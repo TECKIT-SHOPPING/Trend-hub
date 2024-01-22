@@ -20,14 +20,13 @@ public class User extends BaseTimeEntity {
     private Long userId;
 
     private String loginId;
-
     private String password;
-
     private String username;
     private String nickname;
 
     @Temporal(TemporalType.DATE)
     private Date birth;
+
     private String profile;
     private String provider; //app, kakao
     private LocalDateTime agreeInfo;

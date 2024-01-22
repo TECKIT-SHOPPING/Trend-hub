@@ -35,7 +35,7 @@ public class Product extends BaseTimeEntity {
     private Season season;
 
     @OneToMany(mappedBy = "product")
-    private List<ProductOpt> productOptList = new ArrayList<>();
+    private List<ProductOption> productOptionList = new ArrayList<>();
 
     private String name;
     private String image;
@@ -44,5 +44,4 @@ public class Product extends BaseTimeEntity {
     private String detailContent;
     private String detailImage;
     private int totalLike;
-
 }

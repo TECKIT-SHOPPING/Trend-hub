@@ -17,8 +17,8 @@ public class MainCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mainCategoryId;
 
-    private String name;
-
     @OneToMany(mappedBy = "mainCategory")
     private List<Product> products = new ArrayList<>();
+
+    private String name;
 }

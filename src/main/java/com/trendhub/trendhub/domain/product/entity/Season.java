@@ -17,8 +17,8 @@ public class Season {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seasonId;
 
-    private String name;
-
     @OneToMany(mappedBy = "season")
     private List<Product> products = new ArrayList<>();
+
+    private String name;
 }
