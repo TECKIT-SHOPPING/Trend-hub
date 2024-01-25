@@ -29,6 +29,7 @@ public class User extends BaseTimeEntity {
     private String password;
     private String username;
     private String nickname;
+    private String email;
 
     @Temporal(TemporalType.DATE)
     private Date birth;
@@ -54,4 +55,9 @@ public class User extends BaseTimeEntity {
     private int point;
     private String status;
 
+    private boolean emailAuthChecked;
+
+    public void changeEmailAuthChecked(boolean emailAuthChecked) {
+        this.emailAuthChecked = emailAuthChecked;
+    }
 }
