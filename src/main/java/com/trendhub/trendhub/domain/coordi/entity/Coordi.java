@@ -21,4 +21,5 @@ public class Coordi extends BaseTimeEntity {
 
     private String image;
     private int totalLike; // 좋아요 총 갯수
+    private int viewCount;
 }
