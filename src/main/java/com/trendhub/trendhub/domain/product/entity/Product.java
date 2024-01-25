@@ -44,4 +44,5 @@ public class Product extends BaseTimeEntity {
     private String detailContent;
     private String detailImage;
     private int totalLike;
+    private int viewCount;
 }
