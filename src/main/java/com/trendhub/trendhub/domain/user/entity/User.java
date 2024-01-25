@@ -33,23 +33,17 @@ public class User extends BaseTimeEntity {
     @Temporal(TemporalType.DATE)
     private Date birth;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
 
-        /*if (List.of("system", "admin").contains(username)) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        }*/
-
         return authorities;
     }
 
-    private String profile;
+    private String profile; // URL
     private String provider; //app, kakao
+    private String providerId;  // 소셜 전용 ID 변수
     private LocalDateTime agreeInfo;
     private LocalDateTime agreeAge;
     private LocalDateTime agreeEmail;
