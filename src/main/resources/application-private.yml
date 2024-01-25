@@ -4,4 +4,4 @@ spring:
       client:
         registration:
           kakao:
-            client-id: bcda04f3dbb1052307427b9508ca0914
+            client-id: d8c564ccc0712df534847e50264aa6ec

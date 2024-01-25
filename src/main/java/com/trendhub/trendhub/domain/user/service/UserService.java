@@ -1,5 +1,7 @@
-package com.trendhub.trendhub.domain.user.entity;
+package com.trendhub.trendhub.domain.user.service;
 
+import com.trendhub.trendhub.domain.user.entity.User;
+import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

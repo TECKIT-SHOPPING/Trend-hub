@@ -10,10 +10,10 @@ import java.io.IOException;
 public class CustomAuthenticationEntryPoint implements org.springframework.security.web.AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        if (request.getRequestURI().equals("/users/login/error")) {
+        if (request.getRequestURI().equals("/members/login/error")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UNAUTHORIZED");
         } else {
-            response.sendRedirect("/users/login/error");
+            response.sendRedirect("/members/login/error");
         }
     }
 }

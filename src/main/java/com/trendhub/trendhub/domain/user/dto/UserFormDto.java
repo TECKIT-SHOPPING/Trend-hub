@@ -1,5 +1,6 @@
-package com.trendhub.trendhub.domain.user.entity;
+package com.trendhub.trendhub.domain.user.dto;
 
+import com.trendhub.trendhub.domain.user.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
