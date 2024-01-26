@@ -59,8 +59,6 @@
 
 ## 개발 결과물 공유
 
-Github Repository URL: 
-
 Github Repository URL: https://github.com/TECKIT-SHOPPING/Trend-hub
 
 - 필수) 팀원들과 함께 찍은 인증샷(온라인 만남시 스크린 캡쳐)도 함께 업로드 해주세요 🙂
