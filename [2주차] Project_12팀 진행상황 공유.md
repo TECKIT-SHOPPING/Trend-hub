@@ -52,7 +52,10 @@
     - 초반에는 모든 url에 대해서 permitAll()로 하고 어느 정도 화면과 기능 구현이 완료된 상태에서 상세하게 SecurityConfig 설정할 예정
 - git pull 관련 문제
     - develop 브랜치에서 pull하는 과정에서 충돌이 생겨 git status를 먼저하고 modify 된 파일들을 확인하여 github에 있는 코드를 복사하여 해결하였다.
-    - feature/login에서 develop 브랜치로 pr을 하려고했으나 conflict 문제가 생겨 코드를 github에서 수동으로 작성하여 해결하였다.
+    - feature/login에서 develop 브랜치로 pr을 하려고했으나 conflict 문제가 생겨 코드를 github에서 수동으로 작성하여 해결하였다.    
+- 더미 데이터 관련
+    - 상의, 하의, 아우터 위주로 인당 84개씩 넣기, 프로젝트 마무리 단계에서 나머지 카테고리 상품도 더미 추가
+    - 코디 작성은 인당 10개씩
 
 ## 개발 결과물 공유
 
