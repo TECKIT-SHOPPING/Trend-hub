@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static jakarta.persistence.EnumType.STRING;
+
 
 @Entity
 @Getter
@@ -42,7 +44,9 @@ public class User extends BaseTimeEntity {
     }
 
     private String profile; // URL
-    private String provider; //app, kakao
+
+    @Enumerated(STRING)
+    private SocialProvider provider;
     private String providerId;  // 소셜 전용 ID 변수
     private LocalDateTime agreeInfo;
     private LocalDateTime agreeAge;

@@ -1,5 +1,6 @@
 package com.trendhub.trendhub.domain.user.dto;
 
+import com.trendhub.trendhub.domain.user.entity.SocialProvider;
 import com.trendhub.trendhub.domain.user.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -29,6 +30,7 @@ public class UserFormDto {
         return User.builder()
                 .loginId(getLoginId())
                 .password(passwordEncoder.encode(getPassword()))
+                .provider(SocialProvider.APP)
                 .build();
     }
 

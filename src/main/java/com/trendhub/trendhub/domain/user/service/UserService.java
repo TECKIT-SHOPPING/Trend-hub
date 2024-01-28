@@ -2,6 +2,7 @@ package com.trendhub.trendhub.domain.user.service;
 
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
+import com.trendhub.trendhub.global.config.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -40,11 +41,14 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException(loginId);
         }
         User user = _user.get();
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getLoginId())
+        return SecurityUser.builder()
+                .username(user.getUsername())
                 .password(user.getPassword())
                 .authorities(user.getAuthorities())
                 .build();
+    }
 
+    public Optional<User> findByProviderAndProviderId(String provider, String providerId) {
+        return userRepository.findByProviderAndProviderId(provider, providerId);
     }
 }

@@ -1,7 +1,7 @@
 package com.trendhub.trendhub.domain.user.controller;
 
-import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.dto.UserFormDto;
+import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
