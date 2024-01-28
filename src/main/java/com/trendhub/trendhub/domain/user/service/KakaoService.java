@@ -103,16 +103,18 @@ public class KakaoService {
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(res);
             JSONObject properties = (JSONObject) obj.get("properties");
-            System.out.println(obj);
 
             String id = obj.get("id").toString();
             String nickname = properties.get("nickname").toString();
             String profileImg = properties.get("profile_image").toString();
 
+            System.out.println("properties = " + properties);
+
             return KakaoUserInfo.builder()
                     .id(Long.valueOf(id))
                     .nickname(nickname)
                     .profileImg(profileImg)
+                    .provider(SocialProvider.KAKAO)
                     .build();
 
         } catch (IOException | ParseException e) {
@@ -155,7 +157,9 @@ public class KakaoService {
     public User login(KakaoUserInfo userInfo) {
         System.out.println(userInfo);
 
-        Optional<User> opUser = userService.findByProviderAndProviderId("KAKAO", userInfo.getId().toString());
+        Optional<User> opUser = userService.findByProviderAndProviderId(SocialProvider.valueOf("KAKAO"), userInfo.getId().toString());
+
+        System.out.println("opUser 통과");
 
         if (opUser.isPresent()) {
             return opUser.get();

@@ -1,5 +1,6 @@
 package com.trendhub.trendhub.domain.user.service;
 
+import com.trendhub.trendhub.domain.user.entity.SocialProvider;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.global.config.security.SecurityUser;
@@ -42,13 +43,13 @@ public class UserService implements UserDetailsService {
         }
         User user = _user.get();
         return SecurityUser.builder()
-                .username(user.getUsername())
+                .username(user.getLoginId())
                 .password(user.getPassword())
                 .authorities(user.getAuthorities())
                 .build();
     }
 
-    public Optional<User> findByProviderAndProviderId(String provider, String providerId) {
+    public Optional<User> findByProviderAndProviderId(SocialProvider provider, String providerId) {
         return userRepository.findByProviderAndProviderId(provider, providerId);
     }
 }

@@ -41,6 +41,9 @@ public class KakaoController {
         System.out.println("code = " + code);
         String access_token = ks.getToken(code);
         KakaoUserInfo userInfo = ks.getUserInfo(access_token);
+        System.out.println("카카오 아이디 : " + userInfo.getId());
+        System.out.println("카카오 유저네임 : " + userInfo.getNickname());
+        System.out.println("카카오 이미지 네임 : " + userInfo.getProfileImg());
         model.addAttribute("code", code);
         model.addAttribute("access_token", access_token);
         model.addAttribute("userInfo", userInfo);
