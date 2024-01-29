@@ -62,7 +62,7 @@ public class UserController {
     public String loginError(Model model) {
 
         model.addAttribute("loginErrorMessage", "아이디 또는 비밀번호를 입력해주세요");
-        return "login";
+        return "loginComplete";
     }
 
     @PostMapping("/logout")
