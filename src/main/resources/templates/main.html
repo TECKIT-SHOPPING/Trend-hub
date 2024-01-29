@@ -1,16 +1,13 @@
-<html layout:decorate="~{layout}">
+<html layout:decorate="layouts/layout">
 <div layout:fragment="content">
 <!-- [S]basic-N10 -->
-<div class="basic-N10" data-bid="AeLRpTnFt5" id="" style="margin-left: 150px; margin-right: 150px;">
-    <div class="contents-container">
-        <img class="contents-visual img-pc" th:src="@{../images/이미지캐러셀.png}" alt="">
-<!--        <img class="contents-visual img-mobile" th:src="@{../images/이미지캐러셀.png}" alt="서브 비주얼 모바일 이미지">-->
-        <div class="contents-body container-md">
-            <div class="textset textset-visual">
-            </div>
+
+    <div class="contents-container container-md">
+        <div class="contents-banner">
+            <img class="contents-img img-pc" th:src="@{../images/이미지캐러셀.png}" alt="PC 배너 이미지">
         </div>
     </div>
-</div>
+
 <!-- [E]basic-N10 -->
 <!-- [S]basic-N42 -->
 <div class="basic-N42" data-bid="TPLrQm20HZ">
@@ -93,7 +90,7 @@
             </div>
             <div class="contents-group">
                 <div class="cardset cardset-hover cardset-border text-center">
-                    <img class="cardset-img" src="../resources/images/img_basic_N28_3.png" alt="카드 이미지">
+                    <img class="cardset-img" th:src="@{../images/img_basic_N19_1.png}" alt="카드 이미지">
                 </div>
                 <div class="cardset cardset-hover cardset-border text-center">
                     <img class="cardset-img" src="../resources/images/img_basic_N28_3.png" alt="카드 이미지">
