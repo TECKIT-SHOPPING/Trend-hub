@@ -3,8 +3,10 @@ package com.trendhub.trendhub.domain.user.service;
 import com.trendhub.trendhub.domain.email.entity.EmailAuth;
 import com.trendhub.trendhub.domain.email.repository.EmailAuthRepository;
 import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
+import com.trendhub.trendhub.domain.user.entity.SocialProvider;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
+import com.trendhub.trendhub.global.config.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,11 +47,15 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException(loginId);
         }
         User user = _user.get();
-        return org.springframework.security.core.userdetails.User.builder()
+        return SecurityUser.builder()
                 .username(user.getLoginId())
                 .password(user.getPassword())
                 .authorities(user.getAuthorities())
                 .build();
+    }
+
+    public Optional<User> findByProviderAndProviderId(SocialProvider provider, String providerId) {
+        return userRepository.findByProviderAndProviderId(provider, providerId);
 
     }
 

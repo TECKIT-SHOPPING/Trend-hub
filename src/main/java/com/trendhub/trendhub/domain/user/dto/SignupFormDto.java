@@ -1,5 +1,6 @@
 package com.trendhub.trendhub.domain.user.dto;
 
+import com.trendhub.trendhub.domain.user.entity.SocialProvider;
 import com.trendhub.trendhub.domain.user.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -57,7 +58,7 @@ public class SignupFormDto {
                 .email(signupFormDto.getEmail())
                 .birth(Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .profile("https://ifh.cc/g/NLF78g.png")
-                .provider("app")
+                .provider(SocialProvider.APP)
                 .providerId("-1")
                 .agreeInfo(LocalDateTime.now())
                 .agreeAge(LocalDateTime.now())
