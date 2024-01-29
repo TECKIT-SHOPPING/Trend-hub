@@ -16,12 +16,11 @@
 </head>
 
 <body>
-<th:block th:replace="~{navbar :: navbarFragment}"></th:block>  <!--상단바-->
-
+<th:block th:replace="fragments/navbar :: navbarFragment"></th:block>  <!--상단바-->
 <th:block layout:fragment="content"></th:block>  <!--내용-->
 <th:block layout:fragment="script"></th:block>   <!--스크립트-->
 
-<th:block th:replace="~{footer :: footerFragment}"></th:block> <!--하단바-->
+<th:block th:replace="fragments/footer :: footerFragment"></th:block> <!--하단바-->
 <!-- [E]basic-N4 -->
 <script th:src="@{../js/setting.js}"></script>
 <script th:src="@{../js/plugin.js}"></script>

@@ -1,0 +1,49 @@
+<nav th:fragment="navbarFragment">
+    <div class="personal-QxLRRa9Yn3" id="" data-bid="NuLrRaAlNa">
+        <div class="header-inner">
+            <div class="header-container container-lg">
+                <div class="header-left">
+                    <h1 class="header-title">
+                        <a th:href="@{/home}">
+                            <img th:src="@{../images/로고이미지.png}" alt="로고">
+                        </a>
+                    </h1>
+
+                </div>
+                <div class="inputset inputset-lg">
+                    <button class="inputset-icon icon-right icon-search btn" type="button" aria-label="아이콘"></button>
+                    <input type="text" class="inputset-input form-control" style="height:35px; border:1px solid gray;" placeholder="검색어를 입력해주세요." aria-label="내용">
+                </div>
+                <div class="header-right">
+                    <div class="header-utils" >
+
+                        <button style="margin-right: 10px;" class="header-btn btn-cart badgeset badgeset-circle badgeset-position badgeset-bottom-right">
+                            <a th:href="@{/cart}">
+                            <img th:src="@{../icons/ico_cart_black.svg}" alt="쇼핑백 아이콘">
+                            <span class="badgeset-text">1</span>   <!--담은 수 만큼 변경하기-->
+                            </a>
+                        </button>
+                        <!-- 사용자가 로그인한 경우 마이페이지로 이동-->
+                        <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                            <a th:href="@{/members/myPage}">
+                                <img style="margin-right: 10px;" th:src="@{../icons/ico_user_black.svg}">
+                            </a>
+                        </th:block>
+                        <!-- 사용자가 로그인 안한 경우 로그인으로 이동-->
+                        <th:block th:if="${#authorization.expression('isAnonymous()')}">
+                            <a th:href="@{/members/login}">
+                                <img style="margin-right: 10px;" th:src="@{../icons/ico_user_black.svg}">
+                            </a>
+                        </th:block>
+                        <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                            <a th:href="@{/members/logout}">
+                                <img style="margin-top: 3px; width: 28px; height: 28px;" th:src="@{../images/로그아웃.png}">
+                            </a>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-dim"></div>
+    </div>
+</nav>
