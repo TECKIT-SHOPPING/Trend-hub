@@ -1,149 +1,109 @@
-<html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-
+<html layout:decorate="layouts/layout">
 <div layout:fragment="content">
-    <div style="display: flex; flex-direction: column; align-items: center;" th:object="${mainDto}">
-        <!-- 캐러셀-->
-        <div class="contents-container container-md">
-            <div class="contents-banner">
-                <!-- 이미지 캐러셀 부분 -->
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        <!-- Thymeleaf iteration over banners -->
-                        <div th:each="banner : *{banners}" class="swiper-slide">
-                            <a th:href="@{'/banners/' + ${banner.bannerId}}" class="cardset cardset-shopping"
-                               style="min-width: 1500px;">
-                                <figure class="cardset-figure">
-                                    <img class="cardset-img" th:src="${banner.image}" alt="Banner Image">
-                                </figure>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Add navigation buttons -->
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-            </div>
-            <!-- 카테고리 바 -->
-            <div style="display: flex; justify-content: space-between; align-items:center; width: 2000px;">
-                <div>
-                    <th:block th:replace="~{fragments/category :: cateGoryFragment}"></th:block>
-                </div>
-                <div style="flex-grow: 1;">
-                    <div class="basic-N42" data-bid="Lgls03hvIE" style=" width: 1670px;">
-                        <div class="contents-inner">
-                            <div class="textset">
-                                <h2 class="textset-tit">Best Product</h2>
-                                <p class="textset-desc">베스트 상품을 지금 바로 만나보세요!</p>
-                            </div>
-                            <div class="contents-container container-md" style="display: flex; flex-direction: column;">
-                                <div style="display: flex;">
-                                    <div class="swiper-button-prev" style="flex-grow: 1"></div>
-                                    <div class="swiper contents-swiper" style="flex-grow: 1;">
-                                        <div class="swiper-wrapper">
-                                            <!-- Thymeleaf 반복문을 사용하여 동적으로 제품 카드 생성 -->
-                                            <div th:each="product : *{products}" class="swiper-slide">
-                                                <a href="javascript:void(0);"
-                                                   class="cardset cardset-shopping"
-                                                   >
-                                                    <figure class="cardset-figure">
-                                                        <img class="cardset-img" th:src="${product.image}" th:href="@{'/products/' + ${product.productId}}"
-                                                             alt="스와이퍼 이미지">
-                                                    </figure>
-                                                    <div class="cardset-body"
-                                                         style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <!-- 수정된 부분 -->
-                                                        <div>
-                                                            <span class="cardset-name" th:text="${product.name}"></span>
-                                                            <h2 class="cardset-tit" th:text="${product.price}"></h2>
-                                                            <p class="cardset-desc"
-                                                               th:text="${product.price + '원'}"></p>
-                                                        </div>
-                                                        <div class="cardset-actions"
-                                                             th:attr="data-heart=${product.productId}"
-                                                             onclick="toggleLike(this)">
-<!--                                                            <i th:if="${product.liked}" class="fas fa-heart"-->
-<!--                                                               style="color: red; font-size: 24px;"></i>-->
-                                                            <img th:if="${product.liked}" src="../static/images/like.png" />
-                                                            <img th:unless="${product.liked}" src="../static/images/unlike.png" />
-<!--                                                            <i th:unless="${product.liked}" class="far fa-heart"-->
-<!--                                                               style="color: white; font-size: 24px; border: 2px solid red; border-radius: 50%; padding: 4px;"></i>-->
-                                                        </div>
-                                                        <span th:text="${product.totalLike}"
-                                                              style="margin-left: 5px;"></span>
-                                                    </div>
+<!-- [S]basic-N10 -->
 
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-button-next" style="flex-grow: 1"></div>
-                                </div>
-                                <div class="swiper-pagination"></div>
+    <div class="contents-container container-md">
+        <div class="contents-banner">
+            <img class="contents-img img-pc" th:src="@{../images/이미지캐러셀.png}" alt="PC 배너 이미지">
+        </div>
+    </div>
+
+<!-- [E]basic-N10 -->
+<!-- [S]basic-N42 -->
+<div class="basic-N42" data-bid="TPLrQm20HZ">
+    <div class="contents-inner">
+        <div class="contents-container container-md">
+            <div class="textset">
+                <h2 class="textset-tit">Best Product</h2>
+                <p class="textset-desc">베스트 상품을 지금 바로 만나보세요!</p>
+            </div>
+            <div class="swiper contents-swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <a href="javascript:void(0);" class="cardset cardset-shopping">
+                            <figure class="cardset-figure">
+                                <img class="cardset-img" src="../resources/images/img_basic_N42_1.png" alt="스와이퍼 이미지">
+                            </figure>
+                            <div class="cardset-body">
+                                <span class="cardset-name">Temhamol</span>
+                                <h2 class="cardset-tit"> 템하몰 방문손잡이 (3color) </h2>
+                                <p class="cardset-desc">32,000<small>원</small>
+                                </p>
                             </div>
-                        </div>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="javascript:void(0);" class="cardset cardset-shopping">
+                            <figure class="cardset-figure">
+                                <img class="cardset-img" src="../resources/images/img_basic_N42_2.png" alt="스와이퍼 이미지">
+                            </figure>
+                            <div class="cardset-body">
+                                <span class="cardset-name">Temhamol</span>
+                                <h2 class="cardset-tit"> 템하몰 방문손잡이 (3color) </h2>
+                                <p class="cardset-desc">32,000<small>원</small>
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="javascript:void(0);" class="cardset cardset-shopping">
+                            <figure class="cardset-figure">
+                                <img class="cardset-img" src="../resources/images/img_basic_N42_3.png" alt="스와이퍼 이미지">
+                            </figure>
+                            <div class="cardset-body">
+                                <span class="cardset-name">Temhamol</span>
+                                <h2 class="cardset-tit"> 템하몰 방문손잡이 (3color) </h2>
+                                <p class="cardset-desc">32,000<small>원</small>
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="javascript:void(0);" class="cardset cardset-shopping">
+                            <figure class="cardset-figure">
+                                <img class="cardset-img" src="../resources/images/img_basic_N42_4.png" alt="스와이퍼 이미지">
+                            </figure>
+                            <div class="cardset-body">
+                                <span class="cardset-name">Temhamol</span>
+                                <h2 class="cardset-tit"> 템하몰 방문손잡이 (3color) </h2>
+                                <p class="cardset-desc">32,000<small>원</small>
+                                </p>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="basic-N28" data-bid="NilrPTHQLW" id="">
-                <div class="contents-inner">
-                    <div class="contents-container container-md">
-                        <div class="textset">
-                            <h2 class="textset-tit">Best Style</h2>
-                            <a th:href="@{/coordi}" class="btn btn-ghost" style="font-size: 20px;">더보기 →</a>
-                        </div>
-                        <div class="contents-group">
-                            <!-- Thymeleaf 반복문을 사용하여 동적으로 스타일 카드 생성 -->
-                            <div th:each="coordi : *{coordis}" class="cardset cardset-hover cardset-border text-center">
-                                <a th:href="@{'/coordi/' + ${coordi.coordiId}}" style="width: 100%; height: 100%;">
-                                    <img class="cardset-img" th:src="${coordi.image}" alt="카드 이미지">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</div>
+<!-- [E]basic-N42 -->
+<!-- [S]basic-N28 -->
+<div class="basic-N28" data-bid="NilrPTHQLW" id="">
+    <div class="contents-inner">
+        <div class="contents-container container-md">
+            <div class="textset">
+                <h2 class="textset-tit">Best Style</h2>
+                <button class="btn btn-ghost" style="font-size: 20px;">더보기 →</button>
+            </div>
+            <div class="contents-group">
+                <div class="cardset cardset-hover cardset-border text-center">
+                    <img class="cardset-img" th:src="@{../images/img_basic_N19_1.png}" alt="카드 이미지">
+                </div>
+                <div class="cardset cardset-hover cardset-border text-center">
+                    <img class="cardset-img" src="../resources/images/img_basic_N28_3.png" alt="카드 이미지">
+                </div>
+                <div class="cardset cardset-hover cardset-border text-center">
+                    <img class="cardset-img" src="../resources/images/img_basic_N28_3.png" alt="카드 이미지">
+                </div>
+                <div class="cardset cardset-hover cardset-border text-center">
+                    <img class="cardset-img" src="../resources/images/img_basic_N28_3.png" alt="카드 이미지">
                 </div>
             </div>
         </div>
     </div>
-
-    <script th:inline="javascript">
-        function toggleLike(element) {
-            var csrfToken = [[${_csrf.token}]];
-            var heartContainer = element;
-            var productId = heartContainer.getAttribute('data-heart');
-            var currentState = heartContainer.getAttribute('data-liked');
-            var newState = currentState === 'true' ? 'false' : 'true';
-            // UI 갱신
-
-            // 변경된 상태를 서버로 전송
-            fetch('/api/products/liked', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-                body: JSON.stringify({
-                    productId: parseInt(productId),
-                }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    if (data === true) {
-                        heartContainer.innerHTML = '<i class="fas fa-heart" style="color: red; font-size: 24px;"></i>';
-                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
-                        heartContainer.nextElementSibling.innerText = likeCount + 1;
-                    } else {
-                        heartContainer.innerHTML = '<i class="far fa-heart" style="color: white; font-size: 24px; border: 2px solid red; border-radius: 50%; padding: 4px;"></i>';
-                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
-                        heartContainer.nextElementSibling.innerText = likeCount - 1;
-                    }
-                    heartContainer.setAttribute('data-liked', !newState);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-    </script>
 </div>
-
+</div>
 </html>
