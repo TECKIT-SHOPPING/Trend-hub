@@ -1,7 +1,6 @@
 package com.trendhub.trendhub.domain.user.controller;
 
-import com.trendhub.trendhub.domain.user.dto.UserFormDto;
-import com.trendhub.trendhub.domain.user.entity.User;
+import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,26 +29,28 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/join")
-    public String createForm(UserFormDto userFormDto, Model model) {
-        model.addAttribute("userFormDto", userFormDto);
-        return "createMember";
+    public String getSignup(@ModelAttribute("signupFormDto") SignupFormDto signupFormDto, Model model) {
+        model.addAttribute("signupFormDto", signupFormDto);
+        return "users/joinMemberForm";
     }
 
     @PostMapping("/join")
-    public String memberForm(@Valid UserFormDto userFormDto, BindingResult bindingResult, Model model) {
+    public String postSignup(@Valid @ModelAttribute("signupFormDto") SignupFormDto signupFormDto, BindingResult bindingResult, Model model) {
+        System.out.println("memberFormDto.toString() = " + signupFormDto.toString());
         if (bindingResult.hasErrors()) {
-            return "createMember";
+            return "users/joinMemberForm";
         }
 
         try {
-            User saveUser = userFormDto.toEntity(passwordEncoder);
-            userService.saveUser(saveUser);
-        } catch (IllegalStateException e) {
+            userService.saveMember(signupFormDto);
+        } catch (Exception e) {
+            System.out.println("e = " + e);
             model.addAttribute("errorMessage", e.getMessage());
-            return "createMember";
+            model.addAttribute("signupFormDto", signupFormDto);  // Add this line to retain form data
+            return "users/joinMemberForm";
         }
 
-        return "home";
+        return "redirect:/";
     }
 
     @GetMapping("/login")
@@ -70,6 +72,6 @@ public class UserController {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         SecurityContextHolder.clearContext();
-        return "home";
+        return "redirect:/";
     }
 }

@@ -23,7 +23,7 @@ public class SecurityConfig {
                         form ->
                                 form
                                         .loginPage("/members/login")
-                                        .successHandler(((request, response, authentication) -> response.sendRedirect("/home")))
+                                        .successHandler(((request, response, authentication) -> response.sendRedirect("/")))
                                         .usernameParameter("loginId")
                                         .failureUrl("/members/login/error")
                 )

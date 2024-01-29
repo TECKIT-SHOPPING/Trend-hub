@@ -73,7 +73,7 @@ public class KakaoController {
         response.addCookie(cookie);
 
         //ci는 비즈니스 전환후 검수신청 -> 허락받아야 수집 가능
-        return "index";
+        return "redirect:/";
     }
 
 }

@@ -3,6 +3,7 @@ package com.trendhub.trendhub.domain.user.service;
 import com.trendhub.trendhub.domain.user.dto.KakaoUserInfo;
 import com.trendhub.trendhub.domain.user.entity.SocialProvider;
 import com.trendhub.trendhub.domain.user.entity.User;
+import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,13 +15,16 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class KakaoService {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     public String getToken(String code) throws IOException {
         // 인가코드로 토큰받기
@@ -165,15 +169,30 @@ public class KakaoService {
             return opUser.get();
         }
 
+        //랜덤 닉네임 생성
+        Random random = new Random();
+        int randomNumber = random.nextInt(9000) + 1000;
+        while (userRepository.existsByNickname("user_" + randomNumber)) {
+            randomNumber = random.nextInt(9000) + 1000;
+        }
+        String randomNickname = "user_" + randomNumber;
+
         // 강제 회원가입
         User user = User.builder()
+                .emailAuthChecked(true)
+                .agreeInfo(LocalDateTime.now())
+                .agreeAge(LocalDateTime.now())
                 .provider(SocialProvider.KAKAO)
                 .providerId(userInfo.getId().toString())
-                .nickname(userInfo.getNickname())
+                .username(userInfo.getNickname())
+                .nickname(randomNickname)
                 .profile(userInfo.getProfileImg())
+                .level(1)
+                .point(0)
+                .status("ACTIVE")
                 .build();
 
-        return userService.saveUser(user);
+        return userRepository.save(user);
         // Yes - 기존의 유저인지
         // No - 로그인 후 DB에 저장
         /*1. provider -> enum
