@@ -2,8 +2,11 @@ package com.trendhub.trendhub.domain.user.controller;
 
 import com.trendhub.trendhub.domain.user.dto.*;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
+import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
+import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import com.trendhub.trendhub.global.rq.Rq;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -21,6 +24,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Slf4j
 @Controller
@@ -216,4 +222,43 @@ public class UserController {
         return "users/userInfoModify";
     }
     // 이메일 및 이름 가져와서 맞는지 확인하기
+
+    public String mypage(Principal principal, Model model) {
+        String logInid = principal.getName();
+        User user = this.userService.getUser(logInid);
+        model.addAttribute("user", user);
+        return "users/myPage";
+    }
+
+    @GetMapping("/myPage/1")
+    public String mypage_exp(Principal principal, Model model) {
+        String logInid = principal.getName();
+        User user = this.userService.getUser(logInid);
+        model.addAttribute("user", user);
+        return "users/myPage_1";
+    }
+
+    @GetMapping("/myPage/2")
+    public String mypage_looking(Principal principal, Model model) {
+        String logInid = principal.getName();
+        User user = this.userService.getUser(logInid);
+        model.addAttribute("user", user);
+        return "users/myPage_2";
+    }
+
+    @GetMapping("/myPage/3")
+    public String mypage_like(Principal principal, Model model) {
+        String logInid = principal.getName();
+        User user = this.userService.getUser(logInid);
+        model.addAttribute("user", user);
+        return "users/myPage_3";
+    }
+
+    @GetMapping("/myPage/4")
+    public String mypage_riview(Principal principal, Model model) {
+        String logInid = principal.getName();
+        User user = this.userService.getUser(logInid);
+        model.addAttribute("user", user);
+        return "users/myPage_4";
+    }
 }

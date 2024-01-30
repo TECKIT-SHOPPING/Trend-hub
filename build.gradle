@@ -33,7 +33,6 @@ dependencies {
 
 	// thymeleaf
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-
 	// OAUTH2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 

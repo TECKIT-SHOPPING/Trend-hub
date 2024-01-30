@@ -227,4 +227,10 @@ public class UserService implements UserDetailsService {
         }
         return  str;
     }
+
+    public User getUser(String longInid){
+        Optional<User> user = this.userRepository.findByLoginId(longInid);
+        return user.get();
+    }
+
 }
