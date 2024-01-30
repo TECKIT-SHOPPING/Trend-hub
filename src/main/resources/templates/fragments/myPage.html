@@ -1,46 +1,43 @@
 <!--내 정보, 사이드바 -->
-<html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="myPageFragment" th:object="${user}">
+<div th:fragment="myPageFragment">
     <div style="display:flex; flex-direction: column; align-items:center;">
         <div style="display:flex; justify-content: space-between; width: fit-content;">
-            <div style="display: flex; align-items: center; width: 700px;" >
+            <div style="display: flex; align-items: center; width: 700px;">
                 <div>
                     <img style="width: 180px; height: 180px;"
                          src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
                 </div>
                 <div style="display:flex; flex-direction: column; justify-content: start; font-size:20px; margin-left: 20px; flex-grow: 1;">
-                    <div style="display:flex;">
-                    <span style="font-weight: bold; font-size: 50px;" th:text="${user.nickname}">jinyong</span>
-                    <button style="font-size: 12px; margin-left: 6px; color: gray; font-weight: lighter;">* 회원정보수정</button>
-                    </div>
-                    <span style="font-weight: bold;" th:text="${user.level}">Lv 1</span>
+                    <span style="font-weight: bold; font-size: 50px;">jinyong1 <button
+                            style="font-size: 12px; margin-left: 6px; color: gray; font-weight: lighter;">* 회원정보수정</button></span>
+                    <span style="font-weight: bold;">Lv 1</span>
                     <span style="display: flex; align-items: center;">
-                        <img style="width: 15px; height: 15px;" th:src="@{/images/point.png}">
-                        <div style="font-weight: bold; margin-left: 3px;" th:text="${user.point}"></div>
+                        <img style="width: 15px; height: 15px;" th:src="@{/images/포인트.png}">
+                        <div style="font-weight: bold; margin-left: 3px;">10,000</div>
                     </span>
                 </div>
                 <div style="display: flex; flex-direction: column; justify-content: space-between;">
                     <a th:href="@{|/members/myPage/${1}|}">
                         <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 5px;">
-                            <img style="width: 30px; height: 25px;" th:src="@{/images/exp.png}">
+                            <img style="width: 30px; height: 25px;" th:src="@{/images/배송목록.png}">
                             <span style="font-weight: bold;">배송목록</span>
                         </div>
                     </a>
                     <a th:href="@{|/members/myPage/${2}|}">
                         <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 5px;">
-                            <img style="width: 25px; height: 25px;" th:src="@{/images/recently.png}">
+                            <img style="width: 25px; height: 25px;" th:src="@{/images/최근상품.png}">
                             <span style="font-weight: bold;">최근 본 상품</span>
                         </div>
                     </a>
                     <a th:href="@{|/members/myPage/${3}|}">
                         <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 5px;">
-                            <img style="width: 25px; height: 25px;" th:src="@{/images/like.png}">
+                            <img style="width: 25px; height: 25px;" th:src="@{/images/좋아요.png}">
                             <span style="font-weight: bold;">좋아요</span>
                         </div>
                     </a>
                     <a th:href="@{|/members/myPage/${4}|}">
                         <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 5px;">
-                            <img style="width: 25px; height: 25px;" th:src="@{/images/review.png}">
+                            <img style="width: 25px; height: 25px;" th:src="@{/images/후기모음.png}">
                             <span style="font-weight: bold;">후기모음</span>
                         </div>
                     </a>
@@ -49,4 +46,3 @@
         </div>
     </div>
 </div>
-</html>

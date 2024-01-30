@@ -9,18 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class main {
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String main(){
         return "main";
     }
 
-    @GetMapping("/community")
+    @GetMapping("/coordi")
     public String community(){
-        return "community";
+        return "coordi";
     }
 
-    @GetMapping("/membership")
-    public String membership(){
-        return "membership";
-    }
 }
