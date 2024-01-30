@@ -1,0 +1,85 @@
+name: deploy
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+      - 'src/**'
+      - 'gradle'
+      - 'gradlew'
+      - 'build.gradle'
+      - 'settings.gradle'
+      - 'Dockerfile'
+    branches:
+      - test
+jobs:
+  makeTagAndRelease:
+    runs-on: ubuntu-latest
+    outputs:
+      tag_name: ${{ steps.create_tag.outputs.new_tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Tag
+        id: create_tag
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.create_tag.outputs.new_tag }}
+          release_name: Release ${{ steps.create_tag.outputs.new_tag }}
+          body: ${{ steps.create_tag.outputs.changelog }}
+          draft: false
+          prerelease: false
+  buildImageAndPush:
+    name: docker image build and push
+    needs: makeTagAndRelease
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docker Buildx Setup
+        uses: docker/setup-buildx-action@v2
+      - name: Login to ghcr.io
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: set lower case owner name
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >> ${GITHUB_ENV}
+        env:
+          OWNER: "${{ github.repository_owner }}"
+      - name: application.yml create
+        env:
+          ACTIONS_STEP_DEBUG: true
+          APPLICATION_SECRET_YML: ${{ secrets.APPLICATION_YML }}
+        run: echo "$APPLICATION_YML" > src/main/resources/application.yml
+      - name: build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ env.OWNER_LC }}/trend-hub:${{ needs.makeTagAndRelease.outputs.tag_name }},
+            ghcr.io/${{ env.OWNER_LC }}/trend-hub:latest
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.NCP_SSH_HOST }}
+          username: ${{ secrets.NCP_SSH_USERNAME }}
+          password: ${{ secrets.NCP_SSH_PASSWORD }}
+          port: ${{ secrets.NCP_SSH_PORT }}
+          script: |
+            docker pull ghcr.io/mabyoungg/trend-hub:latest
+            docker stop trend-hub
+            docker rm trend-hub
+            docker run \
+                -p 8081:8080 \
+                -d \
+                --name trend-hub \
+                ghcr.io/mabyoungg/trend-hub:latest
+            docker image prune
