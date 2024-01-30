@@ -10,7 +10,8 @@ on:
       - 'settings.gradle'
       - 'Dockerfile'
     branches:
-      - test
+      - main
+      - develop
 jobs:
   makeTagAndRelease:
     runs-on: ubuntu-latest
