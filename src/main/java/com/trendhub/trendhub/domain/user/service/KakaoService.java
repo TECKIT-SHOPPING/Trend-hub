@@ -104,13 +104,15 @@ public class KakaoService {
             System.out.println("res = " + res);
 
 
+
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(res);
             JSONObject properties = (JSONObject) obj.get("properties");
 
             String id = obj.get("id").toString();
             String nickname = properties.get("nickname").toString();
-            String profileImg = properties.get("profile_image").toString();
+            Object profileImgObject = properties.get("profile_image");
+            String profileImg = (profileImgObject != null) ? profileImgObject.toString() : "logo.png";  // 프로필 이미지 동의 안할 시 null 값 대신 기본 logo.png로 대체
 
             System.out.println("properties = " + properties);
 
@@ -177,6 +179,7 @@ public class KakaoService {
         }
         String randomNickname = "user_" + randomNumber;
 
+
         // 강제 회원가입
         User user = User.builder()
                 .emailAuthChecked(true)
@@ -186,7 +189,7 @@ public class KakaoService {
                 .providerId(userInfo.getId().toString())
                 .username(userInfo.getNickname())
                 .nickname(randomNickname)
-                .profile(userInfo.getProfileImg())
+                .profile(userInfo.getProfileImg() != null ? userInfo.getProfileImg() : "resources/static/images/logo.png") // null 체크 및 기본값 할당
                 .level(1)
                 .point(0)
                 .status("ACTIVE")

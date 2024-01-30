@@ -1,0 +1,99 @@
+<div style="display:flex; flex-direction: column; align-items: center; margin-top: 20px;">
+    <!-- (기존 내용은 유지하면서) -->
+
+<!--    <form id="findForm" action="${contextPath }/member/findLoginId" method="post">-->
+<!--        <div class="form-group">-->
+<!--            <input type="text" name="name" id="name" placeholder="이름">-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <input type="email" name="email" id="email" placeholder="이메일">-->
+<!--        </div>-->
+<!--        <button type="button" onclick="findId()">아이디 찾기</button>-->
+<!--    </form>-->
+    <div>
+        <div class="form-group">
+            <input type="text" name="name" id="name" placeholder="이름">
+        </div>
+        <div class="form-group">
+            <input type="email" name="email" id="email" placeholder="이메일">
+        </div>
+        <button type="button" onclick="findId()">아이디 찾기</button>
+    </div>
+
+    <script>
+        function findId() {
+            // 이름과 이메일 값을 가져오기
+            // var name = document.getElementById('name').value;
+            // var email = document.getElementById('email').value;
+            // let var const
+
+            // Extract input values(name, email)
+            const nameNode = document.getElementById('name');
+            const emailNode = document.getElementById('name');
+
+            const nameValue = nameNode.value;
+            const emailValue = emailNode.value;
+
+            const data = {
+                "username": nameValue,
+                "email": emailValue
+            }
+
+            // AJAX를 사용하여 서버에 요청 보내기 -> JQuery
+            // var xhr = new XMLHttpRequest();
+            // xhr.open('POST', '${contextPath}/members/findLoginId', true);
+            // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            // xhr.onreadystatechange = function () {
+            //     if (xhr.readyState == 4 && xhr.status == 200) {
+            //         // 서버로부터의 응답을 처리
+            //         handleResponse(xhr.responseText);
+            //     }
+            // };
+            //
+            // // 폼 데이터를 URL 인코딩하여 전송
+            // var data = 'name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email);
+            // xhr.send(data);
+
+            // {}
+            // fetch API
+            fetch("http://localhost:8080/members/findLoginId", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                // body: JSON.stringify({
+                //     nameValue,
+                //     emailValue
+                // })
+                body: JSON.stringify(data)
+            })
+                .then( resp => {
+                    return resp.json();
+                })
+                .then( data => {
+                    console.log("response data : ", data);
+                })
+                .catch( err => {
+                    console.log('err', err);
+                });
+
+        }
+
+        function handleResponse(responseText) {
+            // 결과를 표시할 영역 선택
+            var resultBox = document.getElementById('resultBox');
+
+            // JSON 형식의 응답을 JavaScript 객체로 변환
+            var response = JSON.parse(responseText);
+
+            // 결과를 동적으로 HTML에 추가
+            if (response.findId === undefined || response.findId === null) {
+                // 조회결과가 없는 경우
+                resultBox.innerHTML = '<p class="inquiry">조회결과가 없습니다.</p>';
+            } else {
+                // 결과 상자에 아이디 표시
+                resultBox.innerHTML = '<p>아이디: ' + response.findId + '</p>';
+            }
+        }
+    </script>
+</div>

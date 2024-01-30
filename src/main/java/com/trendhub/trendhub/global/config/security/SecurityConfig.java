@@ -26,6 +26,10 @@ public class SecurityConfig {
                                         .successHandler(((request, response, authentication) -> response.sendRedirect("/")))
                                         .usernameParameter("loginId")
                                         .failureUrl("/members/login/error")
+
+                )
+                .csrf(
+                        httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable()
                 )
                 .headers(
                         headers ->

@@ -33,7 +33,7 @@ public class KakaoController {
     @GetMapping("/do")
     public String loginPage()
     {
-        return "login";
+        return "users/login";
     }
 
     @GetMapping("/callback")
@@ -44,6 +44,7 @@ public class KakaoController {
         System.out.println("카카오 아이디 : " + userInfo.getId());
         System.out.println("카카오 유저네임 : " + userInfo.getNickname());
         System.out.println("카카오 이미지 네임 : " + userInfo.getProfileImg());
+        if(userInfo.getProfileImg() == null) userInfo.setProfileImg("https://kr.object.ncloudstorage.com/trend-hub-bucket/images/logo.png");
         model.addAttribute("code", code);
         model.addAttribute("access_token", access_token);
         model.addAttribute("userInfo", userInfo);

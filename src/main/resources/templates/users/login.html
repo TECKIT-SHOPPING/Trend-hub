@@ -24,6 +24,7 @@
 </head>
 
 <body>
+<form th:action method="post"></form>
 <!-- [S]personal-IGLRQ9N4JR -->
 <div class="personal-IGLRQ9N4JR" id="" data-bid="SSLrr2bb7h">
     <div class="header-dim"></div>
@@ -36,7 +37,7 @@
             <div class="header-left">
                 <h1 class="header-title">
                     <a href="javascript:void(0)">
-                        <img src="../static/images/img_logo_lightgray.png" alt="로고"/>
+                        <img src="../../static/images/img_logo_lightgray.png" alt="로고"/>
                     </a>
                 </h1>
                 <div class="header-mobile-group">
@@ -67,7 +68,7 @@
                         </li>
                     </ul>
                     <button class="header-btn btn-close">
-                        <img src="../static/icons/ico_close_white.svg" alt="닫기 아이콘">
+                        <img src="../../static/icons/ico_close_white.svg" alt="닫기 아이콘">
                     </button>
                 </div>
             </div>
@@ -79,11 +80,11 @@
             <div class="header-right">
                 <div class="header-utils">
                     <button class="header-btn btn-cart badgeset badgeset-circle badgeset-position badgeset-bottom-right">
-                        <img src="../static/icons/ico_cart_black.svg" alt="쇼핑백 아이콘">
+                        <img src="../../static/icons/ico_cart_black.svg" alt="쇼핑백 아이콘">
                         <span class="badgeset-text">1</span>
                     </button>
                     <a href="javascipt:void(0);" class="header-btn btn-user">
-                        <img src="../static/icons/ico_user_black.svg" alt="유저 아이콘">
+                        <img src="../../static/icons/ico_user_black.svg" alt="유저 아이콘">
                     </a>
                 </div>
             </div>
@@ -132,7 +133,7 @@
                                 </li>
                             </ul>
                             <button class="header-btn btn-close">
-                                <img src="../static/icons/ico_close_white.svg" alt="닫기 아이콘">
+                                <img src="../../static/icons/ico_close_white.svg" alt="닫기 아이콘">
                             </button>
                         </div>
                     </div>
@@ -145,11 +146,11 @@
                     <div class="header-right">
                         <div class="header-utils">
                             <button class="header-btn btn-cart badgeset badgeset-circle badgeset-position badgeset-bottom-right">
-                                <img src="../static/icons/ico_cart_black.svg" alt="쇼핑백 아이콘">
+                                <img src="../../static/icons/ico_cart_black.svg" alt="쇼핑백 아이콘">
                                 <span class="badgeset-text">1</span>
                             </button>
                             <a href="javascipt:void(0);" class="header-btn btn-user">
-                                <img src="../static/icons/ico_user_black.svg" alt="유저 아이콘">
+                                <img src="../../static/icons/ico_user_black.svg" alt="유저 아이콘">
                             </a>
                         </div>
                     </div>
@@ -171,7 +172,8 @@
         </div>
         <!-- [E]personal-nKLrr6WAz1 -->
         <!-- [S]personal-mALrqlJVbp -->
-        <form class="personal-mALrqlJVbp" data-bid="wSLRR2ef0l" role="form" method="post" th:action="@{/members/login}" id="">
+        <form class="personal-mALrqlJVbp" data-bid="wSLRR2ef0l" role="form" method="post" th:action="@{/members/login}"
+              id="">
             <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
             <div class="contents-inner">
                 <div class="agree-box">
@@ -201,10 +203,14 @@
 
                     <div style="width:350px; font-size: 14px;  display: flex; justify-content: space-around; padding-bottom: 10px;">
                         <div>
-                            <a>아이디찾기</a>
+                            <button type="button" class="btn btn-primary" onClick="location.href='/members/findLoginId'">
+                                <a>아이디찾기</a>
+                            </button>
                         </div>
                         <div>
-                            <a>비밀번호찾기 </a>
+                            <button type="button" class="btn btn-primary" onClick="location.href='/members/findPassWord'">
+                                <a>비밀번호찾기 </a>
+                            </button>
                         </div>
                     </div>
                     <div style="text-align: center">
@@ -277,22 +283,22 @@
             <ul class="footer-snslist">
                 <li class="footer-snsitem">
                     <a class="footer-snslink" href="javascript:void(0)">
-                        <img src="../static/icons/ico_instagram_lightgrey.svg" alt="인스타그램">
+                        <img src="../../static/icons/ico_instagram_lightgrey.svg" alt="인스타그램">
                     </a>
                 </li>
                 <li class="footer-snsitem">
                     <a class="footer-snslink" href="javascript:void(0)">
-                        <img src="../static/icons/ico_youtube_lightgrey.svg" alt="유튜브">
+                        <img src="../../static/icons/ico_youtube_lightgrey.svg" alt="유튜브">
                     </a>
                 </li>
                 <li class="footer-snsitem">
                     <a class="footer-snslink" href="javascript:void(0)">
-                        <img src="../static/icons/ico_facebook_lightgrey.svg" alt="페이스북">
+                        <img src="../../static/icons/ico_facebook_lightgrey.svg" alt="페이스북">
                     </a>
                 </li>
                 <li class="footer-snsitem">
                     <a class="footer-snslink" href="javascript:void(0)">
-                        <img src="../static/icons/ico_kakao_lightgrey.svg" alt="카카오톡">
+                        <img src="../../static/icons/ico_kakao_lightgrey.svg" alt="카카오톡">
                     </a>
                 </li>
             </ul>
@@ -319,3 +325,11 @@
 <script th:src="@{/js/script.js}"></script>
 </body>
 </html>
+
+
+<!--
+세션 문제 :
+1. 세션 생성하고 있는 로그인 창 폼 부분 위의 http코드가 너무 많음
+2. http는 한번에 연결하는 것이 아닌 나눠서 호출한다.
+3. 이미 헤드에서 세션을 요청했는데 밑에서도 요청하는 경우
+4. 자바 코드(UserController에서 login 참조)에서 Session을 따로 따오거나 html(body 태그 내 단순 form 참조) 내에 form을 만들면 해결.-->
