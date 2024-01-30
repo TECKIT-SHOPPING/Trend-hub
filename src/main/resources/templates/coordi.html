@@ -3,65 +3,34 @@
     <div style="display: flex; flex-direction: column; justify-content: center;">
         <div class="contents-container container-md">
             <div class="textset">
-                <h2 class="textset-tit" style="text-align: center;">Best coordi</h2>
+                <h2 class="textset-tit">Best coordi</h2>
             </div>
         </div>
         <div class="basic-N45" data-bid="aGLrPw1vOT">
-            <div style="height: 500px;" class="contents-container container-md">
-                <img style="width: 1320px; height: 500px;" th:src="@{/images/coordi_bg.png}">
+            <div class="contents-container container-md">
+                <img th:src="@{/images/코디배경.png}">
             </div>
         </div>
-        <div style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 10px;">
-            <div style="width:1300px; display: flex; justify-content: end; align-items: center;">
-                <button th:href="@{/coordi/write}"
-                   style="width:200px; height:auto; display:flex; align-items:center; justify-content:space-evenly; border: 2px solid black; border-radius: 10px;">
-                    <img style="width: 30px; height: 30px;" th:src="@{/images/camera.png}"></img>
-                    <div style="font-size:36px;">후기등록</div>
-                </button>
+        <div class="row row-cols-1 row-cols-md-5" style="display:flex; justify-content: center; margin-bottom: 50px; margin-top: 40px;">
+            <div class="card" style="width: auto; height: auto;">
+                <a th:href="@{/}" class="cardset">
+                    <figure class="cardset-figure">
+                        <img class="cardset-img"
+                             th:src="@{/images/로고이미지(검정배경).png}">
+                    </figure>
+                </a>
             </div>
-        </div>
-        <div style="display:flex; justify-content: center; margin-bottom: 50px;">
-            <div style="display: flex; flex-wrap: wrap;  width: 1300px; height: auto;">
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_black.png}">
-                    </a>
-                </figure>
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_black.png}">
-                    </a>
-                </figure>
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_black.png}">
-                    </a>
-                </figure>
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_black.png}">
-                    </a>
-                </figure>
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_black.png}">
-                    </a>
-                </figure>
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_black.png}">
-                    </a>
-                </figure>
+            <div class="card">
+                <a th:href="@{/}" class="cardset">
+                    <figure class="cardset-figure">
+                        <img class="cardset-img"
+                             th:src="@{/images/로고이미지(검정배경).png}">
+                    </figure>
+                </a>
             </div>
         </div>
 
-        <nav class="pagiset pagiset-line" style="margin-bottom: 30px;">
+        <nav class="pagiset pagiset-line">
             <div class="pagiset-ctrl">
                 <a class="pagiset-link pagiset-first" href="javascript:void(0)">
                     <span class="visually-hidden">처음</span>
