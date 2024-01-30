@@ -56,7 +56,7 @@ jobs:
       - name: application.yml create
         env:
           ACTIONS_STEP_DEBUG: true
-          APPLICATION_SECRET_YML: ${{ secrets.APPLICATION_YML }}
+          APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
         run: echo "$APPLICATION_YML" > src/main/resources/application.yml
       - name: build and push
         uses: docker/build-push-action@v3
