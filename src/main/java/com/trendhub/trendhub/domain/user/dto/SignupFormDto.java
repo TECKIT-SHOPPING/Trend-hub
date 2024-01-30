@@ -1,6 +1,9 @@
 package com.trendhub.trendhub.domain.user.dto;
 
+<<<<<<< HEAD
 import com.trendhub.trendhub.domain.user.entity.SocialProvider;
+=======
+>>>>>>> origin/feature/register-user
 import com.trendhub.trendhub.domain.user.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -55,10 +58,17 @@ public class SignupFormDto {
                 .password(passwordEncoder.encode(signupFormDto.getPassword()))
                 .username(signupFormDto.getUsername())
                 .nickname(randomNickname)
+<<<<<<< HEAD
                 .email(signupFormDto.getEmail()+"@"+signupFormDto.getEmailDomain())
                 .birth(Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .profile("https://kr.object.ncloudstorage.com/trend-hub-bucket/images/logo.png")
                 .provider(SocialProvider.APP)
+=======
+                .email(signupFormDto.getEmail())
+                .birth(Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .profile("https://ifh.cc/g/NLF78g.png")
+                .provider("app")
+>>>>>>> origin/feature/register-user
                 .providerId("-1")
                 .agreeInfo(LocalDateTime.now())
                 .agreeAge(LocalDateTime.now())
