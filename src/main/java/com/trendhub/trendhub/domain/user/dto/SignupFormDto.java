@@ -59,8 +59,6 @@ public class SignupFormDto {
                 .birth(Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .profile("https://kr.object.ncloudstorage.com/trend-hub-bucket/images/logo.png")
                 .provider(SocialProvider.APP)
-                .email(signupFormDto.getEmail())
-                .birth(Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .providerId("-1")
                 .agreeInfo(LocalDateTime.now())
                 .agreeAge(LocalDateTime.now())
