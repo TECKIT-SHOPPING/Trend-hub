@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class main {
 
+<<<<<<< HEAD
     private final MainService mainService;
 
     @GetMapping("/")
@@ -18,6 +19,10 @@ public class main {
 
         MainDto mainDto = mainService.getMainPage();
         model.addAttribute("mainDto", mainDto);
+=======
+    @GetMapping("/")
+    public String main(){
+>>>>>>> 6aeb89e (feat/마이페이지 화면구현 충돌해결)
         return "main";
     }
 
