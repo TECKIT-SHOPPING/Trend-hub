@@ -60,10 +60,6 @@ public class User extends BaseTimeEntity {
     private String status;
 
     private boolean emailAuthChecked;
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/feature/register-user
     public void changeEmailAuthChecked(boolean emailAuthChecked) {
         this.emailAuthChecked = emailAuthChecked;
     }

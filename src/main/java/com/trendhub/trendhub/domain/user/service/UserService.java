@@ -3,10 +3,7 @@ package com.trendhub.trendhub.domain.user.service;
 import com.trendhub.trendhub.domain.email.entity.EmailAuth;
 import com.trendhub.trendhub.domain.email.repository.EmailAuthRepository;
 import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
-<<<<<<< HEAD
 import com.trendhub.trendhub.domain.user.entity.SocialProvider;
-=======
->>>>>>> origin/feature/register-user
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.global.config.security.SecurityUser;
@@ -67,11 +64,9 @@ public class UserService implements UserDetailsService {
         validateSignupForm(signupFormDto);
         //이메일 인증했는지 체크
         validateEmailAuth(signupFormDto);
-<<<<<<< HEAD
         //중복된 아이디 체크
         validateLoginId(signupFormDto.getLoginId());
-=======
->>>>>>> origin/feature/register-user
+
 
         //랜덤 닉네임 생성
         Random random = new Random();
@@ -92,7 +87,7 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-<<<<<<< HEAD
+
     private void validateLoginId(String loginId) {
         Optional<User> _findUser = userRepository.findByLoginId(loginId);
         if (_findUser.isPresent()) {
@@ -100,8 +95,6 @@ public class UserService implements UserDetailsService {
         }
     }
 
-=======
->>>>>>> origin/feature/register-user
     private void validateSignupForm(SignupFormDto signupFormDto) {
         if (!signupFormDto.isAgreeInfo() || !signupFormDto.isAgreeAge()) { //필수 동의 체크
             throw new IllegalStateException("필수 동의를 해주세요.");
