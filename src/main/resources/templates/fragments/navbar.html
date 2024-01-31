@@ -57,11 +57,15 @@
                         <!--로그아웃-->
                         <th:block th:if="${#authorization.expression('isAuthenticated()')}">
 <<<<<<< HEAD
+<<<<<<< HEAD
                             <form id="logoutForm" method="post" th:action="@{/members/logout}">
 =======
                             <form id="logoutForm" method="post" action="/members/logout">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 >>>>>>> 6aeb89e (feat/마이페이지 화면구현 충돌해결)
+=======
+                            <form id="logoutForm" method="post" th:action="@{/members/logout}">
+>>>>>>> 2e71e87 (fix:화면 적용)
                                 <button type="submit">
                                     <img style="margin-top: 3px; width: 28px; height: 28px;"
                                          th:src="@{/images/로그아웃.png}" alt="Logout">
