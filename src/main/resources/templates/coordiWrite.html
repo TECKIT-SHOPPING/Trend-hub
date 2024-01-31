@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>TrendHub</title>
+    <script>
+        function previewFiles() {
+            var previewContainer = document.querySelector('#preview-container');
+            var fileInput = document.querySelector('input[type=file]');
+            var files = fileInput.files;
+
+            var allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+            // 파일 크기 제한
+            var maxSize = 10 * 1024 * 1024;
+
+            previewContainer.innerHTML = '';
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                // 파일 확장자 가져오기
+                var fileExtension = file.name.split('.').pop().toLowerCase();
+
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert('jpg, jpeg, png 확장자만 허용됩니다.');
+                    fileInput.value = '';
+                    return;
+                }
+
+                if (file.size > maxSize) {
+                    alert('파일 크기가 10MB 제한을 초과하는 파일이 있습니다. 더 작은 파일을 선택해주세요.');
+                    fileInput.value = '';
+                    return;
+                }
+
+                var reader = new FileReader();
+                var previewImg = document.createElement('img');
+                previewImg.height = 100;
+                previewImg.alt = '이미지 미리보기';
+
+                reader.onloadend = function () {
+                    previewImg.src = reader.result;
+                };
+
+                reader.readAsDataURL(file);
+                previewContainer.appendChild(previewImg);
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div th:if="${message}">
+    <h2 th:text="${message}"/>
+</div>
+<div>
+    <form method="POST" enctype="multipart/form-data" th:action="@{/coordi/write}" role="form">
+        <table>
+            <tr>
+                <td>업로드할 파일:</td>
+                <td><input type="file" name="file" onchange="previewFiles()" multiple/></td>
+            </tr>
+            <tr>
+                <td>선택한 파일:</td>
+                <td id="preview-container"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="등록하기" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div>
+    <ul>
+        <li th:each="file : ${files}">
+            <a th:href="${file}" th:text="${file}" />
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
