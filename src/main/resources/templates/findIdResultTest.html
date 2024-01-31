@@ -1,0 +1,10 @@
+<div class="result-box" xmlns:c="http://www.w3.org/1999/XSL/Transform">
+    <c:choose>
+        <c:when test="${empty findId}">
+            <p class="inquiry">조회결과가 없습니다.</p>
+        </c:when>
+        <c:otherwise>
+            <p>${findId.id}</p>
+        </c:otherwise>
+    </c:choose>
+</div>
