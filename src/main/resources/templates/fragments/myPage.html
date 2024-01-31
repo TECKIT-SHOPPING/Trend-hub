@@ -1,19 +1,20 @@
 <!--내 정보, 사이드바 -->
-<div th:fragment="myPageFragment">
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="myPageFragment" th:object="${user}">
     <div style="display:flex; flex-direction: column; align-items:center;">
         <div style="display:flex; justify-content: space-between; width: fit-content;">
-            <div style="display: flex; align-items: center; width: 700px;">
+            <div style="display: flex; align-items: center; width: 700px;" >
                 <div>
                     <img style="width: 180px; height: 180px;"
                          src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
                 </div>
                 <div style="display:flex; flex-direction: column; justify-content: start; font-size:20px; margin-left: 20px; flex-grow: 1;">
-                    <span style="font-weight: bold; font-size: 50px;">jinyong1 <button
+                    <span style="font-weight: bold; font-size: 50px;" th:text="${user.nickname}">jinyong1 <button
                             style="font-size: 12px; margin-left: 6px; color: gray; font-weight: lighter;">* 회원정보수정</button></span>
-                    <span style="font-weight: bold;">Lv 1</span>
+                    <span style="font-weight: bold;" th:text="${user.level}">Lv 1</span>
                     <span style="display: flex; align-items: center;">
                         <img style="width: 15px; height: 15px;" th:src="@{/images/포인트.png}">
-                        <div style="font-weight: bold; margin-left: 3px;">15,000</div>
+                        <div style="font-weight: bold; margin-left: 3px;" th:text="${user.point}"></div>
                     </span>
                 </div>
                 <div style="display: flex; flex-direction: column; justify-content: space-between;">
@@ -46,3 +47,4 @@
         </div>
     </div>
 </div>
+</html>
