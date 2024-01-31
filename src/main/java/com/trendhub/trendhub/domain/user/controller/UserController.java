@@ -2,6 +2,7 @@ package com.trendhub.trendhub.domain.user.controller;
 
 import com.trendhub.trendhub.domain.user.dto.*;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
+import com.trendhub.trendhub.domain.user.dto.FindUserDto;
 import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.NoSuchElementException;
 
 
 
@@ -98,26 +100,6 @@ public class UserController {
         model.addAttribute("findIdErrorMessage", "이름 또는 이메일을 입력해주세요");
         return "users/findID";
     }
-
-//    @PostMapping("/findLoginId")
-//    public String postFindLoginId(Model model, FindUserDto dto,
-//                                  @RequestParam String name, @RequestParam String email) {
-//        try {
-//            dto.setUsername(name);
-//            dto.setEmail(email);
-//            Optional<User> foundUser = userService.findUserByUsernameAndEmail(dto);
-//
-//            if (foundUser.isPresent()) {
-//                model.addAttribute("findId", foundUser.get().getUserId());
-//            } else {
-//                model.addAttribute("findId", null); // 아이디가 없으면 null 전달
-//            }
-//        } catch (Exception e) {
-//            model.addAttribute("msg", "오류가 발생되었습니다.");
-//            e.printStackTrace();
-//        }
-//        return "users/login";
-//    } // 로그인 찾기 Post 기능
 
     @ResponseBody
     @PostMapping("/findLoginId")
