@@ -112,13 +112,7 @@ public class UserController {
 
         userService.findId(dto.getUsername(), dto.getEmail());
 
-        /*User findUser =userService.findUserByUsernameAndEmail(dto).orElseThrow(
-                () -> {
-                    throw new NoSuchElementException("Could not find that user.");
-                }
-        );*/
         return ResponseEntity.ok().build();
-                /*findUser.getUsername()*/
     } // 로그인 찾기 Post 기능
 
 
@@ -137,9 +131,9 @@ public class UserController {
     @ResponseBody
     @PostMapping("/findLoginPw")
     public ResponseEntity<Object> postFindLoginPw(@RequestBody FindUserDto dto) throws Exception {
-        log.info("loginId={}, email={}", dto.getLoginId(), dto.getEmail());
-
-        userService.findPw(dto.getLoginId(), dto.getEmail());
+//        log.info("loginId={}, email={}", dto.getLoginId(), dto.getEmail());
+//
+//        userService.findPw(dto.getLoginId(), dto.getEmail());
         /*User findUser =userService.findUserByUsernameAndEmail(dto).orElseThrow(
                 () -> {
                     throw new NoSuchElementException("Could not find that user.");
