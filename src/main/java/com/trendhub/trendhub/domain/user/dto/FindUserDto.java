@@ -1,7 +1,10 @@
 package com.trendhub.trendhub.domain.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
+<<<<<<< HEAD
 import lombok.Data;
+=======
+>>>>>>> 0f9e92f (fix:충돌 수정)
 import lombok.Getter;
 import lombok.Setter;
 
