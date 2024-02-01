@@ -4,6 +4,7 @@ import com.trendhub.trendhub.domain.home.dto.MainDto;
 import com.trendhub.trendhub.domain.home.service.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequiredArgsConstructor
