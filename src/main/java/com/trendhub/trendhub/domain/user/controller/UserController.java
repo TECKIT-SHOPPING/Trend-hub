@@ -139,5 +139,19 @@ public class UserController {
         return "users/findPW";
     }
 
+    @ResponseBody
+    @PostMapping("/findLoginPw")
+    public ResponseEntity<Object> postFindLoginPw(@RequestBody FindUserDto dto) throws Exception {
+        log.info("loginId={}, email={}", dto.getLoginId(), dto.getEmail());
+
+        userService.findPw(dto.getLoginId(), dto.getEmail());
+        /*User findUser =userService.findUserByUsernameAndEmail(dto).orElseThrow(
+                () -> {
+                    throw new NoSuchElementException("Could not find that user.");
+                }
+        );*/
+        return ResponseEntity.ok().build();
+        /*findUser.getUsername()*/
+    } // 로그인 찾기 Post 기능
     // 이메일 및 이름 가져와서 맞는지 확인하기
 }

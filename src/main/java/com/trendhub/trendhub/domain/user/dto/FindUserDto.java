@@ -12,6 +12,6 @@ import lombok.Setter;
 public class FindUserDto {
     @NotBlank(message = "이름을 입력해주세요.")
     private String username;
-
+    private String loginId;
     private String email;
 }
