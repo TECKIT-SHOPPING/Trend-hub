@@ -1,14 +1,15 @@
 package com.trendhub.trendhub.domain.user.controller;
 
-import com.trendhub.trendhub.domain.user.dto.FindUserDto;
-import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
+import com.trendhub.trendhub.domain.user.dto.*;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.domain.user.service.UserService;
+import com.trendhub.trendhub.global.rq.Rq;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.NoSuchElementException;
 
@@ -30,6 +32,7 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final Rq rq;
 
     @GetMapping("/join")
     public String getSignup(@ModelAttribute("signupFormDto") SignupFormDto signupFormDto, Model model) {
@@ -113,4 +116,65 @@ public class UserController {
         );
         return findUser.getUsername();
     } // 로그인 찾기 Post 기능
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/info")
+    public String userInfo () {
+        return "users/userInfo";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify")
+    public String userInfoModify () {
+        return "users/userInfoModify";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/change-password")
+    public String changePassword (
+            @Valid ChangePasswordDto changePasswordDto
+    ) {
+        userService.changePassword(rq.getUserInfo(), changePasswordDto);
+
+        return "users/userInfoModify";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/check-nickname")
+    public String checkNickname (
+            ChangeNicknameDto changeNicknameDto
+    ) {
+        userService.checkNickname(changeNicknameDto);
+
+        return "users/userInfoModify";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/change-nickname")
+    public String changeNickname (
+            ChangeNicknameDto changeNicknameDto
+    ) {
+        userService.changeNickname(rq.getUserInfo(), changeNicknameDto);
+
+        return "users/userInfoModify";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/change-profile")
+    public String changeProfile (
+            @RequestPart MultipartFile profile
+    ) {
+        userService.changeProfile(rq.getUserInfo(), profile);
+
+        return "users/userInfoModify";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/address")
+    public String address (AddressDto addressDto) {
+        userService.saveAddress(rq.getUserInfo(), addressDto);
+
+        return "users/userInfoModify";
+    }
+
 }

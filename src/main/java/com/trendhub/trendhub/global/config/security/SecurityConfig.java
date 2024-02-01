@@ -40,7 +40,10 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(
                         auth ->
-                                auth.requestMatchers("/**").permitAll()
+                                auth
+                                        .requestMatchers("/members/info").authenticated()
+                                        .requestMatchers("/members/modify").authenticated()
+                                        .requestMatchers("/**").permitAll()
                 )
                 .exceptionHandling(
                         except ->
