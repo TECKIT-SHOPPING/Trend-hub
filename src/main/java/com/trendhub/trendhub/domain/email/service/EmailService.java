@@ -123,18 +123,19 @@ public class EmailService {
         MimeMessage message = javaMailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, email);
-        message.setSubject("TrendHub 임시 비밀번호 제공");
+        message.setSubject("TrendHub 아이디 찾기 확인");
 
         String msgg = "";
         msgg += "<div style='margin:100px;'>";
         msgg += "<h1> 안녕하세요 TrendHub입니다. </h1>";
         msgg += "<br>";
+        msgg += "<p>아래 아이디를 확인해주세요<p>";
         msgg += "<p>아래 코드를 로그인 창으로 돌아가 입력해주세요<p>";
         msgg += "<br>";
         msgg += "<p>감사합니다!<p>";
         msgg += "<br>";
         msgg += "<div align='center' style='border:1px solid black; font-family:verdana';>";
-        msgg += "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
+        msgg += "<h3 style='color:blue;'>고객님의 아이디입니다.</h3>";
         msgg += "<div style='font-size:130%'>";
         msgg += "Id : <strong>";
         msgg += loginId + "</strong><div><br/> ";
@@ -150,7 +151,6 @@ public class EmailService {
 
         message.addRecipients(Message.RecipientType.TO, email);
         message.setSubject("TrendHub 아이디 찾기 확인");
-
         String msgg = "";
         msgg += "<div style='margin:100px;'>";
         msgg += "<h1> 안녕하세요 TrendHub입니다. </h1>";

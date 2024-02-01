@@ -1,9 +1,6 @@
 package com.trendhub.trendhub.domain.user.controller;
 
 import com.trendhub.trendhub.domain.user.dto.*;
-import com.trendhub.trendhub.domain.user.entity.User;
-import com.trendhub.trendhub.domain.user.dto.FindUserDto;
-import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import com.trendhub.trendhub.global.rq.Rq;
@@ -11,9 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -159,7 +156,6 @@ public class UserController {
         return ResponseEntity.ok().build();
         /*findUser.getUsername()*/
     } // 로그인 찾기 Post 기능
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/info")
     public String userInfo () {
@@ -219,6 +215,5 @@ public class UserController {
 
         return "users/userInfoModify";
     }
-
     // 이메일 및 이름 가져와서 맞는지 확인하기
 }

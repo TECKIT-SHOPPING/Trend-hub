@@ -189,7 +189,6 @@ public class UserService implements UserDetailsService {
         userInfo.saveAddress(changeUser);
     }
 
-
     public void findId(String name, String email) throws Exception {
         Optional<User> _user = userRepository.findByUsernameAndEmail(name, email);
         if(_user.isEmpty()) throw new IllegalStateException("존재하지 않는 회원입니다.");
