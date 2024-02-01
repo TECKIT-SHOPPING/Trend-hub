@@ -2,8 +2,8 @@ package com.trendhub.trendhub.domain.user.service;
 
 import com.trendhub.trendhub.domain.email.entity.EmailAuth;
 import com.trendhub.trendhub.domain.email.repository.EmailAuthRepository;
-import com.trendhub.trendhub.domain.user.dto.FindUserDto;
-import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
+import com.trendhub.trendhub.domain.email.service.EmailService;
+import com.trendhub.trendhub.domain.user.dto.*;
 import com.trendhub.trendhub.domain.user.entity.SocialProvider;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
@@ -229,9 +229,5 @@ public class UserService implements UserDetailsService {
     public User getUser(String longInid){
         Optional<User> user = this.userRepository.findByLoginId(longInid);
         return user.get();
-    }
-
-    public Optional<User> findUserByUsernameAndEmail(FindUserDto dto) {
-        return userRepository.findByUsernameAndEmail(dto.getUsername(), dto.getEmail());
     }
 }
