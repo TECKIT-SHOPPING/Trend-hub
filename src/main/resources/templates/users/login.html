@@ -167,7 +167,7 @@
         <div class="personal-nKLrr6WAz1" data-bid="eeLrrE5L17" id="">
             <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
             <div style="display:flex; justify-content: center; margin-bottom: 20px;">
-                <h1 style="font-weight: bold; text-decoration-line: underline; ">로그인</h1>
+                <h1 style="font-weight: bold; text-decoration-line: underline;">로그인</h1>
             </div>
         </div>
         <!-- [E]personal-nKLrr6WAz1 -->
@@ -203,12 +203,10 @@
 
                     <div style="width:350px; font-size: 14px;  display: flex; justify-content: space-around; padding-bottom: 10px;">
                         <div>
-                            <button type="button" class="btn btn-primary" onClick="location.href='/members/findLoginId'">
+                            <button type="button" style="height: 40px; margin-right: 10px;" class="btn btn-primary" onClick="location.href='/members/findLoginId'">
                                 <a>아이디찾기</a>
                             </button>
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-primary" onClick="location.href='/members/findPassWord'">
+                            <button type="button" style="height: 40px;" class="btn btn-primary" onClick="location.href='/members/findPassWord'">
                                 <a>비밀번호찾기 </a>
                             </button>
                         </div>
@@ -221,9 +219,8 @@
                     </div>
 
                     <div>
-                        <a class="p-2"
-                           href="https://kauth.kakao.com/oauth/authorize?client_id=bcda04f3dbb1052307427b9508ca0914&redirect_uri=http://localhost:8080/kakao/callback&response_type=code">
-                            <img th:src="@{/images/kakao_login_medium_narrow.png}" style="height:60px"/>
+                        <a class="p-2" href="https://kauth.kakao.com/oauth/authorize?client_id=bcda04f3dbb1052307427b9508ca0914&redirect_uri=http://localhost:8080/kakao/callback&response_type=code">
+                            <img th:src="@{/images/kakao_login_medium_narrow.png}" style="height: 40px; margin-right: 10px;"/>
                         </a>
                     </div>
                     <div style="font-size: 13px; margin: 20px 0px 10px 0px;">회원가입 후 <span
