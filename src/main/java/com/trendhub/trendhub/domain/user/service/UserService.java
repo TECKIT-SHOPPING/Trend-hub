@@ -2,6 +2,7 @@ package com.trendhub.trendhub.domain.user.service;
 
 import com.trendhub.trendhub.domain.email.entity.EmailAuth;
 import com.trendhub.trendhub.domain.email.repository.EmailAuthRepository;
+import com.trendhub.trendhub.domain.email.service.EmailService;
 import com.trendhub.trendhub.domain.user.dto.FindUserDto;
 import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
 import com.trendhub.trendhub.domain.user.entity.SocialProvider;
@@ -27,6 +28,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailAuthRepository emailAuthRepository;
+    private final EmailService emailService;
 
     public User saveUser(User user) {
         validateDuplicateUser(user);
@@ -117,5 +119,44 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> findUserByUsernameAndEmail(FindUserDto dto) {
         return userRepository.findByUsernameAndEmail(dto.getUsername(), dto.getEmail());
+    }
+
+    public void findId(String name, String email) throws Exception {
+        Optional<User> _user = userRepository.findByUsernameAndEmail(name, email);
+        if(_user.isEmpty()) throw new IllegalStateException("존재하지 않는 회원입니다.");
+
+        String userId = _user.get().getLoginId();
+
+        emailService.sendEmailId(email, userId);
+    }
+
+    public void findPw(String loginId, String email) throws Exception {
+        Optional<User> _user = userRepository.findByLoginIdAndEmail(loginId, email);
+        if(_user.isEmpty()) throw new IllegalStateException("존재하지 않는 회원입니다.");
+
+        String tempPw = getTempPassword();
+
+        User user = _user.get();
+        user.setPassword(passwordEncoder.encode(tempPw));
+
+        System.out.println("임시 비밀번호 입니다 = " + tempPw + "encode = " + user.getPassword());
+
+        userRepository.save(user);
+
+        emailService.sendEmailPw(email, tempPw);
+    }
+
+    public String getTempPassword() {
+        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+        String str = "";
+
+        int idx = 0;
+        for (int i = 0; i < 10; i++) {
+            idx = (int) (charSet.length * Math.random());
+            str += charSet[idx];
+        }
+        return  str;
     }
 }

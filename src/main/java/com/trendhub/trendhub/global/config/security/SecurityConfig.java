@@ -28,9 +28,9 @@ public class SecurityConfig {
                                         .failureUrl("/members/login/error")
 
                 )
-                .csrf(
+                /*.csrf(
                         httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable()
-                )
+                )*/
                 .headers(
                         headers ->
                                 headers.frameOptions(
