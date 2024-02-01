@@ -1,0 +1,63 @@
+<html layout:decorate="layouts/layout">
+<div layout:fragment="content">
+    <div style="display: flex; flex-direction: column; justify-content: center;">
+        <div class="contents-container container-md">
+            <div class="textset">
+                <h2 class="textset-tit">Best coordi</h2>
+            </div>
+        </div>
+        <div class="basic-N45" data-bid="aGLrPw1vOT">
+            <div class="contents-container container-md">
+                <img th:src="@{/images/코디배경.png}">
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-5" style="display:flex; justify-content: center; margin-bottom: 50px; margin-top: 40px;">
+            <div class="card" style="width: auto; height: auto;">
+                <a th:href="@{/}" class="cardset">
+                    <figure class="cardset-figure">
+                        <img class="cardset-img"
+                             th:src="@{/images/로고이미지(검정배경).png}">
+                    </figure>
+                </a>
+            </div>
+            <div class="card">
+                <a th:href="@{/}" class="cardset">
+                    <figure class="cardset-figure">
+                        <img class="cardset-img"
+                             th:src="@{/images/로고이미지(검정배경).png}">
+                    </figure>
+                </a>
+            </div>
+        </div>
+
+        <nav class="pagiset pagiset-line">
+            <div class="pagiset-ctrl">
+                <a class="pagiset-link pagiset-first" href="javascript:void(0)">
+                    <span class="visually-hidden">처음</span>
+                </a>
+            </div>
+            <div class="pagiset-ctrl">
+                <a class="pagiset-link pagiset-prev" href="javascript:void(0)">
+                    <span class="visually-hidden">이전</span>
+                </a>
+            </div>
+            <div class="pagiset-list">
+                <a class="pagiset-link active-fill" href="javascript:void(0)">1</a>
+                <a class="pagiset-link" href="javascript:void(0)">2</a>
+                <a class="pagiset-link" href="javascript:void(0)">3</a>
+                <a class="pagiset-link" href="javascript:void(0)">4</a>
+            </div>
+            <div class="pagiset-ctrl">
+                <a class="pagiset-link pagiset-next" href="javascript:void(0)">
+                    <span class="visually-hidden">다음</span>
+                </a>
+            </div>
+            <div class="pagiset-ctrl">
+                <a class="pagiset-link pagiset-last" href="javascript:void(0)">
+                    <span class="visually-hidden">마지막</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+</div>
+</html>
