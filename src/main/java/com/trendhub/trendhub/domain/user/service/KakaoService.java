@@ -189,7 +189,7 @@ public class KakaoService {
                 .providerId(userInfo.getId().toString())
                 .username(userInfo.getNickname())
                 .nickname(randomNickname)
-                .profile(userInfo.getProfileImg() != null ? userInfo.getProfileImg() : "resources/static/images/logo.png") // null 체크 및 기본값 할당
+                .profile(userInfo.getProfileImg())
                 .level(1)
                 .point(0)
                 .status("ACTIVE")

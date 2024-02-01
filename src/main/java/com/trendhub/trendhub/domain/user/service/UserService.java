@@ -68,6 +68,9 @@ public class UserService implements UserDetailsService {
         validateSignupForm(signupFormDto);
         //이메일 인증했는지 체크
         validateEmailAuth(signupFormDto);
+        //중복된 아이디 체크
+        validateLoginId(signupFormDto.getLoginId());
+
 
         //랜덤 닉네임 생성
         Random random = new Random();
@@ -86,6 +89,14 @@ public class UserService implements UserDetailsService {
         //회원가입
         User user = userRepository.save(saveUser);
         return user;
+    }
+
+
+    private void validateLoginId(String loginId) {
+        Optional<User> _findUser = userRepository.findByLoginId(loginId);
+        if (_findUser.isPresent()) {
+            throw new IllegalStateException("중복된 아이디입니다.");
+        }
     }
 
     private void validateSignupForm(SignupFormDto signupFormDto) {
