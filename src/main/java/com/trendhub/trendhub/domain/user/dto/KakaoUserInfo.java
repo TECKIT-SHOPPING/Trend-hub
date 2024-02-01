@@ -4,6 +4,7 @@ import com.trendhub.trendhub.domain.user.entity.SocialProvider;
 import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Data;
+
 import static jakarta.persistence.EnumType.STRING;
 
 @Data
