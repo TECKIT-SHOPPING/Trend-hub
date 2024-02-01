@@ -2,6 +2,8 @@ package com.trendhub.trendhub.domain.user.controller;
 
 import com.trendhub.trendhub.domain.user.dto.*;
 import com.trendhub.trendhub.domain.user.entity.User;
+import com.trendhub.trendhub.domain.user.dto.FindUserDto;
+import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import com.trendhub.trendhub.global.rq.Rq;
@@ -10,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,8 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.NoSuchElementException;
-
+@Slf4j
 @Controller
 @Transactional
 @RequiredArgsConstructor
@@ -83,8 +86,15 @@ public class UserController {
 
     @GetMapping("/findLoginId")
     public String getFindLoginId() {
-        return "findIdTest";
+        return "users/findID";
     }   // 로그인 찾기 페이지 Get
+
+    @GetMapping("/findLoginId/error")
+    public String FindLoginIdError(Model model) {
+
+        model.addAttribute("findIdErrorMessage", "이름 또는 이메일을 입력해주세요");
+        return "users/findID";
+    }
 
 //    @PostMapping("/findLoginId")
 //    public String postFindLoginId(Model model, FindUserDto dto,
@@ -108,13 +118,46 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/findLoginId")
-    public String postFindLoginId(@RequestBody FindUserDto dto) {
-        User findUser =userService.findUserByUsernameAndEmail(dto).orElseThrow(
+    public ResponseEntity<Object> postFindLoginId(@RequestBody FindUserDto dto) throws Exception {
+        log.info("name={}, email={}", dto.getUsername(), dto.getEmail());
+
+        userService.findId(dto.getUsername(), dto.getEmail());
+
+        /*User findUser =userService.findUserByUsernameAndEmail(dto).orElseThrow(
                 () -> {
                     throw new NoSuchElementException("Could not find that user.");
                 }
-        );
-        return findUser.getUsername();
+        );*/
+        return ResponseEntity.ok().build();
+                /*findUser.getUsername()*/
+    } // 로그인 찾기 Post 기능
+
+
+    @GetMapping("/findLoginPw")
+    public String getFindLoginPw() {
+        return "users/findPW";
+    }   // 로그인 찾기 페이지 Get
+
+    @GetMapping("/findLoginPw/error")
+    public String FindLoginPwError(Model model) {
+
+        model.addAttribute("findPwErrorMessage", "이름, 이메일, 아이디를 입력해주세요");
+        return "users/findPW";
+    }
+
+    @ResponseBody
+    @PostMapping("/findLoginPw")
+    public ResponseEntity<Object> postFindLoginPw(@RequestBody FindUserDto dto) throws Exception {
+        log.info("loginId={}, email={}", dto.getLoginId(), dto.getEmail());
+
+        userService.findPw(dto.getLoginId(), dto.getEmail());
+        /*User findUser =userService.findUserByUsernameAndEmail(dto).orElseThrow(
+                () -> {
+                    throw new NoSuchElementException("Could not find that user.");
+                }
+        );*/
+        return ResponseEntity.ok().build();
+        /*findUser.getUsername()*/
     } // 로그인 찾기 Post 기능
 
     @PreAuthorize("isAuthenticated()")
@@ -177,4 +220,5 @@ public class UserController {
         return "users/userInfoModify";
     }
 
+    // 이메일 및 이름 가져와서 맞는지 확인하기
 }
