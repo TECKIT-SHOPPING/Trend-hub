@@ -48,11 +48,17 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException(loginId);
         }
         User user = _user.get();
-        return SecurityUser.builder()
-                .username(user.getLoginId())
-                .password(user.getPassword())
-                .authorities(user.getAuthorities())
-                .build();
+        return new SecurityUser(
+                user.getUserId(),
+                user.getLoginId(),
+                user.getPassword(),
+                user.getAuthorities());
+
+//        return SecurityUser.builder()
+//                .username(user.getLoginId())
+//                .password(user.getPassword())
+//                .authorities(user.getAuthorities())
+//                .build();
     }
 
     public Optional<User> findByProviderAndProviderId(SocialProvider provider, String providerId) {
