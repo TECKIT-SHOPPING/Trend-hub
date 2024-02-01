@@ -2,6 +2,7 @@ package com.trendhub.trendhub.domain.user.service;
 
 import com.trendhub.trendhub.domain.email.entity.EmailAuth;
 import com.trendhub.trendhub.domain.email.repository.EmailAuthRepository;
+import com.trendhub.trendhub.domain.user.dto.*;
 import com.trendhub.trendhub.domain.email.service.EmailService;
 import com.trendhub.trendhub.domain.user.dto.FindUserDto;
 import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
@@ -9,6 +10,7 @@ import com.trendhub.trendhub.domain.user.entity.SocialProvider;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.global.config.security.SecurityUser;
+import com.trendhub.trendhub.global.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 import java.util.Random;
@@ -28,6 +31,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailAuthRepository emailAuthRepository;
+    private final S3Service s3Service;
     private final EmailService emailService;
 
     public User saveUser(User user) {
@@ -50,11 +54,17 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException(loginId);
         }
         User user = _user.get();
-        return SecurityUser.builder()
-                .username(user.getLoginId())
-                .password(user.getPassword())
-                .authorities(user.getAuthorities())
-                .build();
+        return new SecurityUser(
+                user.getUserId(),
+                user.getLoginId(),
+                user.getPassword(),
+                user.getAuthorities());
+
+//        return SecurityUser.builder()
+//                .username(user.getLoginId())
+//                .password(user.getPassword())
+//                .authorities(user.getAuthorities())
+//                .build();
     }
 
     public Optional<User> findByProviderAndProviderId(SocialProvider provider, String providerId) {
@@ -119,6 +129,64 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> findUserByUsernameAndEmail(FindUserDto dto) {
         return userRepository.findByUsernameAndEmail(dto.getUsername(), dto.getEmail());
+    }
+
+    @Transactional
+    public void changePassword(User userInfo, ChangePasswordDto changePasswordDto) {
+        if (!passwordEncoder.matches(changePasswordDto.getOriginPassword(), userInfo.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        if (!changePasswordDto.getNewPassword().equals(changePasswordDto.getCheckNewPassword())) {
+            throw new IllegalArgumentException("새 비밀번호가 일치하지 않습니다.");
+        }
+
+        User changeUser = User.builder()
+                .password(passwordEncoder.encode(changePasswordDto.getNewPassword()))
+                .build();
+
+        userInfo.changePassword(changeUser);
+    }
+
+    public void checkNickname(ChangeNicknameDto changeNicknameDto) {
+        userRepository.findByNickname(changeNicknameDto.getNickname()).ifPresent(
+                user -> {
+                    throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+                }
+        );
+    }
+
+    @Transactional
+    public void changeNickname(User userInfo, ChangeNicknameDto changeNicknameDto) {
+        checkNickname(changeNicknameDto);
+
+        User changeUser = User.builder()
+                .nickname(changeNicknameDto.getNickname())
+                .build();
+
+        userInfo.changeNickname(changeUser);
+    }
+
+    @Transactional
+    public void changeProfile(User userInfo, MultipartFile profile) {
+        String profileUrl = s3Service.createVideo(profile);
+
+        User changeUser = User.builder()
+                .profile(profileUrl)
+                .build();
+
+        userInfo.changeProfile(changeUser);
+    }
+
+    @Transactional
+    public void saveAddress(User userInfo, AddressDto addressDto) {
+        User changeUser = User.builder()
+                .zipcode(addressDto.getZipcode())
+                .address1(addressDto.getAddress1())
+                .address2(addressDto.getAddress2())
+                .build();
+
+        userInfo.saveAddress(changeUser);
     }
 
     public void findId(String name, String email) throws Exception {

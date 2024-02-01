@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <div>username</div>
+    <div th:text="${#authentication.principal}"></div>
+    <div>프로필 이미지</div>
+    <img th:src="${@rq.userInfo.profile}">
+    <div>닉네임</div>
+    <div th:text="${@rq.userInfo.nickname}"></div>
+    <div>등급</div>
+    <div th:text="${@rq.userInfo.level}"></div>
+    <div>포인트</div>
+    <div th:text="${@rq.userInfo.point}"></div>
+    <div>가입일</div>
+    <div th:text="${@rq.userInfo.createAt}"></div>
+
+    <div>최근 본 상품</div>
+    <div>좋아요</div>
+
+    <a href="/members/modify">회원정보변경</a>
+</div>
+</body>
+</html>

@@ -63,4 +63,22 @@ public class User extends BaseTimeEntity {
     public void changeEmailAuthChecked(boolean emailAuthChecked) {
         this.emailAuthChecked = emailAuthChecked;
     }
+
+    public void changePassword(User changeUser) {
+        this.password = changeUser.getPassword();
+    }
+
+    public void changeNickname(User changeUser) {
+        this.nickname = changeUser.getNickname();
+    }
+
+    public void changeProfile(User changeUser) {
+        this.profile = changeUser.getProfile();
+    }
+
+    public void saveAddress(User changeUser) {
+        this.zipcode = changeUser.getZipcode();
+        this.address1 = changeUser.getAddress1();
+        this.address2 = changeUser.getAddress2();
+    }
 }

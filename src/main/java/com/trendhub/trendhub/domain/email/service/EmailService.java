@@ -130,6 +130,7 @@ public class EmailService {
         msgg += "<h1> 안녕하세요 TrendHub입니다. </h1>";
         msgg += "<br>";
         msgg += "<p>아래 아이디를 확인해주세요<p>";
+        msgg += "<p>아래 코드를 로그인 창으로 돌아가 입력해주세요<p>";
         msgg += "<br>";
         msgg += "<p>감사합니다!<p>";
         msgg += "<br>";
@@ -149,8 +150,7 @@ public class EmailService {
         MimeMessage message = javaMailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, email);
-        message.setSubject("TrendHub 임시 비밀번호 제공");
-
+        message.setSubject("TrendHub 아이디 찾기 확인");
         String msgg = "";
         msgg += "<div style='margin:100px;'>";
         msgg += "<h1> 안녕하세요 TrendHub입니다. </h1>";
