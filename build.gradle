@@ -79,8 +79,9 @@ sourceSets {
 	main.java.srcDirs += [ querydslDir ]
 }
 
-tasks.named(processResources) {
-	encoding = 'UTF-8'
+
+processResources {
+	'UTF-8'
 }
 
 tasks.withType(JavaCompile) {
