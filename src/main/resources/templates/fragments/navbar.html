@@ -5,7 +5,7 @@
                 <div class="header-left">
                     <h1 class="header-title">
                         <a th:href="@{/}">
-                            <img th:src="@{/images/로고이미지.png}" alt="로고">
+                            <img th:src="@{/images/logo_white.png}" alt="로고">
                         </a>
                     </h1>
 
@@ -51,7 +51,7 @@
                         <!--로그인-->
                         <th:block th:if="${#authorization.expression('isAnonymous()')}">
                             <a th:href="@{/members/login}">
-                                <img style="margin-top: 3px; width: 28px; height: 28px;" th:src="@{/images/로그인.png}">
+                                <img style="margin-top: 3px; width: 28px; height: 28px;" th:src="@{/images/login.png}">
                             </a>
                         </th:block>
                         <!--로그아웃-->
@@ -59,7 +59,7 @@
                             <form id="logoutForm" method="post" th:action="@{/members/logout}">
                                 <button type="submit">
                                     <img style="margin-top: 3px; width: 28px; height: 28px;"
-                                         th:src="@{/images/로그아웃.png}" alt="Logout">
+                                         th:src="@{/images/logout.png}" alt="Logout">
                                 </button>
                             </form>
                             <script th:inline="javascript">
