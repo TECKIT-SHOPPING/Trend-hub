@@ -13,7 +13,7 @@ RUN ./gradlew dependencies --no-daemon
 
 COPY src src
 
-RUN ./gradlew build --no-daemon
+RUN ./gradlew build --no-daemon -Dfile.encoding=UTF-8
 
 FROM ghcr.io/graalvm/jdk-community:21
 
@@ -21,4 +21,4 @@ WORKDIR /app
 
 COPY --from=builder /app/build/libs/*.jar app.jar
 
-ENTRYPOINT ["java", "-jar", " -Dfile.encoding=UTF-8", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
