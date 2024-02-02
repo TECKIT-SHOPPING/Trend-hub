@@ -33,4 +33,9 @@ public class CoordiController {
         //TODO 업로드후 이동할 화면 얘기해야함
         return "redirect:/";
     }
+
+    @GetMapping("")
+    public String coordi(){
+        return "coordi";
+    }
 }

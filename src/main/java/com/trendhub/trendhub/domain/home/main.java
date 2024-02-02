@@ -20,8 +20,5 @@ public class main {
             return "main";
         }
 
-        @GetMapping("/coordi")
-        public String community(){
-            return "coordi";
-        }
+
     }
