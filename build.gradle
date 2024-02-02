@@ -86,7 +86,6 @@ processResources {
 
 tasks.withType(JavaCompile) {
 	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
-	options.encoding = "UTF-8"
 }
 
 clean.doLast {
