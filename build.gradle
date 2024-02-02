@@ -79,10 +79,10 @@ sourceSets {
 	main.java.srcDirs += [ querydslDir ]
 }
 
-
-processResources {
-	filteringCharset 'UTF-8'
+tasks.processResources {
+	doNotTrackState("not tracked")
 }
+
 
 tasks.withType(JavaCompile) {
 	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
