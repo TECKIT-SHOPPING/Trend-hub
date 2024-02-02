@@ -79,7 +79,7 @@ sourceSets {
 	main.java.srcDirs += [ querydslDir ]
 }
 
-tasks.processResources {
+processResources {
 	doNotTrackState("not tracked")
 }
 
