@@ -2,6 +2,10 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.1'
 	id 'io.spring.dependency-management' version '1.1.4'
+
+	/** queryDsl **/
+//	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	/** //queryDsl **/
 }
 
 group = 'com.trend-hub'
@@ -33,7 +37,6 @@ dependencies {
 
 	// thymeleaf
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-
 	// OAUTH2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
@@ -55,8 +58,31 @@ dependencies {
 	//ncp bucket
 //	implementation 'com.amazonaws:aws-java-sdk-s3:1.11.238'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// QueryDSL Implementation
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+/**
+ * QueryDSL Build Options
+ */
+def querydslDir = "src/main/generated"
+
+sourceSets {
+	main.java.srcDirs += [ querydslDir ]
+}
+
+tasks.withType(JavaCompile) {
+	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
+}
+
+clean.doLast {
+	file(querydslDir).deleteDir()
 }
