@@ -206,14 +206,14 @@
                             <button type="button" style="height: 40px; margin-right: 10px; width: 80px;" class="btn btn-primary" onClick="location.href='/members/findLoginId'">
                                 <a>아이디찾기</a>
                             </button>
-                            <button type="button" style="height: 40px; width: 80px; margin-right: 10px;" class="btn btn-primary" onClick="location.href='/members/findPassWord'">
+                            <button type="button" style="height: 40px; width: 80px; margin-right: 10px;" class="btn btn-primary" onClick="location.href='/members/findLoginPw'">
                                 <a>비밀번호찾기 </a>
                             </button>
                         </div>
                     </div>
                     <div style="text-align: center">
                         <p th:if="${loginErrorMessage}" class="error" th:text="${loginErrorMessage}"></p>
-                        <button type="button" style="height: 40px; width: 180px; margin-right: 10px;" class="btn btn-primary">로그인</button>
+                        <button type="submit" style="height: 40px; width: 180px; margin-right: 10px;" class="btn btn-primary">로그인</button>
                     </div>
 
                     <div>
@@ -327,5 +327,4 @@
 1. 세션 생성하고 있는 로그인 창 폼 부분 위의 http코드가 너무 많음
 2. http는 한번에 연결하는 것이 아닌 나눠서 호출한다.
 3. 이미 헤드에서 세션을 요청했는데 밑에서도 요청하는 경우
-<<<<<<< HEAD
 4. 자바 코드(UserController에서 login 참조)에서 Session을 따로 따오거나 html(body 태그 내 단순 form 참조) 내에 form을 만들면 해결.-->

@@ -111,46 +111,62 @@
 </div>
 <!-- [E]personal-jglrrGe28m -->
 <main class="th-layout-main ">
-  <!-- [S]personal-tiLrRHbrZ1 -->
-  <div class="personal-tiLrRHbrZ1" id="" data-bid="mjlRRhc7zO">
-    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
-    <div class="contents-inner">
-      <div class="agree-box">
-        <div class="contents-agree-box-1">
-          <div class="contents-agree-all">
-          </div>
+    <!-- [S]personal-tiLrRHbrZ1 -->
+    <div class="personal-tiLrRHbrZ1" id="" data-bid="mjlRRhc7zO">
+        <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+        <div class="contents-inner">
+            <div class="agree-box">
+                <div class="contents-agree-box-1">
+                    <div class="contents-agree-all">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display:flex; justify-content:center;">
+        <div style="width:350px; font-size: 14px;  display: flex; justify-content: space-around; padding-bottom: 10px;">
+            <div style="color:gray; border-bottom: 2px solid gray; height: 40px; display:flex; align-items: center;">
+                <a style="width: 175px; text-align: center;" th:href="@{/members/findLoginId}">아이디 찾기 </a>
+            </div>
+            <div style="background-color: black; height: 40px; display:flex; align-items: center;">
+                <a style="width: 175px; text-align: center; color: white; " th:href="@{/members/findLoginPw}">비밀번호
+                    찾기</a>
+            </div>
         </div>
       </div>
     </div>
-  </div>
-  <div style="display:flex; justify-content:center;">
-    <div style="width:350px; font-size: 14px;  display: flex; justify-content: space-around; padding-bottom: 10px;">
-      <div style="color:gray; border-bottom: 2px solid gray; height: 40px; display:flex; align-items: center;">
-        <a style="width: 175px; text-align: center;" th:href="@{/members/findLoginId}">아이디 찾기 </a>
-      </div>
-      <div style="background-color: black; height: 40px; display:flex; align-items: center;">
-        <a style="width: 175px; text-align: center; color: white; " th:href="@{/members/findLoginPw}">비밀번호
-          찾기</a>
-      </div>
-    </div>
-  </div>
-  <form onsubmit="signup(this); return false;"
-        style="display:flex; flex-direction: column; align-items: center; margin-top: 20px;">
+    <form onsubmit="signup(this); return false;"
+          style="display:flex; flex-direction: column; align-items: center; margin-top: 20px;">
 
-    <div style="margin-bottom: 15px;">
-      <label for="loginId"
-             style="margin-bottom: 5px; position: relative; display: flex; align-items: center; margin-bottom: 5px;">아이디</label>
-      <input type="text" id="loginId" class="input"
-             style="width: 350px; height: 30px; font-size: 13px; border: 1px solid black; padding: 5px;">
-    </div>
+        <div style="margin-bottom: 15px;">
+            <label for="loginId"
+                   style="margin-bottom: 5px; position: relative; display: flex; align-items: center; margin-bottom: 5px;">아이디</label>
+            <input type="text" id="loginId" class="input"
+                   style="width: 350px; height: 30px; font-size: 13px; border: 1px solid black; padding: 5px;">
+        </div>
 
-    <div style="margin-bottom: 15px;">
-      <label for="email"
-             style="position: relative; display: flex; align-items: center; margin-bottom: 5px;">이메일</label>
-      <input type="text" id="email" class="input"
-             style="width: 350px; height: 30px; font-size: 13px; border: 1px solid black; padding: 5px;">
-      <!--<button class="num_btn btn btn-outline-black" onclick="confirmVerification()" style="height: 25px; font-size: 14px; margin-left: 10px;">인증번호 전송</button>-->
+        <div style="margin-bottom: 15px;">
+            <label for="email"
+                   style="position: relative; display: flex; align-items: center; margin-bottom: 5px;">이메일</label>
+            <input type="text" id="email" class="input"
+                   style="width: 350px; height: 30px; font-size: 13px; border: 1px solid black; padding: 5px;">
+            <!--<button class="num_btn btn btn-outline-black" onclick="confirmVerification()" style="height: 25px; font-size: 14px; margin-left: 10px;">인증번호 전송</button>-->
 
+        </div>
+
+        <p th:if="${findPwErrorMessage}" class="error" th:text="${findPwErrorMessage}"
+           style="color: red; margin-bottom: 10px;"></p>
+
+        <button type="submit"
+                style="width: 200px; height:45px; border-radius: 20px; background-color: white; color: black; font-size: 15px; margin-top: 20px;"
+                id="submit">임시 비밀번호 발급
+        </button>
+
+    </form>
+    <!-- [E]personal-tiLrRHbrZ1 -->
+    <!-- [S]blank-xDlrrHDY99 -->
+    <div class="blank-xDlrrHDY99" data-bid="xDlrrHDY99">
+        <div class="container"></div>
     </div>
 
     <p th:if="${findPwErrorMessage}" class="error" th:text="${findPwErrorMessage}"
@@ -245,23 +261,23 @@
 <script src="../resources/js/script.js"></script>
 
 <script>
-  const COMMON_URL = 'http://localhost:8080';
+    const COMMON_URL = 'http://localhost:8080';
 
-  function signup(form) {
-    console.log('findpw 진입')
-    // 유효성 검사
-    fetch(`${COMMON_URL}/members/findLoginPw`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': token,
-      },
-      body: JSON.stringify({
-        loginId: form.loginId.value,
-        email: form.email.value,
-      }),
-    }).then(response => {
-      console.log(response)
+    function signup(form) {
+        console.log('findpw 진입')
+        // 유효성 검사
+        fetch(`${COMMON_URL}/members/findLoginPw`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token,
+            },
+            body: JSON.stringify({
+                loginId: form.loginId.value,
+                email: form.email.value,
+            }),
+        }).then(response => {
+            console.log(response)
 
       if (!response.ok) {
         // 실패시 동작할것들

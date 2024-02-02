@@ -36,6 +36,8 @@ public class User extends BaseTimeEntity {
     @Temporal(TemporalType.DATE)
     private Date birth;
 
+
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
@@ -47,8 +49,11 @@ public class User extends BaseTimeEntity {
     private String profile; // URL
 
     @Enumerated(STRING)
-    private SocialProvider provider;
+    private SocialProvider provider;    // 카카오 기준으로 값 넣기, 없다면 null
     private String providerId;  // 소셜 전용 ID 변수
+
+    private String role;
+
     private LocalDateTime agreeInfo;
     private LocalDateTime agreeAge;
     private LocalDateTime agreeEmail;
