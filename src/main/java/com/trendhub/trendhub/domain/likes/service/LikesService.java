@@ -1,6 +1,5 @@
 package com.trendhub.trendhub.domain.likes.service;
 
-import com.trendhub.trendhub.domain.coordi.entity.Coordi;
 import com.trendhub.trendhub.domain.likes.entity.Likes;
 import com.trendhub.trendhub.domain.likes.repository.LikesRepository;
 import com.trendhub.trendhub.domain.product.entity.Product;
@@ -20,10 +19,6 @@ public class LikesService {
 
     public Optional<Likes> findByProductAndUser(Product product, User user) {
         return likesRepository.findByProductAndUser(product, user);
-    }
-
-    public Optional<Likes> findByCoordiAndUser(Coordi coordi, User user) {
-        return likesRepository.findByCoordiAndUser(coordi, user);
     }
 
     public void createLikes(Likes likes) {
