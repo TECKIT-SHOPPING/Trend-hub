@@ -80,8 +80,8 @@ sourceSets {
 }
 
 
-processResources {
-	filteringCharset 'UTF-8'
+tasks.processResources {
+	options.encoding = 'UTF-8'
 }
 
 tasks.withType(JavaCompile) {
