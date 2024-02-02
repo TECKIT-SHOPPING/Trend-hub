@@ -79,9 +79,12 @@ sourceSets {
 	main.java.srcDirs += [ querydslDir ]
 }
 
+tasks.withType(processResources) {
+	encoding = 'UTF-8'
+}
+
 tasks.withType(JavaCompile) {
 	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
-	options.encoding = "UTF-8"
 }
 
 clean.doLast {
