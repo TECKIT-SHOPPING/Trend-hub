@@ -81,7 +81,7 @@ sourceSets {
 
 
 tasks.processResources {
-	options.encoding = 'UTF-8'
+	options.charset = 'UTF-8'
 }
 
 tasks.withType(JavaCompile) {
