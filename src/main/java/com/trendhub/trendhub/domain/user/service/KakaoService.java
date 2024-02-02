@@ -108,16 +108,21 @@ public class KakaoService {
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(res);
             JSONObject properties = (JSONObject) obj.get("properties");
-
+            JSONObject kakaoAccount = (JSONObject) obj.get("kakao_account");
+            System.out.println("res = " + res);
             String id = obj.get("id").toString();
             String nickname = properties.get("nickname").toString();
             Object profileImgObject = properties.get("profile_image");
-            String profileImg = (profileImgObject != null) ? profileImgObject.toString() : "logo.png";  // 프로필 이미지 동의 안할 시 null 값 대신 기본 logo.png로 대체
+            String profileImg = (profileImgObject != null) ? profileImgObject.toString() : "https://kr.object.ncloudstorage.com/trend-hub-bucket/images/logo.png";  // 프로필 이미지 동의 안할 시 null 값 대신 기본 logo.png로 대체
+            System.out.println("profileImg = " + profileImg);
 
+            String email = kakaoAccount.get("email").toString();
+            System.out.println("email = " + email);
             System.out.println("properties = " + properties);
 
             return KakaoUserInfo.builder()
                     .id(Long.valueOf(id))
+                    .email(email)
                     .nickname(nickname)
                     .profileImg(profileImg)
                     .provider(SocialProvider.KAKAO)
@@ -179,9 +184,12 @@ public class KakaoService {
         }
         String randomNickname = "user_" + randomNumber;
 
+        // 이메일 기존 존재 시 merge
+        // 카카오 등록이 안됐다면?
 
         // 강제 회원가입
         User user = User.builder()
+                .loginId(userInfo.getEmail())
                 .emailAuthChecked(true)
                 .agreeInfo(LocalDateTime.now())
                 .agreeAge(LocalDateTime.now())

@@ -33,6 +33,8 @@ public class KakaoController {
     @GetMapping("/do")
     public String loginPage()
     {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("name = " + name);
         return "users/login";
     }
 
@@ -52,7 +54,7 @@ public class KakaoController {
 
         User user = ks.login(userInfo);
 
-        SecurityUser securityUser = new SecurityUser(user.getUserId(), user.getUsername(), "", user.getAuthorities());
+        SecurityUser securityUser = new SecurityUser(user.getUserId(), user.getLoginId(), "", user.getAuthorities());
 
         Authentication authentication =
                 new OAuth2AuthenticationToken(securityUser, securityUser.getAuthorities(), KAKAO.toString());
@@ -76,5 +78,4 @@ public class KakaoController {
         //ci는 비즈니스 전환후 검수신청 -> 허락받아야 수집 가능
         return "redirect:/";
     }
-
 }

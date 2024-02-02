@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByLoginId(String loginId);
+    Optional<User> findByLoginId(String loginId);   // 카카오, 앱 전용 ID 찾기
     Optional<User> findByProviderAndProviderId(SocialProvider provider, String providerId); // 카카오 로그인 용
     Optional<User> findByUsernameAndEmail(String username, String email);   // 아이디 찾기
     boolean existsByNickname(String nickname);
