@@ -1,0 +1,77 @@
+<nav th:fragment="navbarFragment">
+    <div class="personal-QxLRRa9Yn3" id="" data-bid="NuLrRaAlNa">
+        <div class="header-inner">
+            <div class="header-container container-lg">
+                <div class="header-left">
+                    <h1 class="header-title">
+                        <a th:href="@{/}">
+                            <img th:src="@{/images/로고이미지.png}" alt="로고">
+                        </a>
+                    </h1>
+
+                </div>
+                <div class="inputset inputset-lg">
+                    <button class="inputset-icon icon-right icon-search btn" type="button" aria-label="아이콘"></button>
+                    <input type="text" class="inputset-input form-control" style="height:35px; border:1px solid gray;"
+                           placeholder="검색어를 입력해주세요." aria-label="내용">
+                </div>
+                <div class="header-right">
+                    <div class="header-utils">
+                        <!-- 장바구니 - 사용자가 로그인한 경우 장바구니로 이동-->
+                        <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                            <button style="margin-right: 10px;" class="header-btn btn-cart badgeset badgeset-circle badgeset-position badgeset-bottom-right">
+                                <a th:href="@{/cart}">
+                                    <img th:src="@{/icons/ico_cart_black.svg}" alt="쇼핑백 아이콘">
+                                    <span class="badgeset-text">5</span>
+<!--                                    <span class="badgeset-text" th:if="${cartItemCount > 0}">${cartItemCount}</span>-->
+                                    <!--담은 수 만큼 변경하기 and 상품 수가 0개 이상일때만 나타나게 하기-->
+                                </a>
+                            </button>
+                        </th:block>
+                        <!-- 장바구니 - 사용자가 로그인 안한 경우 로그인으로 이동-->
+                        <th:block th:if="${#authorization.expression('isAnonymous()')}">
+                            <button style="margin-right: 10px;">
+                                <a th:href="@{/members/login}">
+                                    <img th:src="@{/icons/ico_cart_black.svg}" alt="쇼핑백 아이콘">
+                                </a>
+                            </button>
+                        </th:block>
+                        <!-- 마이페이지 - 사용자가 로그인한 경우 마이페이지로 이동-->
+                        <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                            <a th:href="@{|/members/myPage/${1}|}">
+                                <img style="margin-right: 5px;" th:src="@{/icons/ico_user_black.svg}">
+                            </a>
+                        </th:block>
+                        <!-- 마이페이지 - 사용자가 로그인 안한 경우 로그인으로 이동-->
+                        <th:block th:if="${#authorization.expression('isAnonymous()')}">
+                            <a th:href="@{/members/login}">
+                                <img style="margin-right: 5px;" th:src="@{/icons/ico_user_black.svg}">
+                            </a>
+                        </th:block>
+                        <!--로그인-->
+                        <th:block th:if="${#authorization.expression('isAnonymous()')}">
+                            <a th:href="@{/members/login}">
+                                <img style="margin-top: 3px; width: 28px; height: 28px;" th:src="@{/images/로그인.png}">
+                            </a>
+                        </th:block>
+                        <!--로그아웃-->
+                        <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                            <form id="logoutForm" method="post" th:action="@{/members/logout}">
+                                <button type="submit">
+                                    <img style="margin-top: 3px; width: 28px; height: 28px;"
+                                         th:src="@{/images/로그아웃.png}" alt="Logout">
+                                </button>
+                            </form>
+                            <script th:inline="javascript">
+                                function logout() {
+                                    document.getElementById('logoutForm').submit();
+                                }
+                            </script>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-dim"></div>
+    </div>
+</nav>

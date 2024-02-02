@@ -1,7 +1,6 @@
 package com.trendhub.trendhub.domain.email.controller;
 
 import com.trendhub.trendhub.domain.email.dto.SignUpEmailReq;
-import com.trendhub.trendhub.domain.email.dto.VerifyEmailReq;
 import com.trendhub.trendhub.domain.email.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
