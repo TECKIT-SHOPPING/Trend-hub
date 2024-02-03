@@ -4,27 +4,67 @@
     <div style="display: flex; flex-direction: column; align-items: center;" th:object="${mainDto}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-        <!-- 캐러셀-->
-        <div class="contents-container container-md">
-            <div class="contents-banner">
-                <!-- 이미지 캐러셀 부분 -->
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        <!-- Thymeleaf iteration over banners -->
-                        <div th:each="banner : *{banners}" class="swiper-slide">
-                            <a th:href="@{'/banners/' + ${banner.bannerId}}" class="cardset cardset-shopping"
-                               style="min-width: 1500px;">
-                                <figure class="cardset-figure">
-                                    <img class="cardset-img" th:src="${banner.image}" alt="Banner Image">
-                                </figure>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Add navigation buttons -->
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+        <!--        이미지 캐러셀-->
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style="">
+            <div class="carousel-indicators">
+                <button style="width: 20px; height: 20px; border-radius: 50%;" type="button"
+                        data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                <button style="width: 20px; height: 20px; border-radius: 50%;" type="button"
+                        data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button style="width: 20px; height: 20px; border-radius: 50%;" type="button"
+                        data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner" style="width: 1300px; height: 500px;">
+                <div th:each="banner, iterStat : *{banners}" class="carousel-item"
+                     th:classappend="${iterStat.index == 0} ? 'active'">
+                    <a th:href="@{'/banners/' + ${banner.bannerId}}" class="cardset cardset-shopping"
+                       style="overflow: hidden;">
+                        <figure class="cardset-figure" style="width: 1300px; height: 500px; ">
+                            <img class="cardset-img" th:src="${banner.image}"
+                                 style="object-fit: cover;"
+                                 alt="Banner Image">
+                        </figure>
+                    </a>
                 </div>
             </div>
+            <button style="width: 100px;" class="carousel-control-prev" type="button"
+                    data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span style="width: 60px; height: 60px;" class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button style="width: 100px;" class="carousel-control-next" type="button"
+                    data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span style="width: 60px; height: 60px;" class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+
+
+
+
+<!--        &lt;!&ndash; 캐러셀&ndash;&gt;-->
+<!--        <div class="contents-container container-md">-->
+<!--            <div class="contents-banner">-->
+<!--                &lt;!&ndash; 이미지 캐러셀 부분 &ndash;&gt;-->
+<!--                <div class="swiper-container">-->
+<!--                    <div class="swiper-wrapper">-->
+<!--                        &lt;!&ndash; Thymeleaf iteration over banners &ndash;&gt;-->
+<!--                        <div th:each="banner : *{banners}" class="swiper-slide">-->
+<!--                            <a th:href="@{'/banners/' + ${banner.bannerId}}" class="cardset cardset-shopping"-->
+<!--                               style="min-width: 1500px;">-->
+<!--                                <figure class="cardset-figure">-->
+<!--                                    <img class="cardset-img" th:src="${banner.image}" alt="Banner Image">-->
+<!--                                </figure>-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash; Add navigation buttons &ndash;&gt;-->
+<!--                    <div class="swiper-button-next"></div>-->
+<!--                    <div class="swiper-button-prev"></div>-->
+<!--                </div>-->
+<!--            </div>-->
             <!-- 카테고리 바 -->
             <div style="display: flex; justify-content: space-between; align-items:center; width: 2000px;">
                 <div>
@@ -230,6 +270,4 @@
                 });
         }
     </script>
-</div>
-
 </html>
