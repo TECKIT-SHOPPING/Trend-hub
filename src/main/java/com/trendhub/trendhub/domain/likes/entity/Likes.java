@@ -35,4 +35,12 @@ public class Likes {
     public void addProduct(Product product) {
         this.product = product;
     }
+
+    public void removeCoordi() {
+        this.coordi = null;
+    }
+
+    public void addCoordi(Coordi coordi) {
+        this.coordi = coordi;
+    }
 }
