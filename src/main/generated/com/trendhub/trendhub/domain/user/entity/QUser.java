@@ -56,6 +56,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath providerId = createString("providerId");
 
+    public final StringPath role = createString("role");
+
     public final StringPath status = createString("status");
 
     //inherited
