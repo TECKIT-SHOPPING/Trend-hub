@@ -1,6 +1,7 @@
 package com.trendhub.trendhub.domain.coordi.entity;
 
 import com.trendhub.trendhub.domain.likes.entity.Likes;
+import com.trendhub.trendhub.domain.review.entity.Review;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -32,13 +33,13 @@ public class Coordi extends BaseTimeEntity {
 
 
     //연관관계 메서드
-    public void likeCoordi(Likes likes) {
+    public void likeProduct(Likes likes) {
         this.likes.add(likes);
         likes.addCoordi(this);
         this.totalLike = this.totalLike + 1;
     }
 
-    public void unLikeCoordi(Likes likes) {
+    public void unLikeProduct(Likes likes) {
         this.likes.remove(likes);
         likes.removeCoordi();
         this.totalLike = this.totalLike - 1;
