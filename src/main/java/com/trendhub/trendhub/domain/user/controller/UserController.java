@@ -203,13 +203,6 @@ public class UserController {
     }
     // 이메일 및 이름 가져와서 맞는지 확인하기
 
-    public String mypage(Principal principal, Model model) {
-        String logInid = principal.getName();
-        User user = this.userService.getUser(logInid);
-        model.addAttribute("user", user);
-        return "users/myPage";
-    }
-
     @GetMapping("/myPage/1")
     public String mypage_exp(Principal principal, Model model) {
         String logInid = principal.getName();
