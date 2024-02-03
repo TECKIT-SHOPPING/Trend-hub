@@ -38,4 +38,4 @@ out/
 
 ### Setting ###
 application.yml
-**/generated
+src/main/generated
