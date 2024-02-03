@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CoordiService {
 
     private final CoordiRepository coordiRepository;
@@ -81,12 +79,12 @@ public class CoordiService {
             //좋아요를 누른적 없다면 likes 생성후, 좋아요 처리
             Likes likes = coordiLikeDto.toEntity(user, coordi);
             likesService.createLikes(likes);
-            coordi.likeCoordi(likes);
+            coordi.likeProduct(likes);
             return true;
         } else {
             //좋아요 누른적 있다면 취소 처리 후 데이터 삭제
             Likes findLikes = _findLikes.get();
-            coordi.unLikeCoordi(findLikes);
+            coordi.unLikeProduct(findLikes);
             likesService.deleteLikes(findLikes);
             return false;
         }
