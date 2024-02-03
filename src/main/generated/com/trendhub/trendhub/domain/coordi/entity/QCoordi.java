@@ -31,6 +31,8 @@ public class QCoordi extends EntityPathBase<Coordi> {
 
     public final StringPath image = createString("image");
 
+    public final ListPath<com.trendhub.trendhub.domain.likes.entity.Likes, com.trendhub.trendhub.domain.likes.entity.QLikes> likes = this.<com.trendhub.trendhub.domain.likes.entity.Likes, com.trendhub.trendhub.domain.likes.entity.QLikes>createList("likes", com.trendhub.trendhub.domain.likes.entity.Likes.class, com.trendhub.trendhub.domain.likes.entity.QLikes.class, PathInits.DIRECT2);
+
     public final NumberPath<Integer> totalLike = createNumber("totalLike", Integer.class);
 
     //inherited
