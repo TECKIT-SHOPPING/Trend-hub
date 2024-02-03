@@ -59,10 +59,11 @@
                                     <div class="swiper-wrapper">
                                         <!-- Thymeleaf 반복문을 사용하여 동적으로 제품 카드 생성 -->
                                         <div th:each="product : *{products}" class="swiper-slide">
-                                            <a href="javascript:void(0);"
-                                               class="cardset cardset-shopping"
+                                            <a
+                                                    class="cardset cardset-shopping" style="cursor: pointer;"
                                             >
-                                                <figure class="cardset-figure">
+                                                <figure class="cardset-figure"
+                                                        th:onclick="|redirectToProduct('${product.productId}')|">
                                                     <img class="cardset-img" th:src="${product.image}"
                                                          th:href="@{'/products/' + ${product.productId}}"
                                                          alt="스와이퍼 이미지">
@@ -70,7 +71,7 @@
                                                 <div class="cardset-body"
                                                      style="display: flex; justify-content: space-between; align-items: center;">
                                                     <!-- 수정된 부분 -->
-                                                    <div>
+                                                    <div th:onclick="|redirectToProduct('${product.productId}')|">
                                                         <span class="cardset-name" th:text="${product.name}"></span>
                                                         <!-- Check if discount is not zero -->
                                                         <h2 class="cardset-tit" th:if="${product.discount == 0}">
@@ -90,15 +91,18 @@
                                                         <p class="cardset-desc" th:if="${product.discount == 0}"
                                                            th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
                                                     </div>
-                                                    <div class="cardset-actions"
-                                                         th:attr="data-heart=${product.productId}"
-                                                         onclick="toggleLike(this)">
-                                                        <img th:if="${product.liked}" src="../images/like.png"
-                                                             width="34" height="34"/>
-                                                        <img th:unless="${product.liked}" src="../images/unlike.png"
-                                                             width="34" height="34"/>
+                                                    <div style="display: flex; flex-direction: column">
+                                                        <div class="cardset-actions"
+                                                             th:attr="data-heart=${product.productId}"
+                                                             onclick="toggleLike(this)">
+                                                            <img th:if="${product.liked}" src="../images/like.png"
+                                                                 width="34" height="34"/>
+                                                            <img th:unless="${product.liked}" src="../images/unlike.png"
+                                                                 width="34" height="34"/>
+                                                        </div>
+                                                        <span th:text="${product.totalLike}"
+                                                              style="margin: 0 auto;"></span>
                                                     </div>
-                                                    <span th:text="${product.totalLike}"></span>
                                                 </div>
 
                                             </a>
@@ -122,7 +126,7 @@
                     </div>
                     <div class="contents-group">
                         <!-- Thymeleaf 반복문을 사용하여 동적으로 스타일 카드 생성 -->
-                        <div th:each="coordi : *{coordis}" class="cardset cardset-hover cardset-border text-center">
+                        <div th:each="coordi : *{coordis}" class="cardset cardset-hover cardset-border text-center" style="cursor: pointer;">
                             <a th:href="@{'/coordi/' + ${coordi.coordiId}}" style="width: 100%; height: 80%;">
                                 <img class="cardset-img" th:src="${coordi.image}" alt="카드 이미지">
                             </a>
@@ -138,15 +142,17 @@
                                         <span class="cardset-name" th:text="${coordi.nickname}"></span>
                                     </div>
                                 </div>
-                                <div class="cardset-actions"
-                                     th:attr="data-heart=${coordi.coordiId}"
-                                     onclick="toggleLikeCoordi(this)">
-                                    <img th:if="${coordi.liked}" src="../images/like.png"
-                                         width="34" height="34"/>
-                                    <img th:unless="${coordi.liked}" src="../images/unlike.png"
-                                         width="34" height="34"/>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div class="cardset-actions"
+                                         th:attr="data-heart=${coordi.coordiId}"
+                                         onclick="toggleLikeCoordi(this)">
+                                        <img th:if="${coordi.liked}" src="../images/like.png"
+                                             width="34" height="34" />
+                                        <img th:unless="${coordi.liked}" src="../images/unlike.png"
+                                             width="34" height="34"/>
+                                    </div>
+                                    <span th:text="${coordi.totalLike}"></span>
                                 </div>
-                                <span th:text="${coordi.totalLike}"></span>
                             </div>
                         </div>
                     </div>
@@ -244,6 +250,11 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
+        }
+
+        function redirectToProduct(productId) {
+            var productUrl = '/products/' + productId;
+            window.location.href = productUrl;
         }
     </script>
 </div>
