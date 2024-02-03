@@ -31,7 +31,7 @@ public class Coordi extends BaseTimeEntity {
     private List<Likes> likes = new ArrayList<>();
 
 
-    //연관관계 메서드
+    //연관관계 메서드.
     public void likeCoordi(Likes likes) {
         this.likes.add(likes);
         likes.addCoordi(this);
