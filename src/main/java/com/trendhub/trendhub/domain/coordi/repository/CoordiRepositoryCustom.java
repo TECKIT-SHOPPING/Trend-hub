@@ -8,4 +8,6 @@ import java.util.List;
 public interface CoordiRepositoryCustom {
 
     List<CoordiDto> findTop5ByOrderByViewCountDesc(User user);
+
+    List<CoordiDto> findTop5ByOrderByViewCountDescAnonymousUser();
 }

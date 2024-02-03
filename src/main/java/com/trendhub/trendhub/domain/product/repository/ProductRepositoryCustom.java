@@ -8,4 +8,6 @@ import java.util.List;
 public interface ProductRepositoryCustom{
 
     List<ProductDto> findTop10ByOrderByViewCountDesc(User user);
+
+    List<ProductDto> findTop10ByOrderByViewCountDescAnonymousUser();
 }

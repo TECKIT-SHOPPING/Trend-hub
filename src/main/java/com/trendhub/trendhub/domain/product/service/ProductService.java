@@ -29,14 +29,18 @@ public class ProductService {
 
     public List<ProductDto> findTop10ViewCountDesc() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = null;
         if (authentication.getPrincipal() != "anonymousUser") {
+            User user = null;
             String loginId = authentication.getName();
             //세션을 통한 유저 조회
             user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
+            List<ProductDto> result = productRepository.findTop10ByOrderByViewCountDesc(user);
+            return result;
+        } else {
+            //비로그인상태
+            List<ProductDto> result = productRepository.findTop10ByOrderByViewCountDescAnonymousUser();
+            return result;
         }
-        List<ProductDto> result = productRepository.findTop10ByOrderByViewCountDesc(user);
-        return result;
     }
 
     public boolean toggleLikeProduct(ProductLikeDto productLikeDto) {

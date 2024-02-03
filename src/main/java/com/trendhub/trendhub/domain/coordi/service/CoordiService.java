@@ -1,8 +1,11 @@
 package com.trendhub.trendhub.domain.coordi.service;
 
 import com.trendhub.trendhub.domain.coordi.dto.CoordiDto;
+import com.trendhub.trendhub.domain.coordi.dto.CoordiLikeDto;
 import com.trendhub.trendhub.domain.coordi.entity.Coordi;
 import com.trendhub.trendhub.domain.coordi.repository.CoordiRepository;
+import com.trendhub.trendhub.domain.likes.entity.Likes;
+import com.trendhub.trendhub.domain.likes.service.LikesService;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.global.service.S3Service;
@@ -13,12 +16,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CoordiService {
 
     private final CoordiRepository coordiRepository;
+    private final LikesService likesService;
     private final UserRepository userRepository;
     private final S3Service s3Service;
 
@@ -54,10 +59,34 @@ public class CoordiService {
             String loginId = authentication.getName();
             //세션을 통한 유저 조회
             user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
+            List<CoordiDto> result = coordiRepository.findTop5ByOrderByViewCountDesc(user);
+            return result;
+        } else {
+            List<CoordiDto> result = coordiRepository.findTop5ByOrderByViewCountDescAnonymousUser();
+            return result;
         }
 
-        List<CoordiDto> result = coordiRepository.findTop5ByOrderByViewCountDesc(user);
-        return result;
     }
 
+    public boolean toggleLikeCoordi(CoordiLikeDto coordiLikeDto) {
+        String loginId = SecurityContextHolder.getContext().getAuthentication().getName();
+        Coordi coordi = coordiRepository.findById(coordiLikeDto.getCoordiId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 코디입니다."));
+        User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
+
+        Optional<Likes> _findLikes = likesService.findByCoordiAndUser(coordi, user);
+
+        if (_findLikes.isEmpty()) {
+            //좋아요를 누른적 없다면 likes 생성후, 좋아요 처리
+            Likes likes = coordiLikeDto.toEntity(user, coordi);
+            likesService.createLikes(likes);
+            coordi.likeProduct(likes);
+            return true;
+        } else {
+            //좋아요 누른적 있다면 취소 처리 후 데이터 삭제
+            Likes findLikes = _findLikes.get();
+            coordi.unLikeProduct(findLikes);
+            likesService.deleteLikes(findLikes);
+            return false;
+        }
+    }
 }
