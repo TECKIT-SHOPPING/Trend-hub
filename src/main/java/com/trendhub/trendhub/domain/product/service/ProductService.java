@@ -64,4 +64,9 @@ public class ProductService {
             return false;
         }
     }
+
+    public List<ProductDto> likesProductList(User user) {
+        List<ProductDto> result = productRepository.findByLikesProducts(user);
+        return result;
+    }
 }
