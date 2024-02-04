@@ -8,7 +8,7 @@
             </div>
             <div className="row row-cols-1 row-cols-md-5" style="margin-bottom: 50px; margin-top: 5px;">
                 <div class="swiper contents-swiper" style="flex-grow: 1;">
-                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                    <div style="display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 15px;">
                     <!-- Thymeleaf 반복문을 사용하여 동적으로 제품 카드 생성 -->
                         <div th:each="product : *{products}" class="swiper-slide" style="width: 30%; margin-bottom: 15px;">
                             <a class="cardset cardset-shopping" style="cursor: pointer; width: 100%;">
