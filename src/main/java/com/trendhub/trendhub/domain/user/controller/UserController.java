@@ -1,5 +1,6 @@
 package com.trendhub.trendhub.domain.user.controller;
 
+import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.user.dto.*;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.domain.user.dto.FindUserDto;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.security.Principal;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 
@@ -226,6 +228,9 @@ public class UserController {
         String logInid = principal.getName();
         User user = this.userService.getUser(logInid);
         model.addAttribute("user", user);
+
+        List<ProductDto> productList = userService.likeProductList(user);
+        model.addAttribute("products", productList);
         return "users/myPage_3";
     }
 

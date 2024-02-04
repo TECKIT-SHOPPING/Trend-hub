@@ -63,4 +63,26 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 .fetch();
         return result;
     }
+
+    @Override
+    public List<ProductDto> findByLikesProducts(User user) {
+        List<ProductDto> result = jpaQueryFactory
+                .select(Projections.constructor(ProductDto.class,
+                        product.productId,
+                        product.image,
+                        product.name,
+                        product.price,
+                        product.discount,
+                        product.totalLike,
+                        new CaseBuilder()
+                                .when(likes.likesId.isNotNull()).then(true)
+                                .otherwise(false).as("liked")
+                ))
+                .from(product)
+                .innerJoin(likes)
+                .on(likes.product.eq(product).and(likes.user.eq(user)))
+                .orderBy(product.viewCount.desc())
+                .fetch();
+        return result;
+    }
 }
