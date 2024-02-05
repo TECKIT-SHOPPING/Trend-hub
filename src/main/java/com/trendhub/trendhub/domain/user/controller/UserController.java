@@ -2,9 +2,6 @@ package com.trendhub.trendhub.domain.user.controller;
 
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.user.dto.*;
-
-import com.trendhub.trendhub.domain.user.dto.FindUserDto;
-import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import com.trendhub.trendhub.global.rq.Rq;
@@ -25,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.List;
 
 
 @Slf4j

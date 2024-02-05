@@ -1,6 +1,5 @@
 package com.trendhub.trendhub.domain.product.service;
 
-import com.nimbusds.oauth2.sdk.GeneralException;
 import com.trendhub.trendhub.domain.likes.entity.Likes;
 import com.trendhub.trendhub.domain.likes.service.LikesService;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
@@ -65,13 +64,14 @@ public class ProductService {
         }
     }
 
-    public Product getPost(Integer id) {
-        Optional<Product> product = this.productRepository.findById(Long.valueOf(id));
-        if(product.isPresent()) {
+    public Product getPost(Long id) {
+        Optional<Product> product = this.productRepository.findById(id);
+        if (product.isPresent()) {
             return product.get();
         } else {
             throw new DataNotFoundException("post not found");
         }
+    }
 
     public List<ProductDto> likesProductList(User user) {
         List<ProductDto> result = productRepository.findByLikesProducts(user);
