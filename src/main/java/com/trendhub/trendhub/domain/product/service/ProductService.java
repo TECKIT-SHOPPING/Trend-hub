@@ -65,6 +65,14 @@ public class ProductService {
         }
     }
 
+    public Product getPost(Integer id) {
+        Optional<Product> product = this.productRepository.findById(Long.valueOf(id));
+        if(product.isPresent()) {
+            return product.get();
+        } else {
+            throw new DataNotFoundException("post not found");
+        }
+
     public List<ProductDto> likesProductList(User user) {
         List<ProductDto> result = productRepository.findByLikesProducts(user);
         return result;

@@ -15,12 +15,12 @@
   <meta property="og:image" content="https://웹사이트/images/opengraph.png">
   <meta property="og:url" content="https://웹사이트">
   <title>상품상세페이지 | trend</title>
-  <link rel="stylesheet" href="../resources/css/setting.css">
-  <link rel="stylesheet" href="../resources/css/plugin.css">
-  <link rel="stylesheet" href="../resources/css/template.css">
-  <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../resources/css/common.css">
-  <link rel="stylesheet" href="../resources/css/style.css">
+  <link rel="stylesheet" href="/css/setting.css">
+  <link rel="stylesheet" href="/css/plugin.css">
+  <link rel="stylesheet" href="/css/template.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
@@ -36,7 +36,7 @@
         <div class="header-left">
           <h1 class="header-title">
             <a href="javascript:void(0)">
-              <img src="/api/download/f74ed9655e104f7a9be2bb301805a630" alt="로고">
+              <img src="/images/logo.png" alt="로고">
             </a>
           </h1>
           <div class="header-mobile-group">
@@ -67,7 +67,7 @@
               </li>
             </ul>
             <button class="header-btn btn-close">
-              <img src="../resources/icons/ico_close_white.svg" alt="닫기 아이콘">
+              <img src="/icons/ico_close_white.svg" alt="닫기 아이콘">
             </button>
           </div>
         </div>
@@ -78,11 +78,11 @@
         <div class="header-right">
           <div class="header-utils">
             <button class="header-btn btn-cart badgeset badgeset-circle badgeset-position badgeset-bottom-right">
-              <img src="../resources/icons/ico_cart_black.svg" alt="쇼핑백 아이콘">
+              <img src="/icons/ico_cart_black.svg" alt="쇼핑백 아이콘">
               <span class="badgeset-text">1</span>
             </button>
             <a href="javascipt:void(0);" class="header-btn btn-user">
-              <img src="../resources/icons/ico_user_black.svg" alt="유저 아이콘">
+              <img src="/icons/ico_user_black.svg" alt="유저 아이콘">
             </a>
           </div>
         </div>
@@ -113,20 +113,20 @@
         <div class="contents-container container-md">
           <div class="contents-left">
             <div class="contents-thumbnail">
-              <img class="contents-thumbimg" src="../resources/images/img_basic_N51_1.png" alt="썸네일이미지">
+              <img class="contents-thumbimg" src="/images/img_basic_N51_1.png" alt="썸네일이미지">
             </div>
             <ul class="contents-thumblist">
               <li class="contents-thumbitem">
-                <img class="contents-thumbimg" src="../resources/images/img_basic_N51_1.png" alt="썸네일이미지">
+                <img class="contents-thumbimg" src="/images/img_basic_N51_1.png" alt="썸네일이미지">
               </li>
               <li class="contents-thumbitem">
-                <img class="contents-thumbimg" src="../resources/images/img_basic_N51_2.png" alt="썸네일이미지">
+                <img class="contents-thumbimg" src="/images/img_basic_N51_2.png" alt="썸네일이미지">
               </li>
               <li class="contents-thumbitem">
-                <img class="contents-thumbimg" src="../resources/images/img_basic_N51_3.png" alt="썸네일이미지">
+                <img class="contents-thumbimg" src="/images/img_basic_N51_3.png" alt="썸네일이미지">
               </li>
               <li class="contents-thumbitem">
-                <img class="contents-thumbimg" src="../resources/images/img_basic_N51_4.png" alt="썸네일이미지">
+                <img class="contents-thumbimg" src="/images/img_basic_N51_4.png" alt="썸네일이미지">
               </li>
             </ul>
           </div>
@@ -136,10 +136,10 @@
                 <a style="text-decoration: none;" href="javascript:void(0);">템하피부</a>
                 <div class="contents-brand-group">
                   <button class="contents-btn btn-like-line">
-                    <img src="../resources/icons/ico_like_black_line.svg" alt="하트 라인 아이콘">
+                    <img src="/icons/ico_like_black_line.svg" alt="하트 라인 아이콘">
                   </button>
                   <button class="contents-btn btn-like-fill" style="color: red;">
-                    <img src="../resources/icons/ico_like_black_fill.svg" alt="하트 채워진 아이콘">
+                    <img src="/icons/ico_like_black_fill.svg" alt="하트 채워진 아이콘">
                   </button>
                   <button class="contents-btn">
                   </button>
@@ -171,11 +171,11 @@
                   <strong>포인트적립</strong>
                   <div class="contents-amount">
                     <button class="contents-btn btn-minus" type="button">
-                      <img src="../resources/icons/ico_minus_black.svg" alt="마이너스 아이콘">
+                      <img src="/icons/ico_minus_black.svg" alt="마이너스 아이콘">
                     </button>
                     <p class="contents-amount-num">1</p>
                     <button class="contents-btn btn-plus" type="button">
-                      <img src="../resources/icons/ico_plus_black.svg" alt="플러스 아이콘">
+                      <img src="/icons/ico_plus_black.svg" alt="플러스 아이콘">
                     </button>
                   </div>
                 </li>
@@ -187,7 +187,7 @@
               </div>
             </div>
             <div class="contents-btn-group">
-              <button class="btnset btnset-line" type="button">장바구니</button>
+              <button class="btnset btnset-line" type="button" onClick="location.href='/cart'">장바구니</button>
               <button class="btnset" type="button">구매하기</button>
             </div>
           </div>
@@ -196,44 +196,66 @@
     </div>
     <!-- [E]basic-N51 -->
     <!-- [S]basic-N52 -->
-    <div class="basic-N52" data-bid="JNLRpvYymP">
+    <div class="basic-N52">
       <div class="contents-inner">
         <div class="tabset tabset-fluid">
           <ul class="tabset-list container-md">
             <li class="tabset-item">
-              <a class="tabset-link active" href="javascript:void(0)">
+              <a class="tabset-link active" href="#section-details">
                 <span>상세정보</span>
               </a>
             </li>
             <li class="tabset-item">
-              <a class="tabset-link" href="javascript:void(0)">
+              <a class="tabset-link" href="#section-inquiry">
                 <span>상품문의</span>
               </a>
             </li>
             <li class="tabset-item">
-              <a class="tabset-link" href="javascript:void(0)">
+              <a class="tabset-link" href="#section-reviews">
                 <span>후기</span>
               </a>
             </li>
             <li class="tabset-item">
-              <a class="tabset-link" href="javascript:void(0)">
+              <a class="tabset-link" href="#section-shipping">
                 <span>배송/교환/반품안내</span>
               </a>
             </li>
           </ul>
         </div>
         <div class="contents-container container-md">
-          <div class="imageset">
-            <img class="imageset-img" src="../resources/images/img_basic_N52_1.png" alt="이미지">
+          <!-- Section: 상세정보 -->
+          <div id="section-details" class="section-content">
+            <!-- 여기에 상세정보 내용 추가 -->
+
+            <div class="contents-container container-md">
+              <div class="imageset">
+                <img class="imageset-img" src="/images/img_basic_N52_1.png" alt="이미지">
+              </div>
+              <div class="imageset">
+                <img class="imageset-img" src="/images/img_basic_N52_1.png" alt="이미지">
+              </div>
+              <div class="imageset">
+                <img class="imageset-img" src="/images/img_basic_N52_1.png" alt="이미지">
+              </div>
+              <div class="imageset">
+                <img class="imageset-img" src="/images/img_basic_N52_1.png" alt="이미지">
+              </div>
+            </div>
           </div>
-          <div class="imageset">
-            <img class="imageset-img" src="../resources/images/img_basic_N52_1.png" alt="이미지">
+          <!-- Section: 상품문의 -->
+          <div id="section-inquiry" class="section-content">
+            <h2> 상품문의 </h2>
+            <!-- 여기에 상품문의 내용 추가 -->
           </div>
-          <div class="imageset">
-            <img class="imageset-img" src="../resources/images/img_basic_N52_1.png" alt="이미지">
+          <!-- Section: 후기 -->
+          <div id="section-reviews" class="section-content">
+            <h2> 상품후기 </h2>
+            <!-- 여기에 후기 내용 추가 -->
           </div>
-          <div class="imageset">
-            <img class="imageset-img" src="../resources/images/img_basic_N52_1.png" alt="이미지">
+          <!-- Section: 배송/교환/반품안내 -->
+          <div id="section-shipping" class="section-content">
+            <h2> 배송/교환/반품안내 </h2>
+            <!-- 여기에 배송/교환/반품안내 내용 추가 -->
           </div>
         </div>
       </div>
@@ -246,7 +268,7 @@
       <div class="footer-top">
         <h1 class="footer-logo">
           <a href="javascript:void(0)">
-            <img src="../resources/images/img_logo_lightgray.png" alt="로고">
+            <img src="/images/img_logo_lightgray.png" alt="로고">
           </a>
         </h1>
         <ul class="footer-menulist">
@@ -274,22 +296,22 @@
         <ul class="footer-snslist">
           <li class="footer-snsitem">
             <a class="footer-snslink" href="javascript:void(0)">
-              <img src="../resources/icons/ico_instagram_lightgrey.svg" alt="인스타그램">
+              <img src="/icons/ico_instagram_lightgrey.svg" alt="인스타그램">
             </a>
           </li>
           <li class="footer-snsitem">
             <a class="footer-snslink" href="javascript:void(0)">
-              <img src="../resources/icons/ico_youtube_lightgrey.svg" alt="유튜브">
+              <img src="/icons/ico_youtube_lightgrey.svg" alt="유튜브">
             </a>
           </li>
           <li class="footer-snsitem">
             <a class="footer-snslink" href="javascript:void(0)">
-              <img src="../resources/icons/ico_facebook_lightgrey.svg" alt="페이스북">
+              <img src="/icons/ico_facebook_lightgrey.svg" alt="페이스북">
             </a>
           </li>
           <li class="footer-snsitem">
             <a class="footer-snslink" href="javascript:void(0)">
-              <img src="../resources/icons/ico_kakao_lightgrey.svg" alt="카카오톡">
+              <img src="/icons/ico_kakao_lightgrey.svg" alt="카카오톡">
             </a>
           </li>
         </ul>
@@ -309,9 +331,9 @@
     </div>
   </footer>
   <!-- [E]basic-N4 -->
-  <script src="../resources/js/setting.js"></script>
-  <script src="../resources/js/plugin.js"></script>
-  <script src="../resources/js/template.js"></script>
-  <script src="../resources/js/common.js"></script>
-  <script src="../resources/js/script.js"></script>
+  <script src="/js/setting.js"></script>
+  <script src="/js/plugin.js"></script>
+  <script src="/js/template.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/script.js"></script>
 </body>
