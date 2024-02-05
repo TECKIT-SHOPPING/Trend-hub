@@ -1,10 +1,13 @@
 package com.trendhub.trendhub.domain.coordi.repository;
 
+import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.trendhub.trendhub.domain.coordi.dto.CoordiDto;
+import com.trendhub.trendhub.domain.review.entity.QReview;
 import com.trendhub.trendhub.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,25 +26,38 @@ public class CoordiRepositoryCustomImpl implements CoordiRepositoryCustom {
 
     @Override
     public List<CoordiDto> findTop5ByOrderByViewCountDesc(User user) {
-        JPAQuery<CoordiDto> jpaQuery = jpaQueryFactory
+        List<CoordiDto> result = jpaQueryFactory
                 .select(Projections.constructor(CoordiDto.class,
                         coordi.coordiId,
+                        coordi.user.profile,
+                        coordi.user.nickname,
                         coordi.image,
                         coordi.totalLike,
-                        likes.likesId,
                         new CaseBuilder()
                                 .when(likes.likesId.isNotNull()).then(true)
                                 .otherwise(false).as("liked")
                 ))
                 .from(coordi)
                 .leftJoin(likes)
-                .on(likes.coordi.eq(coordi));
+                .on(likes.coordi.eq(coordi).and(likes.user.eq(user)))
+                .limit(5)
+                .fetch();
 
-        if (user != null) {
-            jpaQuery = jpaQuery.on(likes.user.eq(user));
-        }
+        return result;
+    }
 
-        List<CoordiDto> result = jpaQuery
+    @Override
+    public List<CoordiDto> findTop5ByOrderByViewCountDescAnonymousUser() {
+        List<CoordiDto> result = jpaQueryFactory
+                .select(Projections.constructor(CoordiDto.class,
+                        coordi.coordiId,
+                        coordi.user.profile,
+                        coordi.user.nickname,
+                        coordi.image,
+                        coordi.totalLike,
+                        Expressions.asBoolean(false).as("liked")
+                ))
+                .from(coordi)
                 .orderBy(coordi.viewCount.desc())
                 .limit(5)
                 .fetch();

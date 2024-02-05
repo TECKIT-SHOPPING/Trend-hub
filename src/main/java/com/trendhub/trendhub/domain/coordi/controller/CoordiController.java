@@ -1,12 +1,11 @@
 package com.trendhub.trendhub.domain.coordi.controller;
 
+import com.trendhub.trendhub.domain.coordi.dto.CoordiLikeDto;
 import com.trendhub.trendhub.domain.coordi.service.CoordiService;
+import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
@@ -33,4 +32,11 @@ public class CoordiController {
         //TODO 업로드후 이동할 화면 얘기해야함
         return "redirect:/";
     }
+
+    @GetMapping("")
+    public String coordi(){
+        return "coordi";
+    }
+
+
 }
