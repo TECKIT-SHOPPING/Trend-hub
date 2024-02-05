@@ -4,76 +4,114 @@
         <th:block th:replace="~{fragments/myPage :: myPageFragment}"></th:block>
         <div style="margin-top: 60px; width: 800px;">
             <div style="display: flex; align-items:center; font-size: 15px;">
-                <img style="width: 20px; height: 20px; margin-right: 3px;" th:src="@{/images/좋아요.png}">좋아요
+                <img style="width: 20px; height: 20px; margin-right: 3px;" th:src="@{/images/like.png}">좋아요
             </div>
-            <div class="row row-cols-1 row-cols-md-5" style="margin-bottom: 50px; margin-top: 5px;">
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/로고이미지.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
+            <div className="row row-cols-1 row-cols-md-5" style="margin-bottom: 50px; margin-top: 5px;">
+                <div class="swiper contents-swiper" style="flex-grow: 1;">
+                    <div style="display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 15px;">
+                    <!-- Thymeleaf 반복문을 사용하여 동적으로 제품 카드 생성 -->
+                        <div th:each="product : *{products}" class="swiper-slide" style="width: 30%; margin-bottom: 15px;">
+                            <a class="cardset cardset-shopping" style="cursor: pointer; width: 100%;">
+                                <figure class="cardset-figure"
+                                        th:onclick="|redirectToProduct('${product.productId}')|">
+                                    <img class="cardset-img" th:src="${product.image}"
+                                         th:href="@{'/products/' + ${product.productId}}"
+                                         alt="스와이퍼 이미지">
+                                </figure>
+                                <div class="cardset-body"
+                                     style="display: flex; justify-content: space-between; align-items: center;">
+                                    <!-- 수정된 부분 -->
+                                    <div th:onclick="|redirectToProduct('${product.productId}')|" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        <span class="cardset-name" th:text="${product.name}"></span>
+                                        <!-- Check if discount is not zero -->
+                                        <h2 class="cardset-tit" th:if="${product.discount == 0}">
+                                            <span th:text="${'-'}"></span>
+                                            <!-- Strikethrough original price -->
+                                        </h2>
+                                        <h2 class="cardset-tit" th:if="${product.discount != 0}">
+                                            <del th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
+                                            <!-- Strikethrough original price -->
+                                            <span th:text="${'  - ' + product.discount + '%'}"></span>
+                                            <!-- Display discount percentage -->
+                                        </h2>
+                                        <!-- Check if discount is not zero and calculate discounted price -->
+                                        <p class="cardset-desc" th:if="${product.discount != 0}"
+                                           th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                        <!-- If discount is zero, display the original price in the <p> tag -->
+                                        <p class="cardset-desc" th:if="${product.discount == 0}"
+                                           th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column">
+                                        <div class="cardset-actions"
+                                             th:attr="data-heart=${product.productId}"
+                                             onclick="toggleLike(this)">
+                                            <img th:if="${product.liked}" src="../../images/like.png"
+                                                 width="34" height="34"/>
+                                            <img th:unless="${product.liked}" src="../../images/unlike.png"
+                                                 width="34" height="34"/>
+                                        </div>
+                                        <span th:text="${product.totalLike}"
+                                              style="margin: 0 auto;"></span>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/로고이미지.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/로고이미지.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/로고이미지.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/로고이미지.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/로고이미지.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/로고이미지.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-
-
             </div>
         </div>
     </div>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        function toggleLike(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var productId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/products/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    productId: parseInt(productId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function redirectToProduct(productId) {
+            var productUrl = '/products/' + productId;
+            window.location.href = productUrl;
+        }
+    </script>
 </div>
 </html>
