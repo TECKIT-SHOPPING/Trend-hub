@@ -59,14 +59,9 @@
                                     <div class="swiper-wrapper">
                                         <!-- Thymeleaf 반복문을 사용하여 동적으로 제품 카드 생성 -->
                                         <div th:each="product : *{products}" class="swiper-slide">
-                                            <a
-                                                    class="cardset cardset-shopping" style="cursor: pointer;"
-                                            >
-                                                <figure class="cardset-figure" style="width: 296px; height: 350px;"
-                                                        th:onclick="|redirectToProduct('${product.productId}')|">
-                                                    <img class="cardset-img" th:src="${product.image}"
-                                                         th:href="@{'/products/' + ${product.productId}}"
-                                                         alt="스와이퍼 이미지" style="object-fit: cover;">
+                                            <a href="javascript:void(0);" th:href="@{'/product/detail/' + ${product.productId}}" class="cardset cardset-shopping">
+                                                <figure class="cardset-figure">
+                                                    <img class="cardset-img" th:src="${product.image}" alt="스와이퍼 이미지">
                                                 </figure>
                                                 <div class="cardset-body"
                                                      style="display: flex; justify-content: space-between; align-items: center;">
