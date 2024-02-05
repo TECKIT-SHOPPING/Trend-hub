@@ -77,4 +77,12 @@ public class ProductService {
         List<ProductDto> result = productRepository.findByLikesProducts(user);
         return result;
     }
+
+    public List<ProductDto> getProductsByIds(List<Long> productIdList) {
+
+        String loginId = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
+        List<ProductDto> result = productRepository.findByRecentlyProductsIn(user, productIdList);
+        return result;
+    }
 }

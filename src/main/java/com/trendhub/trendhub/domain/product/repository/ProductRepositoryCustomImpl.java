@@ -1,10 +1,8 @@
 package com.trendhub.trendhub.domain.product.repository;
 
-import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.user.entity.User;
@@ -82,6 +80,28 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 .innerJoin(likes)
                 .on(likes.product.eq(product).and(likes.user.eq(user)))
                 .orderBy(product.viewCount.desc())
+                .fetch();
+        return result;
+    }
+
+    @Override
+    public List<ProductDto> findByRecentlyProductsIn(User user, List<Long> productIdList) {
+        List<ProductDto> result = jpaQueryFactory
+                .select(Projections.constructor(ProductDto.class,
+                        product.productId,
+                        product.image,
+                        product.name,
+                        product.price,
+                        product.discount,
+                        product.totalLike,
+                        new CaseBuilder()
+                                .when(likes.likesId.isNotNull()).then(true)
+                                .otherwise(false).as("liked")
+                ))
+                .from(product)
+                .leftJoin(likes)
+                .on(likes.product.eq(product).and(likes.user.eq(user)))
+                .where(product.productId.in(productIdList))
                 .fetch();
         return result;
     }
