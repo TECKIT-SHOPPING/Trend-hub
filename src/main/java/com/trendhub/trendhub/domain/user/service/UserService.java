@@ -3,6 +3,8 @@ package com.trendhub.trendhub.domain.user.service;
 import com.trendhub.trendhub.domain.email.entity.EmailAuth;
 import com.trendhub.trendhub.domain.email.repository.EmailAuthRepository;
 import com.trendhub.trendhub.domain.email.service.EmailService;
+import com.trendhub.trendhub.domain.product.dto.ProductDto;
+import com.trendhub.trendhub.domain.product.service.ProductService;
 import com.trendhub.trendhub.domain.user.dto.*;
 import com.trendhub.trendhub.domain.user.entity.SocialProvider;
 import com.trendhub.trendhub.domain.user.entity.User;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -27,6 +30,7 @@ import java.util.Random;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final ProductService productService;
     private final PasswordEncoder passwordEncoder;
     private final EmailAuthRepository emailAuthRepository;
     private final S3Service s3Service;
@@ -229,5 +233,10 @@ public class UserService implements UserDetailsService {
     public User getUser(String longInid){
         Optional<User> user = this.userRepository.findByLoginId(longInid);
         return user.get();
+    }
+
+    public List<ProductDto> likeProductList(User user) {
+        List<ProductDto> result = productService.likesProductList(user);
+        return result;
     }
 }

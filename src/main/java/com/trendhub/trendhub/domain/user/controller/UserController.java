@@ -1,9 +1,7 @@
 package com.trendhub.trendhub.domain.user.controller;
 
+import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.user.dto.*;
-
-import com.trendhub.trendhub.domain.user.dto.FindUserDto;
-import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import com.trendhub.trendhub.global.rq.Rq;
@@ -24,8 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-
-
+import java.util.List;
 
 
 @Slf4j
@@ -189,13 +186,6 @@ public class UserController {
     }
     // 이메일 및 이름 가져와서 맞는지 확인하기
 
-    public String mypage(Principal principal, Model model) {
-        String logInid = principal.getName();
-        User user = this.userService.getUser(logInid);
-        model.addAttribute("user", user);
-        return "users/myPage";
-    }
-
     @GetMapping("/myPage/1")
     public String mypage_exp(Principal principal, Model model) {
         String logInid = principal.getName();
@@ -217,6 +207,9 @@ public class UserController {
         String logInid = principal.getName();
         User user = this.userService.getUser(logInid);
         model.addAttribute("user", user);
+
+        List<ProductDto> productList = userService.likeProductList(user);
+        model.addAttribute("products", productList);
         return "users/myPage_3";
     }
 

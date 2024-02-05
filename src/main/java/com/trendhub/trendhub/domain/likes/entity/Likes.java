@@ -4,13 +4,13 @@ import com.trendhub.trendhub.domain.coordi.entity.Coordi;
 import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class Likes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +27,20 @@ public class Likes {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coordi_id")
     private Coordi coordi;
+
+    public void removeProduct() {
+        this.product = null;
+    }
+
+    public void addProduct(Product product) {
+        this.product = product;
+    }
+
+    public void removeCoordi() {
+        this.coordi = null;
+    }
+
+    public void addCoordi(Coordi coordi) {
+        this.coordi = coordi;
+    }
 }

@@ -1,27 +1,45 @@
 <html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
 <div layout:fragment="content">
-<div style="display: flex; flex-direction: column; align-items: center;" th:object="${mainDto}">
-    <!-- 캐러셀-->
-    <div class="contents-container container-md">
-        <div class="contents-banner">
-            <!-- 이미지 캐러셀 부분 -->
-            <div class="swiper-container">
-                <div class="swiper-wrapper">
-                    <!-- Thymeleaf iteration over banners -->
-                    <div th:each="banner : *{banners}" class="swiper-slide">
-                        <a th:href="@{'/banners/' + ${banner.bannerId}}" class="cardset cardset-shopping"
-                           style="min-width: 1500px;">
-                            <figure class="cardset-figure">
-                                <img class="cardset-img" th:src="${banner.image}" alt="Banner Image">
-                            </figure>
-                        </a>
-                    </div>
-                </div>
-                <!-- Add navigation buttons -->
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+    <div style="display: flex; flex-direction: column; align-items: center;" th:object="${mainDto}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <!--        이미지 캐러셀-->
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style="">
+            <div class="carousel-indicators">
+                <button style="width: 20px; height: 20px; border-radius: 50%;" type="button"
+                        data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                <button style="width: 20px; height: 20px; border-radius: 50%;" type="button"
+                        data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button style="width: 20px; height: 20px; border-radius: 50%;" type="button"
+                        data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
+            <div class="carousel-inner" style="width: 1300px; height: 500px;">
+                <div th:each="banner, iterStat : *{banners}" class="carousel-item"
+                     th:classappend="${iterStat.index == 0} ? 'active'">
+                    <a th:href="@{'/banners/' + ${banner.bannerId}}" class="cardset cardset-shopping"
+                       style="overflow: hidden;">
+                        <figure class="cardset-figure" style="width: 1300px; height: 500px; ">
+                            <img class="cardset-img" th:src="${banner.image}"
+                                 style="object-fit: cover;"
+                                 alt="Banner Image">
+                        </figure>
+                    </a>
+                </div>
+            </div>
+            <button style="width: 100px;" class="carousel-control-prev" type="button"
+                    data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span style="width: 60px; height: 60px;" class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button style="width: 100px;" class="carousel-control-next" type="button"
+                    data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span style="width: 60px; height: 60px;" class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
+
         <!-- 카테고리 바 -->
         <div style="display: flex; justify-content: space-between; align-items:center; width: 2000px;">
             <div>
@@ -41,15 +59,52 @@
                                     <div class="swiper-wrapper">
                                         <!-- Thymeleaf 반복문을 사용하여 동적으로 제품 카드 생성 -->
                                         <div th:each="product : *{products}" class="swiper-slide">
-                                            <a href="javascript:void(0);" th:href="@{'/product/detail/' + ${product.productId}}" class="cardset cardset-shopping">
-                                                <figure class="cardset-figure">
-                                                    <img class="cardset-img" th:src="${product.image}" alt="스와이퍼 이미지">
+                                            <a
+                                                    class="cardset cardset-shopping" style="cursor: pointer;"
+                                            >
+                                                <figure class="cardset-figure"
+                                                        th:onclick="|redirectToProduct('${product.productId}')|">
+                                                    <img class="cardset-img" th:src="${product.image}"
+                                                         th:href="@{'/products/' + ${product.productId}}"
+                                                         alt="스와이퍼 이미지">
                                                 </figure>
-                                                <div class="cardset-body">
-                                                    <span class="cardset-name" th:text="${product.name}"></span>
-                                                    <h2 class="cardset-tit" th:text="${product.price}"></h2>
-                                                    <p class="cardset-desc" th:text="${product.price + '원'}"></p>
+                                                <div class="cardset-body"
+                                                     style="display: flex; justify-content: space-between; align-items: center;">
+                                                    <!-- 수정된 부분 -->
+                                                    <div th:onclick="|redirectToProduct('${product.productId}')|">
+                                                        <span class="cardset-name" th:text="${product.name}"></span>
+                                                        <!-- Check if discount is not zero -->
+                                                        <h2 class="cardset-tit" th:if="${product.discount == 0}">
+                                                            <span th:text="${'-'}"></span>
+                                                            <!-- Strikethrough original price -->
+                                                        </h2>
+                                                        <h2 class="cardset-tit" th:if="${product.discount != 0}">
+                                                            <del th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
+                                                            <!-- Strikethrough original price -->
+                                                            <span th:text="${'  - ' + product.discount + '%'}"></span>
+                                                            <!-- Display discount percentage -->
+                                                        </h2>
+                                                        <!-- Check if discount is not zero and calculate discounted price -->
+                                                        <p class="cardset-desc" th:if="${product.discount != 0}"
+                                                           th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                                        <!-- If discount is zero, display the original price in the <p> tag -->
+                                                        <p class="cardset-desc" th:if="${product.discount == 0}"
+                                                           th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+                                                    </div>
+                                                    <div style="display: flex; flex-direction: column">
+                                                        <div class="cardset-actions"
+                                                             th:attr="data-heart=${product.productId}"
+                                                             onclick="toggleLike(this)">
+                                                            <img th:if="${product.liked}" src="../images/like.png"
+                                                                 width="34" height="34"/>
+                                                            <img th:unless="${product.liked}" src="../images/unlike.png"
+                                                                 width="34" height="34"/>
+                                                        </div>
+                                                        <span th:text="${product.totalLike}"
+                                                              style="margin: 0 auto;"></span>
+                                                    </div>
                                                 </div>
+
                                             </a>
                                         </div>
                                     </div>
@@ -71,10 +126,34 @@
                     </div>
                     <div class="contents-group">
                         <!-- Thymeleaf 반복문을 사용하여 동적으로 스타일 카드 생성 -->
-                        <div th:each="coordi : *{coordis}" class="cardset cardset-hover cardset-border text-center">
-                            <a th:href="@{'/coordi/' + ${coordi.coordiId}}" style="width: 100%; height: 100%;">
+                        <div th:each="coordi : *{coordis}" class="cardset cardset-hover cardset-border text-center" style="cursor: pointer;">
+                            <a th:href="@{'/coordi/' + ${coordi.coordiId}}" style="width: 100%; height: 80%;">
                                 <img class="cardset-img" th:src="${coordi.image}" alt="카드 이미지">
                             </a>
+                            <div class="cardset-body"
+                                 style="display: flex; justify-content: space-between; align-items: center; margin-top: 2px;">
+                                <div class="left-section" style="display: flex; align-items: center;">
+                                    <div class="profile-image"
+                                         style="border-radius: 50%; overflow: hidden; border: 1px solid #cecdcd; width: 34px; height: 34px;">
+                                        <img th:src="@{${coordi.profile}}" alt="Profile Image"
+                                             style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <div style="margin-left: 10px;">
+                                        <span class="cardset-name" th:text="${coordi.nickname}"></span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div class="cardset-actions"
+                                         th:attr="data-heart=${coordi.coordiId}"
+                                         onclick="toggleLikeCoordi(this)">
+                                        <img th:if="${coordi.liked}" src="../images/like.png"
+                                             width="34" height="34" />
+                                        <img th:unless="${coordi.liked}" src="../images/unlike.png"
+                                             width="34" height="34"/>
+                                    </div>
+                                    <span th:text="${coordi.totalLike}"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,5 +161,101 @@
         </div>
     </div>
 </div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        function toggleLike(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var productId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/products/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    productId: parseInt(productId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+
+        function toggleLikeCoordi(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var coordiId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/coordi/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    coordiId: parseInt(coordiId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function redirectToProduct(productId) {
+            var productUrl = '/products/' + productId;
+            window.location.href = productUrl;
+        }
+    </script>
 </div>
 </html>
