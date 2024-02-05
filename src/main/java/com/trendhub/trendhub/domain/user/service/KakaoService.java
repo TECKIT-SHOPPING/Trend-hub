@@ -184,9 +184,6 @@ public class KakaoService {
         }
         String randomNickname = "user_" + randomNumber;
 
-        // 이메일 기존 존재 시 merge
-        // 카카오 등록이 안됐다면?
-
         // 강제 회원가입
         User user = User.builder()
                 .loginId(userInfo.getEmail())
@@ -204,11 +201,5 @@ public class KakaoService {
                 .build();
 
         return userRepository.save(user);
-        // Yes - 기존의 유저인지
-        // No - 로그인 후 DB에 저장
-        /*1. provider -> enum
-        2. 기존의 유저라면? -> 세션 업데이트
-        3. 카카오 정보를 받아온 후에 DB저장 후 세션 업데이트
-        (회원정보는 로직 선택 구현)*/
     }
 }
