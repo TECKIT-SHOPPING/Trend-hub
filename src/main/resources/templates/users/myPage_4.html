@@ -1,0 +1,53 @@
+<html layout:decorate="layouts/layout">
+<div layout:fragment="content">
+    <div style="display:flex; flex-direction: column; align-items:center; margin-top: 50px;">
+        <th:block th:replace="~{fragments/myPage :: myPageFragment}"></th:block>
+        <div style="margin-top: 60px;">
+            <div style="display: flex; align-items:center; font-size: 15px; margin-bottom: 5px;">
+                <img style="width: 20px; height: 15px; margin-right: 3px;" th:src="@{/images/후기모음.png}"> 후기모음
+            </div>
+            <table class="table" style="width: 800px; margin-bottom: 50px;">
+                <thead style="border-top: 1px solid black; border-bottom: 1px solid black; font-size: 16px;">
+                <tr style="text-align: center;">
+                    <th style="width: 30%;" colspan="2">상품정보</th>
+                    <th style="width: 40%;">후기내용</th>
+                    <th style="width: 20%;">주문일자</th>
+                    <th style="width: 10%;"></th>
+
+                </tr>
+                </thead>
+
+                <tbody style="font-size: 13px; line-height: 50px;">
+                <tr style="text-align: center;">
+                    <td style="width: 30%;" colspan="2">
+                        <div style="display: flex; justify-content: center;">
+                            <img style="width: 45px; height: 45px;" th:src="@{/images/img_basic_N19_1.png}">
+                            <div style="display: flex; flex-direction: column;">
+                                <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
+                                    <span>상품명</span>
+                                </div>
+                                <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
+                                    <span>상품옵션</span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="width: 40%;">
+                        <div>주문일자</div>
+                    </td>
+                    <td style="width: 20%;">
+                        <div>주문일자</div>
+                    </td>
+                    <td style="width: 10%;" colspan="2">
+                        <div style="display: flex; width: 100px; height: 60px; align-items: center;">
+                            <button class="btn btn-outline-dark" style="font-size: 13px;">수정</button>
+                            <button class="btn btn-dark" style="margin-left: 10px; font-size: 13px;">삭제</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</html>

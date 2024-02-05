@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/setting.css}">
+    <link rel="stylesheet" th:href="@{/css/plugin.css}">
+    <link rel="stylesheet" th:href="@{/css/template.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.tailwindcss.com"></script>   <!--테일윈즈-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">   <!--폰트어썸-->
+
+    <title>메인 페이지 | trend</title>
+
+</head>
+
+<body>
+<th:block th:replace="~{fragments/navbar :: navbarFragment}"></th:block>  <!--상단바-->
+
+<th:block layout:fragment="content"></th:block>  <!--내용-->
+<th:block layout:fragment="script"></th:block>   <!--스크립트-->
+
+<th:block th:replace="~{fragments/footer :: footerFragment}"></th:block> <!--하단바-->
+<!-- [E]basic-N4 -->
+<script th:src="@{/js/setting.js}"></script>
+<script th:src="@{/js/plugin.js}"></script>
+<script th:src="@{/js/template.js}"></script>
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

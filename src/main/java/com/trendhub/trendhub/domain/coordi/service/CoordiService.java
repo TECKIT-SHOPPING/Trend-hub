@@ -1,5 +1,6 @@
 package com.trendhub.trendhub.domain.coordi.service;
 
+import com.trendhub.trendhub.domain.coordi.dto.CoordiDto;
 import com.trendhub.trendhub.domain.coordi.entity.Coordi;
 import com.trendhub.trendhub.domain.coordi.repository.CoordiRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
@@ -44,6 +45,19 @@ public class CoordiService {
                 .build();
 
         coordiRepository.save(saveCoordi);
+    }
+
+    public List<CoordiDto> findTop5ViewCountDesc() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            String loginId = authentication.getName();
+            //세션을 통한 유저 조회
+            user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
+        }
+
+        List<CoordiDto> result = coordiRepository.findTop5ByOrderByViewCountDesc(user);
+        return result;
     }
 
 }
