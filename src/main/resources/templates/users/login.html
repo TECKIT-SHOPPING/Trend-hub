@@ -15,12 +15,12 @@
     <meta property="og:image" content="https://웹사이트/images/opengraph.png">
     <meta property="og:url" content="https://웹사이트">
     <title>로그인 | trend</title>
-    <link rel="stylesheet" href="../css/setting.css">
-    <link rel="stylesheet" href="../css/plugin.css">
-    <link rel="stylesheet" href="../css/template.css">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/css/setting.css">
+    <link rel="stylesheet" href="/css/plugin.css">
+    <link rel="stylesheet" href="/css/template.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
@@ -173,7 +173,6 @@
         <!-- [E]personal-nKLrr6WAz1 -->
         <!-- [S]personal-mALrqlJVbp -->
         <form class="personal-mALrqlJVbp" data-bid="wSLRR2ef0l" role="form" method="post" th:action="@{/members/login}"
-              id="">
             <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
             <div class="contents-inner">
                 <div class="agree-box">
@@ -327,5 +326,4 @@
 1. 세션 생성하고 있는 로그인 창 폼 부분 위의 http코드가 너무 많음
 2. http는 한번에 연결하는 것이 아닌 나눠서 호출한다.
 3. 이미 헤드에서 세션을 요청했는데 밑에서도 요청하는 경우
-<<<<<<< HEAD
 4. 자바 코드(UserController에서 login 참조)에서 Session을 따로 따오거나 html(body 태그 내 단순 form 참조) 내에 form을 만들면 해결.-->

@@ -2,14 +2,12 @@ package com.trendhub.trendhub.domain.user.controller;
 
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.user.dto.*;
-import com.trendhub.trendhub.domain.user.repository.UserRepository;
+
 import com.trendhub.trendhub.domain.user.dto.FindUserDto;
 import com.trendhub.trendhub.domain.user.dto.SignupFormDto;
 import com.trendhub.trendhub.domain.user.entity.User;
-import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import com.trendhub.trendhub.global.rq.Rq;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -19,19 +17,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.*;
-
 
 import java.security.Principal;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 
 
@@ -46,8 +39,6 @@ import java.util.NoSuchElementException;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final Rq rq;
 
     @GetMapping("/join")
@@ -135,16 +126,11 @@ public class UserController {
     @ResponseBody
     @PostMapping("/findLoginPw")
     public ResponseEntity<Object> postFindLoginPw(@RequestBody FindUserDto dto) throws Exception {
-//        log.info("loginId={}, email={}", dto.getLoginId(), dto.getEmail());
-//
-//        userService.findPw(dto.getLoginId(), dto.getEmail());
-        /*User findUser =userService.findUserByUsernameAndEmail(dto).orElseThrow(
-                () -> {
-                    throw new NoSuchElementException("Could not find that user.");
-                }
-        );*/
+        log.info("loginId={}, email={}", dto.getLoginId(), dto.getEmail());
+
+        userService.findPw(dto.getLoginId(), dto.getEmail());
+
         return ResponseEntity.ok().build();
-        /*findUser.getUsername()*/
     } // 로그인 찾기 Post 기능
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/info")
