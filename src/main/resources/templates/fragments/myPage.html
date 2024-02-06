@@ -6,12 +6,14 @@
             <div style="display: flex; align-items: center; width: 700px;" >
                 <div>
                     <img style="width: 180px; height: 180px;"
-                         src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
+                         th:src="${@rq.userInfo.profile}"/>
                 </div>
                 <div style="display:flex; flex-direction: column; justify-content: start; font-size:20px; margin-left: 20px; flex-grow: 1;">
                     <div style="display:flex;">
                     <span style="font-weight: bold; font-size: 50px;" th:text="${user.nickname}">jinyong</span>
-                    <button style="font-size: 12px; margin-left: 6px; color: gray; font-weight: lighter;">* 회원정보수정</button>
+                        <div>
+                            <button onclick="location.href='/members/modify'" style="font-size: 12px; margin-left: 6px; font-weight: lighter;" class="btn btn-primary">* 회원정보수정</button>
+                        </div>
                     </div>
                     <span style="font-weight: bold;" th:text="${user.level}">Lv 1</span>
                     <span style="display: flex; align-items: center;">
