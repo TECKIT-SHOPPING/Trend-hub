@@ -4,8 +4,11 @@ import com.trendhub.trendhub.domain.likes.entity.Likes;
 import com.trendhub.trendhub.domain.likes.service.LikesService;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
+import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.Product;
+import com.trendhub.trendhub.domain.product.entity.QnA;
 import com.trendhub.trendhub.domain.product.repository.ProductRepository;
+import com.trendhub.trendhub.domain.product.repository.QnaRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final LikesService likesService;
     private final UserRepository userRepository;
+    private final QnaRepository qnaRepository;
 
     public List<ProductDto> findTop10ViewCountDesc() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -64,7 +68,7 @@ public class ProductService {
         }
     }
 
-    public Product getPost(Long id) {
+    public Product getProduct(Long id) {
         Optional<Product> product = this.productRepository.findById(id);
         if (product.isPresent()) {
             return product.get();
@@ -84,5 +88,10 @@ public class ProductService {
         User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
         List<ProductDto> result = productRepository.findByRecentlyProductsIn(user, productIdList);
         return result;
+    }
+
+    public void createQna(QnaDto qnaDto, Product product, User user) {
+        QnA saveQnA = qnaDto.toEntity(product, user);
+        this.qnaRepository.save(saveQnA);
     }
 }
