@@ -11,21 +11,21 @@ public class ChangePasswordDto {
     @NotBlank(message = "회원님의 비밀번호를 적어주세요.")
     @Pattern(
             regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*\\W)(?=\\S+$).{8,16}",
-            message = "영문자(A-Z, a-z), 숫자, 특수문자로 구성된 8~16자입니다."
+            message = "기존 비밀번호는 영문자(A-Z, a-z), 숫자, 특수문자로 구성된 8~16자여야 합니다."
     )
     private String originPassword;
 
     @NotBlank(message = "회원님의 비밀번호를 적어주세요.")
     @Pattern(
             regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*\\W)(?=\\S+$).{8,16}",
-            message = "영문자(A-Z, a-z), 숫자, 특수문자로 구성된 8~16자입니다."
+            message = "새 비밀번호는 영문자(A-Z, a-z), 숫자, 특수문자로 구성된 8~16자여야 합니다."
     )
     private String newPassword;
 
     @NotBlank(message = "회원님의 비밀번호를 적어주세요.")
     @Pattern(
             regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*\\W)(?=\\S+$).{8,16}",
-            message = "영문자(A-Z, a-z), 숫자, 특수문자로 구성된 8~16자입니다."
+            message = "새 비밀번호 확인은 영문자(A-Z, a-z), 숫자, 특수문자로 구성된 8~16자여야 합니다."
     )
     private String checkNewPassword;
 }
