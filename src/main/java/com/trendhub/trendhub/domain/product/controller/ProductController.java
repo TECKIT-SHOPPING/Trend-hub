@@ -41,7 +41,6 @@ public class ProductController {
         if (principal.getName().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 먼저 진행해주세요.");
         }
-        /*Product product = this.productService.getProduct(productId);*/
         model.addAttribute("productId", productId);
         model.addAttribute("qnaDto", qnaDto);
         return "products/popup_inquire_write";
@@ -51,8 +50,6 @@ public class ProductController {
     public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
                                    @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.info("{}", bindingResult.toString());
-            System.out.println("product = " + productId);
             model.addAttribute("productId", productId);
             model.addAttribute("qnaDto", qnaDto);
             return "products/popup_inquire_write";

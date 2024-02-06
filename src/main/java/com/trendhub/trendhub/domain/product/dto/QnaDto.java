@@ -21,20 +21,28 @@ public class QnaDto {
     private String content;
 
     @Size(
-            min = 10, max = 50, message = "최소 10글자, 최대 50글자 입력해주세요."
+            min = 5, max = 15, message = "최소 5글자, 최대 20글자 입력해주세요."
 
     )
     private String title;
 
     private String inquireType;
+    private String name;
+    private String image;
+    private int price;
 
     public QnA toEntity(Product product, User user) {
         return QnA.builder()
+                .title(this.title)
+                .inquireType(this.inquireType)
                 .content(this.getContent())
                 .createDate(LocalDateTime.now())
                 .product(product)
                 .user(user)
                 .loginId(user.getLoginId())
+                .image(product.getImage())
+                .name(product.getName())
+                .price(product.getPrice())
                 .build();
     }
 }

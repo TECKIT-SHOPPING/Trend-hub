@@ -186,6 +186,15 @@
                 window.open(`/products/qna/${productId}`, 'inquire', 'width=500,height=600');
             }
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var url = window.location.href;
+            var productUrl = url.match(/\/products\/(\d+)/);
+            var productList = JSON.parse(localStorage.getItem('productList')) || [];
+            productList.push(productUrl[1]);
+            localStorage.setItem('productList', JSON.stringify(productList));
+        });
+
     </script>
 </div>
 </html>

@@ -39,4 +39,8 @@ public class QnA {
     private String loginId;
 
     private LocalDateTime createDate;
+
+    private String name;
+    private String image;
+    private int price;
 }
