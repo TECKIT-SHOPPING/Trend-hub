@@ -1,10 +1,21 @@
 package com.trendhub.trendhub.domain.coordi.controller;
 
+import com.trendhub.trendhub.domain.coordi.dto.CoordiDto;
 import com.trendhub.trendhub.domain.coordi.dto.CoordiLikeDto;
+import com.trendhub.trendhub.domain.coordi.entity.Coordi;
 import com.trendhub.trendhub.domain.coordi.service.CoordiService;
 import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
+import com.trendhub.trendhub.domain.user.entity.User;
+import com.trendhub.trendhub.domain.user.repository.UserRepository;
+import com.trendhub.trendhub.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CoordiController {
 
     private final CoordiService coordiService;
+    private final UserService userService;
 
     /**
      * 코디 작성 화면 조회
@@ -34,7 +46,18 @@ public class CoordiController {
     }
 
     @GetMapping("")
-    public String coordi(){
+    public String getCoordiPage(Model model,
+                                @PageableDefault(page = 0, size = 4, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<CoordiDto> paging = coordiService.getCoordiPage(pageable);
+        int nowPage = paging.getPageable().getPageNumber();
+//        int startPage = ;
+        int endPage = (int) (paging.getTotalElements()/paging.getSize());
+        model.addAttribute("paging", paging);
+        model.addAttribute("nowPage", nowPage);
+//        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+
         return "coordi";
     }
 

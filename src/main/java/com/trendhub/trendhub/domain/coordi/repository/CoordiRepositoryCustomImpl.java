@@ -8,8 +8,12 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.trendhub.trendhub.domain.coordi.dto.CoordiDto;
 import com.trendhub.trendhub.domain.review.entity.QReview;
+import com.trendhub.trendhub.domain.user.entity.QUser;
 import com.trendhub.trendhub.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -64,5 +68,30 @@ public class CoordiRepositoryCustomImpl implements CoordiRepositoryCustom {
 
         return result;
     }
+
+    @Override
+    public Page<CoordiDto>coordiPage(User user, Pageable pageable){
+        List<CoordiDto> result = jpaQueryFactory
+                .select(Projections.constructor(CoordiDto.class,
+                        coordi.coordiId,
+                        coordi.user.profile,
+                        coordi.user.nickname,
+                        coordi.image,
+                        coordi.totalLike,
+                        new CaseBuilder()
+                                .when(likes.likesId.isNotNull()).then(true)
+                                .otherwise(false).as("liked")
+                ))
+                .from(coordi)
+                .leftJoin(coordi.likes, likes)
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .on(likes.coordi.eq(coordi).and(likes.user.eq(user)))
+                .fetch();
+
+
+        return new PageImpl<>(result, pageable, result.size());
+    }
+
 
 }

@@ -16,79 +16,198 @@
                 <button onclick="window.location.href='/coordi/write'"
                         style="width:150px; height:auto; display:flex; align-items:center; justify-content:space-evenly; border: 2px solid black; border-radius: 10px;">
                     <img style="width: 20px; height: 20px;" th:src="@{/images/camera.png}"></img>
-                    <div style="font-size:24px;">후기등록</div>
+                    <div style="font-size:24px;">코디등록</div>
                 </button>
             </div>
         </div>
-        <div style="display:flex; justify-content: center; margin-bottom: 50px;">
+        <div style="display:flex; justify-content: center; margin-bottom: 20px;">
             <div style="display: flex; flex-wrap: wrap;  width: 1300px; height: auto;">
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_balck.png}">
+                <figure th:each="coordi, loop : ${paging}"
+                        style="width: 280px; height: 400px; margin: 0 22px 30px 22px;"
+                        class="cardset-figure">
+                    <a th:href="@{'/coordi/' + ${coordi.coordiId}}" class="cardset">
+                        <img style="width: 280px; height: 350px;" class="cardset-img"
+                             th:src="${coordi.image}">
                     </a>
-                </figure>
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_balck.png}">
-                    </a>
-                </figure>
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_balck.png}">
-                    </a>
-                </figure>
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_balck.png}">
-                    </a>
-                </figure>
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_balck.png}">
-                    </a>
-                </figure>
-                <figure style="width: 280px; height: 400px; margin: 0 22px 30px 22px; flex-shrink: 1;" class="cardset-figure">
-                    <a th:href="@{/}" class="cardset">
-                        <img style="width: 280px; height: 400px;" class="cardset-img"
-                             th:src="@{/images/logo_balck.png}">
-                    </a>
+                    <div class="cardset-body"
+                         style="display: flex; justify-content: space-between; align-items: center; margin-top: 2px;">
+                        <div class="left-section" style="display: flex; align-items: center;">
+                            <div class="profile-image"
+                                 style="border-radius: 50%; overflow: hidden; border: 1px solid #cecdcd; width: 34px; height: 34px;">
+                                <img th:src="@{${coordi.profile}}" alt="Profile Image"
+                                     style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div style="margin-left: 10px;">
+                                <span class="cardset-name" th:text="${coordi.nickname}"></span>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <div class="cardset-actions"
+                                 th:attr="data-heart=${coordi.coordiId}"
+                                 onclick="toggleLikeCoordi(this)">
+                                <img th:if="${coordi.liked}" src="../images/like.png"
+                                     width="34" height="34"/>
+                                <img th:unless="${coordi.liked}" src="../images/unlike.png"
+                                     width="34" height="34"/>
+                            </div>
+                            <span th:text="${coordi.totalLike}"></span>
+                        </div>
+                    </div>
                 </figure>
             </div>
         </div>
-
-        <nav class="pagiset pagiset-line" style="margin-bottom: 30px;">
-            <div class="pagiset-ctrl">
-                <a class="pagiset-link pagiset-first" href="javascript:void(0)">
-                    <span class="visually-hidden">처음</span>
-                </a>
-            </div>
-            <div class="pagiset-ctrl">
-                <a class="pagiset-link pagiset-prev" href="javascript:void(0)">
-                    <span class="visually-hidden">이전</span>
-                </a>
-            </div>
-            <div class="pagiset-list">
-                <a class="pagiset-link active-fill" href="javascript:void(0)">1</a>
-                <a class="pagiset-link" href="javascript:void(0)">2</a>
-                <a class="pagiset-link" href="javascript:void(0)">3</a>
-                <a class="pagiset-link" href="javascript:void(0)">4</a>
-            </div>
-            <div class="pagiset-ctrl">
-                <a class="pagiset-link pagiset-next" href="javascript:void(0)">
-                    <span class="visually-hidden">다음</span>
-                </a>
-            </div>
-            <div class="pagiset-ctrl">
-                <a class="pagiset-link pagiset-last" href="javascript:void(0)">
-                    <span class="visually-hidden">마지막</span>
-                </a>
-            </div>
+        <nav>
+            <ul class="pagination pagination-lg justify-content-center" style="margin-bottom: 50px;">
+                <li class="page-item disabled" aria-current="page">
+                    <a th:href="@{|?page=${0}|}">
+                        <span class="page-link" th:classappend="${!paging.hasPrevious} ? 'disabled' ">처음</span>
+                    </a>
+                </li>
+                <li class="page-item" aria-current="page">
+                    <a th:href="@{|?page=${(nowPage)-1}|}">
+                        <span class="page-link" th:classappend="${!paging.hasPrevious} ? 'disabled' "><</span>
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(0, endPage)}"
+                    th:classappend="${page == nowPage} ? 'active'"
+                    class="page-item">
+                    <a th:text="${page + 1 }" class="page-link" th:href="@{|?page=${page}|}"></a>
+                </li>
+                <li class="page-item" aria-current="page">
+                    <a th:href="@{|?page=${(paging.number)+1}|}">
+                        <span class="page-link" th:classappend="${nowPage == endPage} ? 'disabled' ">></span>
+                    </a>
+                </li>
+                <li class="page-item" aria-current="page">
+                    <a>
+                        <span class="page-link" th:classappend="${nowPage == endPage} ? 'disabled' ">마지막</span>
+                    </a>
+                </li>
+            </ul>
         </nav>
+
+        <!--        <nav class="pagiset pagiset-line" style="margin-bottom: 30px;" th:if="${!paging.isEmpty()}">-->
+        <!--            <div class="pagiset-ctrl">-->
+        <!--                <a class="pagiset-link pagiset-first" th:href="@{|?page=${(startPage)-1}|}">-->
+        <!--                    <button class="visually-hidden" th:disabled="${!paging.hasPrevious()}">처음</button>-->
+        <!--                </a>-->
+        <!--            </div>-->
+        <!--            <div class="pagiset-ctrl">-->
+        <!--                <a class="pagiset-link pagiset-prev" th:href="@{|?page=${(nowPage)-2}|}">-->
+        <!--                    <button class="visually-hidden" th:disabled="${!paging.hasPrevious()}">이전</button>-->
+        <!--                </a>-->
+        <!--            </div>-->
+        <!--            <div class="pagiset-list"-->
+        <!--                 th:each="page: ${#numbers.sequence(startPage, endPage)}">-->
+        <!--                <a  class="pagiset-link active-fill" th:href="@{|?page=${(nowPage)-1}|}">-->
+        <!--                    <button th:text="${page}"></button>-->
+        <!--                </a>-->
+        <!--            </div>-->
+        <!--            <div class="pagiset-ctrl">-->
+        <!--                <a class="pagiset-link pagiset-next"  th:href="@{|?page=${(nowPage)}|}" >-->
+        <!--                    <button class="visually-hidden" th:disabled="${!paging.hasNext()}">다음</button>-->
+        <!--                </a>-->
+        <!--            </div>-->
+        <!--            <div class="pagiset-ctrl">-->
+        <!--                <a class="pagiset-link pagiset-last" th:href="@{|?page=${endPage}|}">-->
+        <!--                    <button class="visually-hidden" th:disabled="${!paging.hasNext()}">마지막</button>-->
+        <!--                </a>-->
+        <!--            </div>-->
+        <!--        </nav>-->
+
     </div>
+
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        function toggleLike(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var productId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/products/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    productId: parseInt(productId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+
+        function toggleLikeCoordi(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var coordiId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/coordi/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    coordiId: parseInt(coordiId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
 </div>
 </html>

@@ -10,12 +10,17 @@ import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.global.service.S3Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,4 +96,22 @@ public class CoordiService {
             return false;
         }
     }
+
+    public Page<CoordiDto> getCoordiPage(Pageable pageable) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() == "anonymousUser") {
+            throw new IllegalStateException("로그인해주세요.");
+        }
+        String loginId = authentication.getName();
+        //세션을 통한 유저 조회
+        User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
+
+//         정렬 기준을 동적으로 변경할 수 있도록 Sort를 추가
+        List<Sort.Order> sort = new ArrayList<>();
+        sort.add(Sort.Order.desc("createDate"));
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sort));
+
+        return coordiRepository.coordiPage(user, pageable);
+    }
+
 }
