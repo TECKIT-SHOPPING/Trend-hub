@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 
 @Slf4j
 @RequestMapping("/products")
@@ -37,12 +38,13 @@ public class ProductController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/qna/{id}")
-    public String getInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal, QnaDto qnaDto) {;
+    public String getInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal, QnaDto qnaDto) {
         if (principal.getName().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 먼저 진행해주세요.");
         }
         model.addAttribute("productId", productId);
         model.addAttribute("qnaDto", qnaDto);
+        model.addAttribute("product", productService.getProductsByIds(List.of(productId)).get(0));  // 현재 getProductsByIds 함수는 여러 개 가져오는 함수, 단건 조회 할 수 있는 함수가 필요
         return "products/popup_inquire_write";
     }
 
@@ -54,17 +56,17 @@ public class ProductController {
             model.addAttribute("qnaDto", qnaDto);
             return "products/popup_inquire_write";
         }
-        try {
-            String logInid = principal.getName();
-            Product product = this.productService.getProduct(productId);
-            User user = this.userService.getUser(logInid);
-            this.productService.createQna(qnaDto, product, user);
-        } catch (Exception e) {
-            model.addAttribute("productId", productId);
-            model.addAttribute("qnaDto", qnaDto);
-            model.addAttribute("errorMessage", e.getMessage());
-            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
-        }
+//        try {
+        String logInid = principal.getName();
+        Product product = this.productService.getProduct(productId);
+        User user = this.userService.getUser(logInid);
+        this.productService.createQna(qnaDto, product, user);
+//        } catch (Exception e) {
+//            model.addAttribute("productId", productId);
+//            model.addAttribute("qnaDto", qnaDto);
+//            model.addAttribute("errorMessage", e.getMessage());
+//            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
+//        }
         return "products/completeQnA";
     }
 
