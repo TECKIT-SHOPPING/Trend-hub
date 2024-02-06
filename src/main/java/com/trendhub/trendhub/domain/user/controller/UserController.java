@@ -133,7 +133,11 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify")
-    public String userInfoModify () {
+    public String userInfoModify (Principal principal, Model model) {
+        String logInid = principal.getName();
+        User user = this.userService.getUser(logInid);
+        model.addAttribute("user", user);
+
         return "users/userInfoModify";
     }
 
@@ -144,7 +148,7 @@ public class UserController {
     ) {
         userService.changePassword(rq.getUserInfo(), changePasswordDto);
 
-        return "users/userInfoModify";
+        return "redirect:/members/modify";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -154,7 +158,7 @@ public class UserController {
     ) {
         userService.checkNickname(changeNicknameDto);
 
-        return "users/userInfoModify";
+        return "redirect:/members/modify";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -164,7 +168,7 @@ public class UserController {
     ) {
         userService.changeNickname(rq.getUserInfo(), changeNicknameDto);
 
-        return "users/userInfoModify";
+        return "redirect:/members/modify";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -174,7 +178,7 @@ public class UserController {
     ) {
         userService.changeProfile(rq.getUserInfo(), profile);
 
-        return "users/userInfoModify";
+        return "redirect:/members/modify";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -182,7 +186,7 @@ public class UserController {
     public String address (AddressDto addressDto) {
         userService.saveAddress(rq.getUserInfo(), addressDto);
 
-        return "users/userInfoModify";
+        return "redirect:/members/modify";
     }
     // 이메일 및 이름 가져와서 맞는지 확인하기
 
