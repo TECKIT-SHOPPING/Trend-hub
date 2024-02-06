@@ -1,5 +1,6 @@
 package com.trendhub.trendhub.domain.product.controller;
 
+import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
 import com.trendhub.trendhub.domain.product.dto.RecentlyProductReq;
@@ -7,9 +8,9 @@ import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class ApiProductController {
 
     private final ProductService productService;
-
+    @ResponseBody
     @PostMapping("/liked")
     public boolean toggleLikeProduct(@RequestBody ProductLikeDto productLikeDto) {
         boolean result = productService.toggleLikeProduct(productLikeDto);
