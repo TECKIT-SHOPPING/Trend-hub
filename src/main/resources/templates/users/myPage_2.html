@@ -1,79 +1,127 @@
+<!-- resources/templates/recentlyViewedProducts.html -->
 <html layout:decorate="layouts/layout">
 <div layout:fragment="content">
     <div style="display:flex; flex-direction: column; align-items:center; margin-top: 50px;">
         <th:block th:replace="~{fragments/myPage :: myPageFragment}"></th:block>
         <div style="margin-top: 60px; width: 800px;">
             <div style="display: flex; align-items:center; font-size: 15px;">
-                <img style="width: 20px; height: 20x; margin-right: 3px;" th:src="@{/images/recently.png}"> 최근 본 상품
+                <img style="width: 20px; height: 20px; margin-right: 3px;" th:src="@{/images/recently.png}"> 최근 본 상품
             </div>
             <div class="row row-cols-1 row-cols-md-5" style="margin-bottom: 50px; margin-top: 5px;">
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/logo_white.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
+                <div class="swiper contents-swiper" style="flex-grow: 1;">
+                    <div id="products-container" style="display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 15px;"></div>
                 </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/logo_white.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/logo_white.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/logo_white.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/logo_white.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/logo_white.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col" style="margin-bottom: 10px;">
-                    <div class="card">
-                        <img style="height: 200px;" th:src="@{/images/logo_white.png}">
-                        <div class="card-body">
-                            <p class="card-title" style="font-size: 20px; font-weight: bold;">상품명</p>
-                            <p class="card-text" style="font-size: 15px; font-weight: bold;">가격</p>
-                        </div>
-                    </div>
-                </div>
-
-
             </div>
         </div>
     </div>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var csrfToken = [[${_csrf.token}]];
+            var productList = localStorage.getItem('productList');
+            var productIds = productList ? JSON.parse(productList) : [];
+            console.log(productIds)
+            fetch('/api/products/recently', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    productIdList: productIds,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    var products = data;
+
+                    var productContainer = document.getElementById('products-container');
+                    products.forEach(function (product) {
+                        var productCard = document.createElement('div');
+                        productCard.className = 'swiper-slide';
+                        productCard.style = 'width: 30%; margin-bottom: 15px;';
+                        productCard.innerHTML = `
+                    <a class="cardset cardset-shopping" style="cursor: pointer; width: 100%;">
+                        <figure class="cardset-figure"  onclick="redirectToProduct('${product.productId}')">
+                            <img class="cardset-img" src="${product.image}" alt="스와이퍼 이미지">
+                        </figure>
+                        <div class="cardset-body" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div onclick="redirectToProduct('${product.productId}')" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                <span class="cardset-name">${product.name}</span>
+                                <h2 class="cardset-tit">${product.discount == 0 ? '-' : `<del>${formatPrice(product.price)}</del> - ${product.discount}%`}</h2>
+                                <p class="cardset-desc">${product.discount != 0 ? formatPrice(product.price - (product.price * product.discount / 100)) : formatPrice(product.price)}</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column">
+                                <div class="cardset-actions" data-heart="${product.productId}" onclick="toggleLike(this)">
+                                    <img src="${product.liked ? '../../images/like.png' : '../../images/unlike.png'}" width="34" height="34"/>
+                                </div>
+                                <span>${product.totalLike}</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+                        productContainer.appendChild(productCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            function formatPrice(price) {
+                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';
+            }
+
+        });
+        function toggleLike(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var productId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/products/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    productId: parseInt(productId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function redirectToProduct(productId) {
+            var productUrl = '/products/' + productId;
+            window.location.href = productUrl;
+        }
+    </script>
 </div>
 </html>

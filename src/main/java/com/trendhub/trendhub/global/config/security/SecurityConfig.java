@@ -43,6 +43,7 @@ public class SecurityConfig {
                                 auth
                                         .requestMatchers("/members/info").authenticated()
                                         .requestMatchers("/members/modify").authenticated()
+                                        .requestMatchers("/members/myPage/2").authenticated()
                                         .requestMatchers("/members/myPage/3").authenticated()
                                         .requestMatchers("/**").permitAll()
                 )

@@ -1,0 +1,25 @@
+<html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<div layout:fragment="content">
+    <form th:action="@{|/products/qna/${productId}|}" th:object="${qnaDto}" method="post">
+        <h3>문의 내용
+            <span style="margin-left: 0.4rem; font-size: var(--fs-p1); color: var(--danger);">*</span>
+        </h3>
+        <input name="inquireContent" type="text" id="content" th:field="${qnaDto.content}"
+               style="width: 350px; height: 30px; font-size: 13px; border:1px solid gray;"
+               placeholder="문의 내용을 입력해주세요."/>
+        <h6 style="color: rgba(59, 130, 246); margin-bottom: 10px;">20글자 이상, 200글자 미만 입력해주세요.</h6>
+        <input type="submit" value="문의등록">
+        <p th:if="${#fields.hasErrors('content')}" th:errors="${qnaDto.content}" class="fieldError"
+           style="font-size: 17px; color: red; font-weight: bold;">Incorrect
+            data</p>
+    </form>
+</div>
+
+
+<div layout:fragment="script">
+    <script th:inline="javascript">
+
+    </script>
+</div>
+</html>
