@@ -177,7 +177,7 @@
             }
 
             .personal-TPlRRchzc3 .product-list .cardset-figure {
-                height: 15rem;
+                height: 25rem;
             }
 
             .personal-TPlRRchzc3 .product-list {
@@ -193,151 +193,154 @@
             }
         </style>
     </th:block>
-    <div style="display: flex; justify-content: space-between; align-items:center;    ">
-        <div>
-            <th:block th:replace="~{fragments/category :: cateGoryFragment}"></th:block>
-        </div>
-        <div style="flex-grow: 1;">
-            <div class="personal-TPlRRchzc3" data-bid="Lgls03hvIE" style=" width: 100%;">
-                <div class="contents-inner">
-                    <div class="contents-container container">
-                        <div class="textset">
-                            <h2 class="textset-tit" th:text="${mainCategory.name + ' / ' + subCategory.name}"></h2>
-                        </div>
-                        <div class="contents-right">
-                            <div class="contents-sort"><p class="contents-sort-total"> 총 <span
-                                    th:text="${products.pageableCustom.totalElements}"></span>개의 제품이 있습니다. </p>
-                                <div class="contents-sort-sel">
-                                    <div class="tabset tabset-text">
-                                        <ul class="tabset-list">
-                                            <li class="tabset-item">
-                                                <a th:class="${sort == 'popular' or sort == null} ? 'tabset-link active' : 'tabset-link'"
-                                                   href="javascript:void(0)"
-                                                   th:onclick="|redirectToFilter(${mainCategory.mainCategoryId}, ${subCategory.subCategoryId}, 1, 'popular')|">
-                                                    <span>인기순</span>
-                                                </a>
-                                            </li>
-                                            <li class="tabset-item">
-                                                <a th:class="${sort == 'high-price'} ? 'tabset-link active' : 'tabset-link'"
-                                                   href="javascript:void(0)"
-                                                   th:onclick="|redirectToFilter(${mainCategory.mainCategoryId}, ${subCategory.subCategoryId}, 1, 'high-price')|">
-                                                    <span>높은가격순</span>
-                                                </a>
-                                            </li>
-                                            <li class="tabset-item">
-                                                <a th:class="${sort == 'low-price'} ? 'tabset-link active' : 'tabset-link'"
-                                                   href="javascript:void(0)"
-                                                   th:onclick="|redirectToFilter(${mainCategory.mainCategoryId}, ${subCategory.subCategoryId}, 1, 'low-price')|">
-                                                    <span>낮은가격순</span>
-                                                </a>
-                                            </li>
-                                            <li class="tabset-item">
-                                                <a th:class="${sort == 'discount'} ? 'tabset-link active' : 'tabset-link'"
-                                                   href="javascript:void(0)"
-                                                   th:onclick="|redirectToFilter(${mainCategory.mainCategoryId}, ${subCategory.subCategoryId}, 1, 'discount')|">
-                                                    <span>할인율순</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+    <div style="display: flex; justify-content: center; align-items:center;">
+        <div style="display: flex; justify-content: space-between; width: 1500px;">
+            <div style="margin-top: 150px;">
+                <th:block th:replace="~{fragments/category :: cateGoryFragment}"></th:block>
+            </div>
+            <div style="flex-grow: 1;">
+                <div class="personal-TPlRRchzc3" data-bid="Lgls03hvIE" style=" width: 100%;">
+                    <div class="contents-inner">
+                        <div class="contents-container container">
+                            <div class="textset">
+                                <h2 class="textset-tit" th:text="${mainCategory.name + ' / ' + subCategory.name}"></h2>
+                            </div>
+                            <div class="contents-right">
+                                <div class="contents-sort"><p class="contents-sort-total"> 총 <span
+                                        th:text="${products.pageableCustom.totalElements}"></span>개의 제품이 있습니다. </p>
+                                    <div class="contents-sort-sel">
+                                        <div class="tabset tabset-text">
+                                            <ul class="tabset-list">
+                                                <li class="tabset-item">
+                                                    <a th:class="${sort == 'popular' or sort == null} ? 'tabset-link active' : 'tabset-link'"
+                                                       href="javascript:void(0)"
+                                                       th:onclick="|redirectToFilter(${mainCategory.mainCategoryId}, ${subCategory.subCategoryId}, 1, 'popular')|">
+                                                        <span>인기순</span>
+                                                    </a>
+                                                </li>
+                                                <li class="tabset-item">
+                                                    <a th:class="${sort == 'high-price'} ? 'tabset-link active' : 'tabset-link'"
+                                                       href="javascript:void(0)"
+                                                       th:onclick="|redirectToFilter(${mainCategory.mainCategoryId}, ${subCategory.subCategoryId}, 1, 'high-price')|">
+                                                        <span>높은가격순</span>
+                                                    </a>
+                                                </li>
+                                                <li class="tabset-item">
+                                                    <a th:class="${sort == 'low-price'} ? 'tabset-link active' : 'tabset-link'"
+                                                       href="javascript:void(0)"
+                                                       th:onclick="|redirectToFilter(${mainCategory.mainCategoryId}, ${subCategory.subCategoryId}, 1, 'low-price')|">
+                                                        <span>낮은가격순</span>
+                                                    </a>
+                                                </li>
+                                                <li class="tabset-item">
+                                                    <a th:class="${sort == 'discount'} ? 'tabset-link active' : 'tabset-link'"
+                                                       href="javascript:void(0)"
+                                                       th:onclick="|redirectToFilter(${mainCategory.mainCategoryId}, ${subCategory.subCategoryId}, 1, 'discount')|">
+                                                        <span>할인율순</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-list" style="flex-grow: 1;">
+                                    <div th:each="product : *{products.content}" class="product-item"
+                                         style="width: 20%; margin-bottom: 15px;">
+                                        <a
+                                                class="cardset cardset-shopping" style="cursor: pointer; width: 100%;"
+                                        >
+                                            <figure class="cardset-figure"
+                                                    th:onclick="|redirectToProduct('${product.productId}')|">
+                                                <img class="cardset-img" th:src="${product.image}"
+                                                     th:href="@{'/products/' + ${product.productId}}"
+                                                     alt="스와이퍼 이미지">
+                                            </figure>
+                                            <div class="cardset-body"
+                                                 style="display: flex; justify-content: space-between; align-items: center;">
+                                                <!-- 수정된 부분 -->
+                                                <div th:onclick="|redirectToProduct('${product.productId}')|">
+                                                    <span class="cardset-name" th:text="${product.name}"></span>
+                                                    <!-- Check if discount is not zero -->
+                                                    <h2 class="cardset-tit" th:if="${product.discount == 0}">
+                                                        <span th:text="${'-'}"></span>
+                                                        <!-- Strikethrough original price -->
+                                                    </h2>
+                                                    <h2 class="cardset-tit" th:if="${product.discount != 0}">
+                                                        <del th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
+                                                        <!-- Strikethrough original price -->
+                                                        <span th:text="${'  - ' + product.discount + '%'}"></span>
+                                                        <!-- Display discount percentage -->
+                                                    </h2>
+                                                    <!-- Check if discount is not zero and calculate discounted price -->
+                                                    <p class="cardset-desc" th:if="${product.discount != 0}"
+                                                       th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                                    <!-- If discount is zero, display the original price in the <p> tag -->
+                                                    <p class="cardset-desc" th:if="${product.discount == 0}"
+                                                       th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+                                                </div>
+                                                <div style="display: flex; flex-direction: column">
+                                                    <div class="cardset-actions"
+                                                         th:attr="data-heart=${product.productId}"
+                                                         onclick="toggleLike(this)">
+                                                        <img th:if="${product.liked}" src="../../images/like.png"
+                                                             width="34" height="34"/>
+                                                        <img th:unless="${product.liked}" src="../../images/unlike.png"
+                                                             width="34" height="34"/>
+                                                    </div>
+                                                    <span th:text="${product.totalLike}"
+                                                          style="margin: 0 auto;"></span>
+                                                </div>
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="product-list" style="flex-grow: 1;">
-                                <div th:each="product : *{products.content}" class="product-item" style="width: 20%; margin-bottom: 15px;">
-                                    <a
-                                            class="cardset cardset-shopping" style="cursor: pointer; width: 100%;"
-                                    >
-                                        <figure class="cardset-figure"
-                                                th:onclick="|redirectToProduct('${product.productId}')|">
-                                            <img class="cardset-img" th:src="${product.image}"
-                                                 th:href="@{'/products/' + ${product.productId}}"
-                                                 alt="스와이퍼 이미지">
-                                        </figure>
-                                        <div class="cardset-body"
-                                             style="display: flex; justify-content: space-between; align-items: center;">
-                                            <!-- 수정된 부분 -->
-                                            <div th:onclick="|redirectToProduct('${product.productId}')|">
-                                                <span class="cardset-name" th:text="${product.name}"></span>
-                                                <!-- Check if discount is not zero -->
-                                                <h2 class="cardset-tit" th:if="${product.discount == 0}">
-                                                    <span th:text="${'-'}"></span>
-                                                    <!-- Strikethrough original price -->
-                                                </h2>
-                                                <h2 class="cardset-tit" th:if="${product.discount != 0}">
-                                                    <del th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
-                                                    <!-- Strikethrough original price -->
-                                                    <span th:text="${'  - ' + product.discount + '%'}"></span>
-                                                    <!-- Display discount percentage -->
-                                                </h2>
-                                                <!-- Check if discount is not zero and calculate discounted price -->
-                                                <p class="cardset-desc" th:if="${product.discount != 0}"
-                                                   th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
-                                                <!-- If discount is zero, display the original price in the <p> tag -->
-                                                <p class="cardset-desc" th:if="${product.discount == 0}"
-                                                   th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
-                                            </div>
-                                            <div style="display: flex; flex-direction: column">
-                                                <div class="cardset-actions"
-                                                     th:attr="data-heart=${product.productId}"
-                                                     onclick="toggleLike(this)">
-                                                    <img th:if="${product.liked}" src="../../images/like.png"
-                                                         width="34" height="34"/>
-                                                    <img th:unless="${product.liked}" src="../../images/unlike.png"
-                                                         width="34" height="34"/>
-                                                </div>
-                                                <span th:text="${product.totalLike}"
-                                                      style="margin: 0 auto;"></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <nav class="pagiset pagiset-line"
-                             th:with="
+                            <nav class="pagiset pagiset-line"
+                                 th:with="
                               pageNumber = ${products.pageableCustom.page},
                               pageSize = ${products.pageableCustom.size},
                               totalPages = ${products.pageableCustom.totalPages},
                               startPage = ${((currentPage - 1) / 5 * 5) + 1},
                               tempEndPage = ${startPage + 4},
                               endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})"
-                        >
-                            <div th:class="${products.pageableCustom.isFirst()} ? 'non-clicked' : 'pagiset-ctrl' ">
-                                <a class="pagiset-link pagiset-first" href="javascript:void(0)"
-                                   th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page= 1, sort=${sort})}">
-                                    <span class="visually-hidden">처음</span>
-                                </a>
-                            </div>
-                            <div th:class="${products.pageableCustom.isFirst()} ? 'non-clicked' : 'pagiset-ctrl' ">
-                                <a class="pagiset-link pagiset-prev" href="javascript:void(0)"
-                                   th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${currentPage} - 1, sort=${sort})}">
-                                    <span class="visually-hidden">이전</span>
-                                </a>
-                            </div>
-                            <div id="pagination" class="pagiset-list">
-                                <!-- Iterate over page numbers and create links, showing 5 pages at a time -->
-                                <th:block th:each="page: ${#numbers.sequence(startPage, endPage)}">
-                                    <a class="pagiset-link"
-                                       th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${page}, sort=${sort})}"
-                                       th:text="${page}"
-                                       th:classappend="${page == currentPage} ? 'current-page' : ''"></a>
-                                </th:block>
-                            </div>
+                            >
+                                <div th:class="${products.pageableCustom.isFirst()} ? 'non-clicked' : 'pagiset-ctrl' ">
+                                    <a class="pagiset-link pagiset-first" href="javascript:void(0)"
+                                       th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page= 1, sort=${sort})}">
+                                        <span class="visually-hidden">처음</span>
+                                    </a>
+                                </div>
+                                <div th:class="${products.pageableCustom.isFirst()} ? 'non-clicked' : 'pagiset-ctrl' ">
+                                    <a class="pagiset-link pagiset-prev" href="javascript:void(0)"
+                                       th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${currentPage} - 1, sort=${sort})}">
+                                        <span class="visually-hidden">이전</span>
+                                    </a>
+                                </div>
+                                <div id="pagination" class="pagiset-list">
+                                    <!-- Iterate over page numbers and create links, showing 5 pages at a time -->
+                                    <th:block th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                                        <a class="pagiset-link"
+                                           th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${page}, sort=${sort})}"
+                                           th:text="${page}"
+                                           th:classappend="${page == currentPage} ? 'current-page' : ''"></a>
+                                    </th:block>
+                                </div>
 
-                            <div th:class="${!products.pageableCustom.last} ? 'pagiset-ctrl' : 'non-clicked'">
-                                <a class="pagiset-link pagiset-next" href="javascript:void(0)"
-                                   th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${currentPage + 1}, sort=${sort})}">
-                                    <span class="visually-hidden">다음</span>
-                                </a>
-                            </div>
-                            <div th:class="${products.pageableCustom.last} ? 'non-clicked' : 'pagiset-ctrl' ">
-                                <a class="pagiset-link pagiset-last" href="javascript:void(0)"
-                                   th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${products.pageableCustom.totalPages}, sort=${sort})}"
-                                >
-                                    <span class="visually-hidden">마지막</span>
-                                </a>
-                            </div>
-                        </nav>
+                                <div th:class="${!products.pageableCustom.last} ? 'pagiset-ctrl' : 'non-clicked'">
+                                    <a class="pagiset-link pagiset-next" href="javascript:void(0)"
+                                       th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${currentPage + 1}, sort=${sort})}">
+                                        <span class="visually-hidden">다음</span>
+                                    </a>
+                                </div>
+                                <div th:class="${products.pageableCustom.last} ? 'non-clicked' : 'pagiset-ctrl' ">
+                                    <a class="pagiset-link pagiset-last" href="javascript:void(0)"
+                                       th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${products.pageableCustom.totalPages}, sort=${sort})}"
+                                    >
+                                        <span class="visually-hidden">마지막</span>
+                                    </a>
+                                </div>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
