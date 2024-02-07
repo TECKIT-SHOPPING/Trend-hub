@@ -4,6 +4,7 @@ import com.trendhub.trendhub.domain.coordi.dto.CoordiDto;
 import com.trendhub.trendhub.domain.coordi.dto.CoordiLikeDto;
 import com.trendhub.trendhub.domain.coordi.entity.Coordi;
 import com.trendhub.trendhub.domain.coordi.service.CoordiService;
+import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
@@ -47,15 +48,12 @@ public class CoordiController {
 
     @GetMapping("")
     public String getCoordiPage(Model model,
-                                @PageableDefault(page = 0, size = 4, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<CoordiDto> paging = coordiService.getCoordiPage(pageable);
-        int nowPage = paging.getPageable().getPageNumber();
-//        int startPage = ;
-        int endPage = (int) (paging.getTotalElements()/paging.getSize());
+                                Pageable pageable,
+                                @RequestParam(value="page", defaultValue = "1") int page) {
+        Page<CoordiDto> paging = coordiService.getCoordiPage(pageable, page);
+
+        model.addAttribute("currentPage", page);
         model.addAttribute("paging", paging);
-        model.addAttribute("nowPage", nowPage);
-//        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
 
 
         return "coordi";

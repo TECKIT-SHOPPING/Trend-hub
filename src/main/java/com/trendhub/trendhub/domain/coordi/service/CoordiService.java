@@ -97,19 +97,18 @@ public class CoordiService {
         }
     }
 
-    public Page<CoordiDto> getCoordiPage(Pageable pageable) {
+    public Page<CoordiDto> getCoordiPage(Pageable pageable, int page) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() == "anonymousUser") {
-            throw new IllegalStateException("로그인해주세요.");
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            String loginId = authentication.getName();
+            user = userRepository.findByLoginId(loginId).get();
         }
-        String loginId = authentication.getName();
-        //세션을 통한 유저 조회
-        User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
 
 //         정렬 기준을 동적으로 변경할 수 있도록 Sort를 추가
         List<Sort.Order> sort = new ArrayList<>();
         sort.add(Sort.Order.desc("createDate"));
-        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sort));
+        pageable = PageRequest.of(page - 1, 20, Sort.by(sort));
 
         return coordiRepository.coordiPage(user, pageable);
     }

@@ -71,26 +71,52 @@ public class CoordiRepositoryCustomImpl implements CoordiRepositoryCustom {
 
     @Override
     public Page<CoordiDto>coordiPage(User user, Pageable pageable){
-        List<CoordiDto> result = jpaQueryFactory
-                .select(Projections.constructor(CoordiDto.class,
-                        coordi.coordiId,
-                        coordi.user.profile,
-                        coordi.user.nickname,
-                        coordi.image,
-                        coordi.totalLike,
-                        new CaseBuilder()
-                                .when(likes.likesId.isNotNull()).then(true)
-                                .otherwise(false).as("liked")
-                ))
+        List<CoordiDto> content;
+
+        //유저가 비로그인일 때
+        if (user == null) {
+            content = jpaQueryFactory
+                    .select(Projections.constructor(CoordiDto.class,
+                            coordi.coordiId,
+                            coordi.user.profile,
+                            coordi.user.nickname,
+                            coordi.image,
+                            coordi.totalLike,
+                            Expressions.asBoolean(false).as("liked")
+                    ))
+                    .from(coordi)
+                    .limit(pageable.getPageSize())
+                    .offset(pageable.getOffset())
+                    .fetch();
+        } else {
+            content = jpaQueryFactory
+                    .select(Projections.constructor(CoordiDto.class,
+                            coordi.coordiId,
+                            coordi.user.profile,
+                            coordi.user.nickname,
+                            coordi.image,
+                            coordi.totalLike,
+                            new CaseBuilder()
+                                    .when(likes.likesId.isNotNull()).then(true)
+                                    .otherwise(false).as("liked")
+                    ))
+                    .from(coordi)
+                    .leftJoin(coordi.likes)
+                    .on(likes.coordi.eq(coordi).and(likes.user.eq(user)))
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetch();
+        }
+
+
+        int total = jpaQueryFactory
+                .selectFrom(coordi)
                 .from(coordi)
-                .leftJoin(coordi.likes, likes)
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-                .on(likes.coordi.eq(coordi).and(likes.user.eq(user)))
-                .fetch();
+                .fetch()
+                .size();
 
 
-        return new PageImpl<>(result, pageable, result.size());
+        return new PageImpl<>(content, pageable, total);
     }
 
 
