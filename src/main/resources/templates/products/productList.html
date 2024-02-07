@@ -352,9 +352,6 @@
             window.location.href = productUrl;
         }
 
-        function formatPrice(price) {
-            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';
-        }
 
         function toggleLike(element) {
             var csrfToken = [[${_csrf.token}]];
