@@ -8,7 +8,12 @@ import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.product.repository.ProductRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
+import com.trendhub.trendhub.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -83,6 +88,39 @@ public class ProductService {
         String loginId = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
         List<ProductDto> result = productRepository.findByRecentlyProductsIn(user, productIdList);
+        return result;
+    }
+
+    public Page<ProductDto> categoryProductList(Long mainCategory, Long subCategory, int page, String sort) {
+        Pageable pageable;
+
+        // 기본 정렬: 인기순
+        Sort defaultSort = Sort.by("popular").descending();
+
+        // 낮은 가격순
+        if ("low-price".equals(sort)) {
+            pageable = PageRequest.of(page - 1, 20, Sort.by("low-price").ascending());
+        }
+        // 높은 가격순
+        else if ("high-price".equals(sort)) {
+            pageable = PageRequest.of(page - 1, 20, Sort.by("high-price").descending());
+        }
+        // 할인율순
+        else if ("discount".equals(sort)) {
+            pageable = PageRequest.of(page - 1, 20, Sort.by("discount").descending());
+        }
+        // 기본 정렬: 인기순
+        else {
+            pageable = PageRequest.of(page - 1, 20, defaultSort);
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            user = userRepository.findByLoginId(authentication.getName()).get();
+        }
+        Page<ProductDto> result = productRepository.categoryProductList(mainCategory, subCategory, user, pageable);
+
         return result;
     }
 }
