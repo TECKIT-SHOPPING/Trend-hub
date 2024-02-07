@@ -187,6 +187,10 @@
             .pagiset-link.current-page {
                 color: red;
             }
+
+            .non-clicked {
+                pointer-events: none;
+            }
         </style>
     </th:block>
     <div style="display: flex; justify-content: space-between; align-items:center;    ">
@@ -298,13 +302,13 @@
                               tempEndPage = ${startPage + 4},
                               endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})"
                         >
-                            <div th:class="${products.pageableCustom.isFirst()} ? '' : 'pagiset-ctrl' ">
+                            <div th:class="${products.pageableCustom.isFirst()} ? 'non-clicked' : 'pagiset-ctrl' ">
                                 <a class="pagiset-link pagiset-first" href="javascript:void(0)"
                                    th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page= 1, sort=${sort})}">
                                     <span class="visually-hidden">처음</span>
                                 </a>
                             </div>
-                            <div th:class="${products.pageableCustom.isFirst()} ? '' : 'pagiset-ctrl' ">
+                            <div th:class="${products.pageableCustom.isFirst()} ? 'non-clicked' : 'pagiset-ctrl' ">
                                 <a class="pagiset-link pagiset-prev" href="javascript:void(0)"
                                    th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${currentPage} - 1, sort=${sort})}">
                                     <span class="visually-hidden">이전</span>
@@ -320,13 +324,13 @@
                                 </th:block>
                             </div>
 
-                            <div th:class="${endPage < totalPages} ? 'pagiset-ctrl' : ''">
+                            <div th:class="${!products.pageableCustom.last} ? 'pagiset-ctrl' : 'non-clicked'">
                                 <a class="pagiset-link pagiset-next" href="javascript:void(0)"
-                                   th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${endPage + 1}, sort=${sort})}">
+                                   th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${currentPage + 1}, sort=${sort})}">
                                     <span class="visually-hidden">다음</span>
                                 </a>
                             </div>
-                            <div th:class="${products.pageableCustom.last} ? '' : 'pagiset-ctrl' ">
+                            <div th:class="${products.pageableCustom.last} ? 'non-clicked' : 'pagiset-ctrl' ">
                                 <a class="pagiset-link pagiset-last" href="javascript:void(0)"
                                    th:href="@{'/products/'+${mainCategory.mainCategoryId}+'/'+${subCategory.subCategoryId}(page=${products.pageableCustom.totalPages}, sort=${sort})}"
                                 >
