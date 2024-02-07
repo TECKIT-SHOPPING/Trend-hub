@@ -18,8 +18,10 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -133,38 +135,71 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify")
-    public String userInfoModify () {
+    public String userInfoModify (
+            Principal principal,
+            Model model
+    ) {
+        String logInid = principal.getName();
+        User user = this.userService.getUser(logInid);
+        model.addAttribute("user", user);
+
         return "users/userInfoModify";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/change-password")
     public String changePassword (
-            @Valid ChangePasswordDto changePasswordDto
+            @Valid ChangePasswordDto changePasswordDto,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
     ) {
-        userService.changePassword(rq.getUserInfo(), changePasswordDto);
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                redirectAttributes.addFlashAttribute(error.getField() + "ErrorMessage", error.getDefaultMessage());
+            }
+            return "redirect:/members/modify";
+        }
 
-        return "users/userInfoModify";
+        try {
+            userService.changePassword(rq.getUserInfo(), changePasswordDto);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("passwordErrorMessage", e.getMessage());
+            return "redirect:/members/modify";
+        }
+
+        return "redirect:/members/modify";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/check-nickname")
     public String checkNickname (
-            ChangeNicknameDto changeNicknameDto
+            ChangeNicknameDto changeNicknameDto,
+            RedirectAttributes redirectAttributes
     ) {
-        userService.checkNickname(changeNicknameDto);
+        try {
+            userService.checkNickname(changeNicknameDto);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("nicknameErrorMessage", e.getMessage());
+            return "redirect:/members/modify";
+        }
 
-        return "users/userInfoModify";
+        return "redirect:/members/modify";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/change-nickname")
     public String changeNickname (
-            ChangeNicknameDto changeNicknameDto
+            ChangeNicknameDto changeNicknameDto,
+            RedirectAttributes redirectAttributes
     ) {
-        userService.changeNickname(rq.getUserInfo(), changeNicknameDto);
+        try {
+            userService.changeNickname(rq.getUserInfo(), changeNicknameDto);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("nicknameErrorMessage", e.getMessage());
+            return "redirect:/members/modify";
+        }
 
-        return "users/userInfoModify";
+        return "redirect:/members/modify";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -174,7 +209,7 @@ public class UserController {
     ) {
         userService.changeProfile(rq.getUserInfo(), profile);
 
-        return "users/userInfoModify";
+        return "redirect:/members/modify";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -182,7 +217,7 @@ public class UserController {
     public String address (AddressDto addressDto) {
         userService.saveAddress(rq.getUserInfo(), addressDto);
 
-        return "users/userInfoModify";
+        return "redirect:/members/modify";
     }
     // 이메일 및 이름 가져와서 맞는지 확인하기
 
