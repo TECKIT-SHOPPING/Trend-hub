@@ -6,12 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequiredArgsConstructor
 public class main {
 
-<<<<<<< HEAD
     private final MainService mainService;
 
     @GetMapping("/")
@@ -19,10 +19,6 @@ public class main {
 
         MainDto mainDto = mainService.getMainPage();
         model.addAttribute("mainDto", mainDto);
-=======
-    @GetMapping("/")
-    public String main(){
->>>>>>> 6aeb89e (feat/마이페이지 화면구현 충돌해결)
         return "main";
     }
 
