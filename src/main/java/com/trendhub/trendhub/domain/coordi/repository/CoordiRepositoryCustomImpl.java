@@ -101,7 +101,7 @@ public class CoordiRepositoryCustomImpl implements CoordiRepositoryCustom {
                                     .otherwise(false).as("liked")
                     ))
                     .from(coordi)
-                    .leftJoin(coordi.likes)
+                    .leftJoin(coordi.likes, likes)
                     .on(likes.coordi.eq(coordi).and(likes.user.eq(user)))
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
