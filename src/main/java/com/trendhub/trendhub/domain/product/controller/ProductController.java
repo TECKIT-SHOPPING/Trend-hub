@@ -32,7 +32,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.security.Principal;
 import java.util.List;
 
-
 @Slf4j
 @RequestMapping("/products")
 @RequiredArgsConstructor
