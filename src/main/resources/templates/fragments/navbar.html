@@ -11,9 +11,10 @@
 
                 </div>
                 <div class="inputset inputset-lg">
-                    <button class="inputset-icon icon-right icon-search btn" type="button" aria-label="아이콘"></button>
-                    <input type="text" class="inputset-input form-control" style="height:35px; border:1px solid gray;"
-                           placeholder="검색어를 입력해주세요." aria-label="내용">
+                    <button class="inputset-icon icon-right icon-search btn" type="button" aria-label="아이콘" onclick="search()"></button>
+                    <input id="searchInput"  type="text" class="inputset-input form-control" style="height:35px; border:1px solid gray;"
+                           th:value="${q != null} ? ${q} : ''"
+                           placeholder="검색어를 입력해주세요." aria-label="내용" onkeydown="handleEnterKey(event)">
                 </div>
                 <div class="header-right">
                     <div class="header-utils">
@@ -74,4 +75,21 @@
         </div>
         <div class="header-dim"></div>
     </div>
+
+    <script th:inline="javascript">
+        function search() {
+            var searchInput = document.getElementById('searchInput').value;
+            if (searchInput.trim() !== "") {
+                var searchUrl = '/products/search?q=' + encodeURIComponent(searchInput);
+                window.location.href = searchUrl;
+            }
+        }
+
+        function handleEnterKey(event) {
+            if (event.key === 'Enter') {
+                search();
+            }
+        }
+
+    </script>
 </nav>

@@ -1,13 +1,9 @@
 package com.trendhub.trendhub.domain.product.repository;
 
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.user.entity.User;
@@ -167,6 +163,65 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 .selectFrom(product)
                 .from(product)
                 .where(categoryEq(mainCategory, subCategory))
+                .fetch()
+                .size();
+
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<ProductDto> searchProductList(String keyword, User user, Pageable pageable) {
+        List<OrderSpecifier> ORDERS = productSort(pageable);
+        List<ProductDto> content;
+        if (user == null) {
+            System.out.println("유저가 null");
+            content = jpaQueryFactory
+                    .select(Projections.constructor(ProductDto.class,
+                            product.productId,
+                            product.image,
+                            product.name,
+                            product.price,
+                            product.discount,
+                            product.totalLike,
+                            Expressions.asBoolean(false).as("liked")
+                    ))
+                    .from(product)
+                    .where(product.name.like("%"+keyword+"%"))
+                    .offset(pageable.getOffset())
+                    .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
+                    .limit(pageable.getPageSize())
+                    .fetch();
+        } else {
+            System.out.println("유저가 null이 아님");
+            content = jpaQueryFactory
+                    .select(Projections.constructor(ProductDto.class,
+                            product.productId,
+                            product.image,
+                            product.name,
+                            product.price,
+                            product.discount,
+                            product.totalLike,
+                            new CaseBuilder()
+                                    .when(likes.likesId.isNotNull()).then(true)
+                                    .otherwise(false).as("liked")
+                    ))
+                    .from(product)
+                    .leftJoin(likes)
+                    .on(likes.product.eq(product).and(likes.user.eq(user)))
+                    .where(product.name.like("%"+keyword+"%"))
+                    .offset(pageable.getOffset())
+                    .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
+                    .limit(pageable.getPageSize())
+                    .fetch();
+        }
+
+
+
+        int total = jpaQueryFactory
+                .selectFrom(product)
+                .from(product)
+                .where(product.name.like("%"+keyword+"%"))
                 .fetch()
                 .size();
 
