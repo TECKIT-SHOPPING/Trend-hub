@@ -1,0 +1,216 @@
+<html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<div layout:fragment="content">
+    <div style="display: flex; justify-content: space-between; align-items:center;
+    ">
+        <div>
+            <th:block th:replace="~{fragments/category :: cateGoryFragment}"></th:block>
+        </div>
+        <div style="flex-grow: 1;">
+            <div class="personal-TPlRRchzc3" data-bid="Lgls03hvIE" style=" width: 1670px;">
+
+                <div class="contents-inner">
+
+                    <div class="contents-container container">
+
+                        <div class="textset">
+                            <h2 class="textset-tit">상의/반소매 티셔츠</h2>
+                        </div>
+                        <div class="contents-right">
+                            <div class="contents-sort">
+                                <p class="contents-sort-total">
+                                    총 <span th:text="${products.size()}"></span>개의 제품이 있습니다.
+                                </p>
+
+                                <div class="contents-sort-sel">
+                                    <div class="tabset tabset-text">
+                                        <ul class="tabset-list">
+                                            <li class="tabset-item">
+                                                <a class="tabset-link active" href="javascript:void(0)"
+                                                   onclick="fetchProducts('인기순')">
+                                                    <span>인기순</span>
+                                                </a>
+                                            </li>
+                                            <li class="tabset-item">
+                                                <a class="tabset-link" href="javascript:void(0)"
+                                                   onclick="fetchProducts('높은가격순')">
+                                                    <span>높은가격순</span>
+                                                </a>
+                                            </li>
+                                            <li class="tabset-item">
+                                                <a class="tabset-link" href="javascript:void(0)"
+                                                   onclick="fetchProducts('낮은가격순')">
+                                                    <span>낮은가격순</span>
+                                                </a>
+                                            </li>
+                                            <li class="tabset-item">
+                                                <a class="tabset-link" href="javascript:void(0)"
+                                                   onclick="fetchProducts('할인율순')">
+                                                    <span>할인율순</span>
+                                                </a>
+                                            </li>
+                                            <li class="tabset-item">
+                                                <a class="tabset-link" href="javascript:void(0)"
+                                                   onclick="fetchProducts('후기순')">
+                                                    <span>후기순</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-list" style="flex-grow: 1;">
+                                <div th:each="product : *{products}" class="product-item">
+                                    <a href="javascript:void(0);" th:href="@{'/products/' + ${product.productId}}"
+                                       class="cardset cardset-shopping" style="cursor: pointer; width:  300px;  height: 461px;/* 원하시는 너비로 변경 가능 */
+  height: 460px;;">
+                                        <figure class="cardset-figure">
+                                            <img class="cardset-img" th:src="${product.image}" alt="상품 이미지">
+                                        </figure>
+                                        <div class="cardset-body" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div th:onclick="|redirectToProduct('${product.productId}')|" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                <span class="cardset-name" th:text="${product.name}"></span>
+                                                <h2 class="cardset-tit" th:if="${product.discount == 0}">
+                                                    <span th:text="${'-'}"></span>
+                                                </h2>
+                                                <h2 class="cardset-tit" th:if="${product.discount != 0}">
+                                                    <del th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
+                                                    <span th:text="${'  - ' + product.discount + '%'}"></span>
+                                                </h2>
+                                                <p class="cardset-desc" th:if="${product.discount != 0}"
+                                                   th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                                <p class="cardset-desc" th:if="${product.discount == 0}"
+                                                   th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+                                            </div>
+                                            <div style="display: flex; flex-direction: column">
+                                                <div class="cardset-actions"
+                                                     th:attr="data-heart=${product.productId}"
+                                                     onclick="toggleLike(this)">
+                                                    <img th:if="${product.liked}" src="../../images/like.png"
+                                                         width="34" height="34"/>
+                                                    <img th:unless="${product.liked}" src="../../images/unlike.png"
+                                                         width="34" height="34"/>
+                                                </div>
+                                                <span th:text="${product.totalLike}"
+                                                      style="margin: 0 auto;"></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <nav class="pagiset pagiset-line">
+                            <div class="pagiset-ctrl">
+                                <a class="pagiset-link pagiset-first" href="javascript:void(0)"
+                                   onclick="fetchProducts('인기순', 1)">
+                                    <span class="visually-hidden">처음</span>
+                                </a>
+                            </div>
+                            <div class="pagiset-ctrl">
+                                <a class="pagiset-link pagiset-prev" href="javascript:void(0)"
+                                   onclick="fetchProducts('인기순', currentPage - 1)">
+                                    <span class="visually-hidden">이전</span>
+                                </a>
+                            </div>
+                            <div id="pagination" class="pagiset-list">
+                                <!-- 페이지 번호들이 동적으로 생성됩니다 -->
+                            </div>
+                            <div class="pagiset-ctrl">
+                                <a class="pagiset-link pagiset-next" href="javascript:void(0)"
+                                   onclick="fetchProducts('인기순', currentPage + 1)">
+                                    <span class="visually-hidden">다음</span>
+                                </a>
+                            </div>
+                            <div class="pagiset-ctrl">
+                                <a class="pagiset-link pagiset-last" href="javascript:void(0)"
+                                   onclick="fetchProducts('인기순', totalPage)">
+                                    <span class="visually-hidden">마지막</span>
+                                </a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        var mainCategory = '카테고리명';
+        var subCategory = '서브카테고리명';
+        var currentPage = 1;
+        var totalPage = 1;
+
+        // window.onload = function() {
+        //     fetchProducts('인기순', currentPage);
+        // };
+
+        function fetchProducts(sort, page) {
+            fetch('/api/products?mainCategory=' + mainCategory + '&subCategory=' + subCategory + '&sort=' + sort + '&page=' + page)
+                .then(response => response.json())
+                .then(data => {
+                    displayProducts(data.products);
+                    document.getElementById('total-products').innerText = data.totalCount;
+                    currentPage = data.currentPage;
+                    totalPage = Math.ceil(data.totalCount / 20);
+                    updatePagination(currentPage, totalPage);
+                });
+        }
+
+        function displayProducts(products) {
+            var productList = document.querySelector('.product-list');
+            productList.innerHTML = '';
+            products.forEach(product => {
+                var productItem = document.createElement('div');
+                productItem.className = 'product-item';
+                productItem.innerHTML = `
+        <a href="/products/${product.productId}" class="cardset cardset-shopping">
+            <figure class="cardset-figure">
+                <img class="cardset-img" src="${product.image}" alt="상품 이미지">
+            </figure>
+            <div class="cardset-body">
+                <span class="cardset-name">${product.name}</span>
+                <h2 class="cardset-tit">${product.price}</h2>
+                <p class="cardset-desc">${product.price + '원'}</p>
+            </div>
+            <div style="display: flex; flex-direction: column">
+                <div class="cardset-actions" onclick="toggleLike(this)" data-heart="${product.likes}">
+                    <img src="../images/unlike.png" width="34" height="34">
+                </div>
+                <span style="margin: 0 auto;">${product.likes}</span>
+            </div>
+        </a>`;
+                productList.appendChild(productItem);
+            });
+        }
+
+        function updatePagination(currentPage, totalPage) {
+            var pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            for (var i = 1; i <= totalPage; i++) {
+                var pageLink = document.createElement('a');
+                pageLink.className = 'pagiset-link';
+                if (i === currentPage) {
+                    pageLink.className += ' active-fill';
+                }
+                pageLink.href = 'javascript:void(0)';
+                pageLink.onclick = function () {
+                    fetchProducts('인기순', i);
+                };
+                pageLink.innerText = i;
+                pagination.appendChild(pageLink);
+            }
+        }
+
+        function toggleLike(element) {
+            var heartCount = parseInt(element.getAttribute("data-heart"));
+            heartCount++;
+            element.setAttribute("data-heart", heartCount);
+            element.nextElementSibling.textContent = heartCount;
+            element.children[0].src = "../images/like.png";
+        }
+
+    </script>
+</div>
+</html>
