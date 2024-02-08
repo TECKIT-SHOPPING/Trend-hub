@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
+import com.trendhub.trendhub.domain.product.entity.QBrand;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.global.config.querydsl.QuerydslUtil;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.trendhub.trendhub.domain.likes.entity.QLikes.*;
+import static com.trendhub.trendhub.domain.product.entity.QBrand.*;
 import static com.trendhub.trendhub.domain.product.entity.QProduct.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -187,7 +189,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                             Expressions.asBoolean(false).as("liked")
                     ))
                     .from(product)
-                    .where(product.name.like("%"+keyword+"%"))
+                    .leftJoin(product.brand, brand)
+                    .on(brand.eq(product.brand))
+                    .where(product.name.like("%"+keyword+"%").or(brand.name.like("%"+keyword+"%")))
                     .offset(pageable.getOffset())
                     .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                     .limit(pageable.getPageSize())
@@ -209,7 +213,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                     .from(product)
                     .leftJoin(likes)
                     .on(likes.product.eq(product).and(likes.user.eq(user)))
-                    .where(product.name.like("%"+keyword+"%"))
+                    .leftJoin(product.brand, brand)
+                    .on(brand.eq(product.brand))
+                    .where(product.name.like("%"+keyword+"%").or(brand.name.like("%"+keyword+"%")))
                     .offset(pageable.getOffset())
                     .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                     .limit(pageable.getPageSize())
