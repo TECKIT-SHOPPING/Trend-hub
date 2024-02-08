@@ -227,7 +227,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         int total = jpaQueryFactory
                 .selectFrom(product)
                 .from(product)
-                .where(product.name.like("%"+keyword+"%"))
+                .where(product.name.like("%"+keyword+"%").or(brand.name.like("%"+keyword+"%")))
                 .fetch()
                 .size();
 
