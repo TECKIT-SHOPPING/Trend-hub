@@ -45,7 +45,6 @@ public class ProductController {
     private final SubCategoryService subCategoryService;
 
 
-
     @GetMapping("/{id}")
     public String detail(Model model, @PathVariable("id") Long id) {
         Product product = this.productService.getProduct(id);
@@ -55,7 +54,8 @@ public class ProductController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/qna/{id}")
-    public String getInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal, QnaDto qnaDto) {;
+    public String getInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal, QnaDto qnaDto) {
+        ;
         if (principal.getName().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 먼저 진행해주세요.");
         }
@@ -120,4 +120,26 @@ public class ProductController {
         return "products/completeQnA";
     }
 
+    @GetMapping("/search")
+    public String searchProduct(
+            @RequestParam("q") String q,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "sort", required = false, defaultValue = "popular") String sort,
+            Model model
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.getPrincipal() != "anonymousUser") {
+            User user = userService.getUser(authentication.getName());
+            model.addAttribute("user", user);
+        }
+        Page<ProductDto> pageProducts = productService.searchProductList(q, page, sort);
+        PageCustom<ProductDto> products = (PageCustom<ProductDto>) new PageCustom<>(pageProducts.getContent(), pageProducts.getPageable(), pageProducts.getTotalElements());
+        model.addAttribute("q", q.replaceAll("\\s+", " ").trim());
+        model.addAttribute("sort", sort);
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", page);
+
+        return "products/productSearch";
+    }
 }
