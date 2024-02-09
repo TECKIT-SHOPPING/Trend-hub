@@ -168,7 +168,7 @@
                             <tbody>
                             <tr th:each="qnaList, index : ${qnaList}">
                                 <td>
-                                    <a th:href="@{|/products/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>
+                                    <a th:href="@{|/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>
                                 </td>
                                 <td th:text="${qnaList.createDate}"></td>
                             </tr>

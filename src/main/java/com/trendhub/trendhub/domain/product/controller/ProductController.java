@@ -1,7 +1,6 @@
 package com.trendhub.trendhub.domain.product.controller;
 
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
-import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.MainCategory;
 import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.product.entity.QnA;
@@ -13,21 +12,15 @@ import com.trendhub.trendhub.domain.product.service.SubCategoryService;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import com.trendhub.trendhub.global.service.PageCustom;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -52,13 +45,6 @@ public class ProductController {
         return "products/productDetail";
     }
 
-    @GetMapping(value = "/qna/detail/{id}")
-    public String qnaDetail(Model model, @PathVariable("id") Long id) {
-        QnA qnA = this.qnaService.getQnaDetail(id);
-        model.addAttribute("qnaDetail", qnA);
-        return "products/qnaDetail";
-    }
-
     /*@PreAuthorize("isAuthenticated()")
     @GetMapping("/qna/{id}")
     public String getInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal, QnaDto qnaDto) {
@@ -71,17 +57,7 @@ public class ProductController {
         return "products/popup_inquire_write";
     }*/
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/qna/{id}")
-    public String getInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal, QnaDto qnaDto) {
-        if (principal.getName().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 먼저 진행해주세요.");
-        }
-        model.addAttribute("productId", productId);
-        model.addAttribute("qnaDto", qnaDto);
-        model.addAttribute("product", productService.getProductsByIds(List.of(productId)).get(0));  // 현재 getProductsByIds 함수는 여러 개 가져오는 함수, 단건 조회 할 수 있는 함수가 필요
-        return "products/popup_inquire_write";
-    }
+
 
     /*@PostMapping("/qna/{id}")
     public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
@@ -136,36 +112,5 @@ public class ProductController {
         model.addAttribute("currentPage", page);
         return "products/productList";
 
-    }
-
-
-    @PostMapping("/qna/{id}")
-    public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
-                                   @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("productId", productId);
-            model.addAttribute("qnaDto", qnaDto);
-            return "products/popup_inquire_write";
-        }
-        try {
-            String logInid = principal.getName();
-            Product product = this.productService.getProduct(productId);
-            User user = this.userService.getUser(logInid);
-            this.qnaService.createQna(qnaDto, product, user);
-        } catch (Exception e) {
-            model.addAttribute("productId", productId);
-            model.addAttribute("qnaDto", qnaDto);
-            model.addAttribute("errorMessage", e.getMessage());
-            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
-        }
-        return "products/completeQnA";
-    }
-
-    @PostMapping("qna/create/{id}")
-    public String createQnaAnswer(Model model, @PathVariable("id") Long id,
-                                  @RequestParam(value = "content") String content)
-    {
-        QnA qnA = this.qnaService.getQnaDetail(id);
-        return String.format("redirect:/qna/detail/%s", id);
     }
 }
