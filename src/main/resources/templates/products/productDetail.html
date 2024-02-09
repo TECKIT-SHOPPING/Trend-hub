@@ -157,6 +157,45 @@
                             <button style="display: inline-block; font-size: 20px; background-color: #ddd;">나의 문의 조회
                             </button>
                         </div>
+
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>제목</th>
+                                <th>작성일시</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="qnaList, loop : ${paging}">
+                                <td>
+                                    <a th:href="@{|/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>
+                                </td>
+                                <td th:text="${qnaList.createDate}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- 페이징처리 시작 -->
+                        <div th:if="${!paging.isEmpty()}">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                                    <a class="page-link" th:href="@{|/products/${product.productId}?page=${paging.number-1}#section-inquiry|}">
+                                        <span>이전</span>
+                                    </a>
+                                </li>
+                                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                                    th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                                    th:classappend="${page == paging.number} ? 'active'"
+                                    class="page-item">
+                                    <a th:text="${page}" class="page-link" th:href="@{|/products/${product.productId}?page=${page}#section-inquiry|}"></a>
+                                </li>
+                                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                                    <a class="page-link" th:href="@{|/products/${product.productId}?page=${paging.number+1}#section-inquiry|}">
+                                        <span>다음</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- 페이징처리 끝 -->
                     </div>
                     <!-- Section: 후기 -->
                     <div id="section-reviews" class="section-content">
@@ -183,7 +222,7 @@
             if ( principalName === 'anonymousUser' || principalName === undefined ) {
                 alert('로그인이 필요합니다.');
             } else {
-                window.open(`/products/qna/${productId}`, 'inquire', 'width=500,height=600');
+                window.open(`/qna/${productId}`, 'inquire', 'width=500,height=600');
             }
         }
 
