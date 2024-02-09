@@ -19,9 +19,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @RequestMapping("/products")
@@ -36,12 +37,13 @@ public class ProductController {
     private final QnaService qnaService;
 
     @GetMapping("/{id}")
-    public String detail(Model model, @PathVariable("id") Long id) {
+    public String detail(Model model, @PathVariable("id") Long id,
+                         @RequestParam(value = "page", defaultValue = "0") int page) {
         Product product = this.productService.getProduct(id);
         System.out.println("product_id = " + product.getProductId());
-        List<QnA> qnAList = this.qnaService.getQnAList();
+        Page<QnA> qnAList = this.qnaService.getQnAList(page);
         model.addAttribute("product", product);
-        model.addAttribute("qnaList", qnAList);
+        model.addAttribute("paging", qnAList);
         return "products/productDetail";
     }
 

@@ -9,6 +9,9 @@ import com.trendhub.trendhub.domain.product.repository.QnaAnswerRepository;
 import com.trendhub.trendhub.domain.product.repository.QnaRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +31,9 @@ public class QnaService {
         this.qnaRepository.save(saveQnA);
     }
 
-    public List<QnA> getQnAList() {
-        return qnaRepository.findAll();
+    public Page<QnA> getQnAList(int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.qnaRepository.findAll(pageable);
     }
 
     public QnA getQnaDetail(Long productId) {
