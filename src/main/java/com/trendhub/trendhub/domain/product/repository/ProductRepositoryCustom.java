@@ -18,4 +18,6 @@ public interface ProductRepositoryCustom{
     List<ProductDto> findByRecentlyProductsIn(User user, List<Long> productIdList);
 
     Page<ProductDto> categoryProductList(Long mainCategory, Long subCategory, User user, Pageable pageable);
+
+    Page<ProductDto> searchProductList(String keyword, User user, Pageable pageable);
 }

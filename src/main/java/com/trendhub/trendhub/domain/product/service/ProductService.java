@@ -124,4 +124,48 @@ public class ProductService {
 
         return result;
     }
+
+    public void createQna(QnaDto qnaDto, Product product, User user) {
+        QnA saveQnA = qnaDto.toEntity(product, user);
+        this.qnaRepository.save(saveQnA);
+    }
+
+
+    public Page<ProductDto> searchProductList(String q, int page, String sort) {
+        String keyword = q.replaceAll("\\s+", " ")
+                .trim()
+                .replaceAll("\\s+", "%");
+
+
+        Pageable pageable;
+
+        // 기본 정렬: 인기순
+        Sort defaultSort = Sort.by("popular").descending();
+
+        // 낮은 가격순
+        if ("low-price".equals(sort)) {
+            pageable = PageRequest.of(page - 1, 20, Sort.by("low-price").ascending());
+        }
+        // 높은 가격순
+        else if ("high-price".equals(sort)) {
+            pageable = PageRequest.of(page - 1, 20, Sort.by("high-price").descending());
+        }
+        // 할인율순
+        else if ("discount".equals(sort)) {
+            pageable = PageRequest.of(page - 1, 20, Sort.by("discount").descending());
+        }
+        // 기본 정렬: 인기순
+        else {
+            pageable = PageRequest.of(page - 1, 20, defaultSort);
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            user = userRepository.findByLoginId(authentication.getName()).get();
+        }
+        Page<ProductDto> result = productRepository.searchProductList(keyword, user, pageable);
+
+        return result;
+    }
 }

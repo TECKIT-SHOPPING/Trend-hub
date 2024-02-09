@@ -115,4 +115,49 @@ public class ProductController {
         return "products/productList";
 
     }
+
+    @PostMapping("/qna/{id}")
+    public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
+                                   @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("productId", productId);
+            model.addAttribute("qnaDto", qnaDto);
+            return "products/popup_inquire_write";
+        }
+        try {
+            String logInid = principal.getName();
+            Product product = this.productService.getProduct(productId);
+            User user = this.userService.getUser(logInid);
+            this.productService.createQna(qnaDto, product, user);
+        } catch (Exception e) {
+            model.addAttribute("productId", productId);
+            model.addAttribute("qnaDto", qnaDto);
+            model.addAttribute("errorMessage", e.getMessage());
+            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
+        }
+        return "products/completeQnA";
+    }
+
+    @GetMapping("/search")
+    public String searchProduct(
+            @RequestParam("q") String q,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "sort", required = false, defaultValue = "popular") String sort,
+            Model model
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.getPrincipal() != "anonymousUser") {
+            User user = userService.getUser(authentication.getName());
+            model.addAttribute("user", user);
+        }
+        Page<ProductDto> pageProducts = productService.searchProductList(q, page, sort);
+        PageCustom<ProductDto> products = (PageCustom<ProductDto>) new PageCustom<>(pageProducts.getContent(), pageProducts.getPageable(), pageProducts.getTotalElements());
+        model.addAttribute("q", q.replaceAll("\\s+", " ").trim());
+        model.addAttribute("sort", sort);
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", page);
+
+        return "products/productSearch";
+    }
 }
