@@ -157,6 +157,23 @@
                             <button style="display: inline-block; font-size: 20px; background-color: #ddd;">나의 문의 조회
                             </button>
                         </div>
+
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>제목</th>
+                                <th>작성일시</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="qnaList, index : ${qnaList}">
+                                <td>
+                                    <a th:href="@{|/products/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>
+                                </td>
+                                <td th:text="${qnaList.createDate}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <!-- Section: 후기 -->
                     <div id="section-reviews" class="section-content">

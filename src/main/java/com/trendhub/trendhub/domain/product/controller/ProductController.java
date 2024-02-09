@@ -4,9 +4,11 @@ import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.MainCategory;
 import com.trendhub.trendhub.domain.product.entity.Product;
+import com.trendhub.trendhub.domain.product.entity.QnA;
 import com.trendhub.trendhub.domain.product.entity.SubCategory;
 import com.trendhub.trendhub.domain.product.service.MainCategoryService;
 import com.trendhub.trendhub.domain.product.service.ProductService;
+import com.trendhub.trendhub.domain.product.service.QnaService;
 import com.trendhub.trendhub.domain.product.service.SubCategoryService;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
@@ -38,13 +40,23 @@ public class ProductController {
     private final UserService userService;
     private final MainCategoryService mainCategoryService;
     private final SubCategoryService subCategoryService;
-
+    private final QnaService qnaService;
 
     @GetMapping("/{id}")
     public String detail(Model model, @PathVariable("id") Long id) {
         Product product = this.productService.getProduct(id);
+        System.out.println("product_id = " + product.getProductId());
+        List<QnA> qnAList = this.qnaService.getQnAList();
         model.addAttribute("product", product);
+        model.addAttribute("qnaList", qnAList);
         return "products/productDetail";
+    }
+
+    @GetMapping(value = "/qna/detail/{id}")
+    public String qnaDetail(Model model, @PathVariable("id") Long id) {
+        QnA qnA = this.qnaService.getQnaDetail(id);
+        model.addAttribute("qnaDetail", qnA);
+        return "products/qnaDetail";
     }
 
     /*@PreAuthorize("isAuthenticated()")
@@ -139,7 +151,7 @@ public class ProductController {
             String logInid = principal.getName();
             Product product = this.productService.getProduct(productId);
             User user = this.userService.getUser(logInid);
-            this.productService.createQna(qnaDto, product, user);
+            this.qnaService.createQna(qnaDto, product, user);
         } catch (Exception e) {
             model.addAttribute("productId", productId);
             model.addAttribute("qnaDto", qnaDto);
@@ -149,4 +161,11 @@ public class ProductController {
         return "products/completeQnA";
     }
 
+    @PostMapping("qna/create/{id}")
+    public String createQnaAnswer(Model model, @PathVariable("id") Long id,
+                                  @RequestParam(value = "content") String content)
+    {
+        QnA qnA = this.qnaService.getQnaDetail(id);
+        return String.format("redirect:/qna/detail/%s", id);
+    }
 }
