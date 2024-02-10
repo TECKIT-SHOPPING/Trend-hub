@@ -1,6 +1,7 @@
 package com.trendhub.trendhub.domain.product.controller;
 
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
+import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.MainCategory;
 import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.product.entity.QnA;
@@ -12,6 +13,7 @@ import com.trendhub.trendhub.domain.product.service.SubCategoryService;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import com.trendhub.trendhub.global.service.PageCustom;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,6 +121,7 @@ public class ProductController {
         return "products/productList";
 
     }
+// 수정 2/10
 
     @PostMapping("/qna/{id}")
     public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,

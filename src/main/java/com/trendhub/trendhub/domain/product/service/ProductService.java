@@ -9,6 +9,7 @@ import com.trendhub.trendhub.domain.product.repository.ProductRepository;
 import com.trendhub.trendhub.domain.product.repository.QnaRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +31,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final LikesService likesService;
     private final UserRepository userRepository;
+
 
 
     public List<ProductDto> findTop10ViewCountDesc() {
@@ -125,7 +127,7 @@ public class ProductService {
         return result;
     }
 
-    public void createQna(QnaDto qnaDto, Product product, User user) {
+    public void createQna(@Valid QnaDto qnaDto, Product product, User user) {
         QnA saveQnA = qnaDto.toEntity(product, user);
         this.qnaRepository.save(saveQnA);
     }
