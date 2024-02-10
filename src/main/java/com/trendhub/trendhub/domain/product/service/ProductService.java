@@ -6,6 +6,7 @@ import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
 import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.Product;
+import com.trendhub.trendhub.domain.product.entity.QnA;
 import com.trendhub.trendhub.domain.product.entity.Season;
 import com.trendhub.trendhub.domain.product.entity.QnA;
 import com.trendhub.trendhub.domain.product.repository.ProductRepository;
@@ -132,10 +133,10 @@ public class ProductService {
         return result;
     }
 
-//    public void createQna(@Valid QnaDto qnaDto, Product product, User user) {
-//        QnA saveQnA = qnaDto.toEntity(product, user);
-//        this.qnaRepository.save(saveQnA);
-//    }
+    public void createQna(@Valid QnaDto qnaDto, Product product, User user) {
+        QnA saveQnA = qnaDto.toEntity(product, user);
+        this.qnaRepository.save(saveQnA);
+    }
 
 
     public Page<ProductDto> searchProductList(String q, int page, String sort) {
