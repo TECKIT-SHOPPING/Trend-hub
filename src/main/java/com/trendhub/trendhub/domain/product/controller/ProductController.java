@@ -1,6 +1,7 @@
 package com.trendhub.trendhub.domain.product.controller;
 
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
+import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.MainCategory;
 import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.product.entity.QnA;
@@ -12,6 +13,7 @@ import com.trendhub.trendhub.domain.product.service.SubCategoryService;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import com.trendhub.trendhub.global.service.PageCustom;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,10 +21,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Slf4j
 @RequestMapping("/products")
@@ -115,6 +117,51 @@ public class ProductController {
         return "products/productList";
 
     }
-}
-
 // 수정 2/10
+
+
+    @PostMapping("/qna/{id}")/*@PostMapping("/qna/{id}")*/
+    public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
+                                   @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("productId", productId);
+            model.addAttribute("qnaDto", qnaDto);
+            return "products/popup_inquire_write";
+        }
+        try {
+            String logInid = principal.getName();
+            Product product = this.productService.getProduct(productId);
+            User user = this.userService.getUser(logInid);
+            this.productService.createQna(qnaDto, product, user);
+        } catch (Exception e) {
+            model.addAttribute("productId", productId);
+            model.addAttribute("qnaDto", qnaDto);
+            model.addAttribute("errorMessage", e.getMessage());
+            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
+        }
+        return "products/completeQnA";
+    }
+
+    @GetMapping("/search")
+    public String searchProduct(
+            @RequestParam("q") String q,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "sort", required = false, defaultValue = "popular") String sort,
+            Model model
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.getPrincipal() != "anonymousUser") {
+            User user = userService.getUser(authentication.getName());
+            model.addAttribute("user", user);
+        }
+        Page<ProductDto> pageProducts = productService.searchProductList(q, page, sort);
+        PageCustom<ProductDto> products = (PageCustom<ProductDto>) new PageCustom<>(pageProducts.getContent(), pageProducts.getPageable(), pageProducts.getTotalElements());
+        model.addAttribute("q", q.replaceAll("\\s+", " ").trim());
+        model.addAttribute("sort", sort);
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", page);
+
+        return "products/productSearch";
+    }
+}

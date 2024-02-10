@@ -4,11 +4,14 @@ import com.trendhub.trendhub.domain.likes.entity.Likes;
 import com.trendhub.trendhub.domain.likes.service.LikesService;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
+import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.Product;
+import com.trendhub.trendhub.domain.product.entity.QnA;
 import com.trendhub.trendhub.domain.product.repository.ProductRepository;
 import com.trendhub.trendhub.domain.product.repository.QnaRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +33,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final LikesService likesService;
     private final UserRepository userRepository;
+    private final QnaRepository qnaRepository;
 
 
     public List<ProductDto> findTop10ViewCountDesc() {
@@ -121,6 +125,50 @@ public class ProductService {
             user = userRepository.findByLoginId(authentication.getName()).get();
         }
         Page<ProductDto> result = productRepository.categoryProductList(mainCategory, subCategory, user, pageable);
+
+        return result;
+    }
+
+    public void createQna(@Valid QnaDto qnaDto, Product product, User user) {
+        QnA saveQnA = qnaDto.toEntity(product, user);
+        this.qnaRepository.save(saveQnA);
+    }
+
+
+    public Page<ProductDto> searchProductList(String q, int page, String sort) {
+        String keyword = q.replaceAll("\\s+", " ")
+                .trim()
+                .replaceAll("\\s+", "%");
+
+
+        Pageable pageable;
+
+        // 기본 정렬: 인기순
+        Sort defaultSort = Sort.by("popular").descending();
+
+        // 낮은 가격순
+        if ("low-price".equals(sort)) {
+            pageable = PageRequest.of(page - 1, 20, Sort.by("low-price").ascending());
+        }
+        // 높은 가격순
+        else if ("high-price".equals(sort)) {
+            pageable = PageRequest.of(page - 1, 20, Sort.by("high-price").descending());
+        }
+        // 할인율순
+        else if ("discount".equals(sort)) {
+            pageable = PageRequest.of(page - 1, 20, Sort.by("discount").descending());
+        }
+        // 기본 정렬: 인기순
+        else {
+            pageable = PageRequest.of(page - 1, 20, defaultSort);
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            user = userRepository.findByLoginId(authentication.getName()).get();
+        }
+        Page<ProductDto> result = productRepository.searchProductList(keyword, user, pageable);
 
         return result;
     }
