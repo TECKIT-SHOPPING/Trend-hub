@@ -130,10 +130,10 @@ public class ProductService {
         return result;
     }
 
-    public void createQna(@Valid QnaDto qnaDto, Product product, User user) {
-        QnA saveQnA = qnaDto.toEntity(product, user);
-        this.qnaRepository.save(saveQnA);
-    }
+//    public void createQna(@Valid QnaDto qnaDto, Product product, User user) {
+//        QnA saveQnA = qnaDto.toEntity(product, user);
+//        this.qnaRepository.save(saveQnA);
+//    }
 
 
     public Page<ProductDto> searchProductList(String q, int page, String sort) {

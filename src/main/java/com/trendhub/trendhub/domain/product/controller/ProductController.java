@@ -126,27 +126,27 @@ public class ProductController {
     }
 // 수정 2/10
 
-    @PostMapping("/qna/{id}")
-    public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
-                                   @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("productId", productId);
-            model.addAttribute("qnaDto", qnaDto);
-            return "products/popup_inquire_write";
-        }
-        try {
-            String logInid = principal.getName();
-            Product product = this.productService.getProduct(productId);
-            User user = this.userService.getUser(logInid);
-            this.productService.createQna(qnaDto, product, user);
-        } catch (Exception e) {
-            model.addAttribute("productId", productId);
-            model.addAttribute("qnaDto", qnaDto);
-            model.addAttribute("errorMessage", e.getMessage());
-            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
-        }
-        return "products/completeQnA";
-    }
+//    @PostMapping("/qna/{id}")
+//    public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
+//                                   @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("productId", productId);
+//            model.addAttribute("qnaDto", qnaDto);
+//            return "products/popup_inquire_write";
+//        }
+//        try {
+//            String logInid = principal.getName();
+//            Product product = this.productService.getProduct(productId);
+//            User user = this.userService.getUser(logInid);
+//            this.productService.createQna(qnaDto, product, user);
+//        } catch (Exception e) {
+//            model.addAttribute("productId", productId);
+//            model.addAttribute("qnaDto", qnaDto);
+//            model.addAttribute("errorMessage", e.getMessage());
+//            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
+//        }
+//        return "products/completeQnA";
+//    }
 
     @GetMapping("/search")
     public String searchProduct(
