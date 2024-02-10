@@ -25,6 +25,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @RequestMapping("/products")
@@ -119,8 +123,7 @@ public class ProductController {
     }
 // 수정 2/10
 
-
-    @PostMapping("/qna/{id}")/*@PostMapping("/qna/{id}")*/
+    @PostMapping("/qna/{id}")
     public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
                                    @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
