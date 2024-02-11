@@ -155,19 +155,27 @@
                             <button class="btn btn-active mr-6 px-8 py-2 text-2xl" th:onclick="openInquirePopup([[${product.productId}]])">상품문의 작성하기</button>
                         </div>
 
+                        <!-- 테이블 제목 표시 -->
                         <table class="w-full border-collapse border border-gray-300 mt-8">
                             <thead>
                             <tr class="bg-gray-100">
                                 <th class="py-3 px-6 border-b text-xl">제목</th>
                                 <th class="py-3 px-6 border-b text-xl">작성일시</th>
+                                <th class="py-3 px-6 border-b text-xl">답변상태</th>
                             </tr>
                             </thead>
                             <tbody>
+                            <!-- 상품문의 목록 반복 -->
                             <tr th:each="qnaList, loop : ${paging}" class="border-b">
                                 <td class="py-3 px-6 text-xl">
                                     <a th:href="@{|/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>
                                 </td>
                                 <td class="py-3 px-6 text-xl" th:text="${qnaList.createDate}"></td>
+                                <!-- 답변상태 표시 -->
+                                <td class="py-3 px-6 text-xl">
+                                    <span th:if="${qnaList.answered}" style="color: orange;">답변완료</span>
+                                    <span th:unless="${qnaList.answered}">미답변</span>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

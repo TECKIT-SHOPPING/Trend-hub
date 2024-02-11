@@ -47,4 +47,5 @@ public class QnA {
     private String name;
     private String image;
     private int price;
+    private boolean answered;
 }

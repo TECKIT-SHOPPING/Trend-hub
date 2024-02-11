@@ -20,11 +20,12 @@ public class QnaAnswerDto {
     )
     private String content;
 
-    public QnaAnswer toEntity(QnA qnA, User user) {
+    public QnaAnswer toEntity(QnA qnA, User user, boolean roleFlag) {
         return QnaAnswer.builder()
                 .content(this.getContent())
                 .qnA(qnA)
                 .createDate(LocalDateTime.now())
+                .answered(roleFlag)
                 /*.role(ROLE.ADMIN)*/ // 추후 실제 계정에 있는 관리자 권한 검사
                 .name(user.getUsername())
                 .loginId(user.getLoginId())
