@@ -1,13 +1,108 @@
-<h1 th:text="${qnaDetail.title}"></h1>
-<div th:text="${qnaDetail.content}"></div>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<h5 th:text="|${#lists.size(qnaDetail.qnaAnswerList)}개의 답변이 있습니다.|"></h5>
-<div>
-    <ul>
-        <li th:each="answer : ${qnaDetail.qnaAnswerList}" th:text="${answer.content}"></li>
-    </ul>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:if="${qnaDetail.title}" th:text="${qnaDetail.title + ' - 문의 상세보기'}">문의 상세보기</title>
+    <!-- 여기에 필요한 스타일이나 스크립트를 추가하세요 -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        h5 {
+            color: #555;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        div {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* 추가된 부분: 테두리로 두 영역을 나눔 */
+        .qna-section {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="qna-section">
+        <h1 th:text="${qnaDetail.title}"></h1>
+        <div th:text="${qnaDetail.content}"></div>
+    </div>
+
+    <h5 th:text="|${#lists.size(qnaDetail.qnaAnswerList)}개의 답변이 있습니다.|"></h5>
+    <div>
+        <ul>
+            <li th:each="answer : ${qnaDetail.qnaAnswerList}" th:text="${answer.content}"></li>
+        </ul>
+    </div>
+    <form th:action="@{|/qna/create/${qnaDetail.id}|}" method="post">
+        <textarea name="content" id="content" rows="15" placeholder="답변을 입력하세요"></textarea>
+        <input type="submit" value="답변 등록">
+    </form>
 </div>
-<form th:action="@{|/qna/create/${qnaDetail.id}|}" method="post">
-    <textarea name="content" id="content" rows="15"></textarea>
-    <input type="submit" value="답변등록">
-</form>
+</body>
+
+</html>
