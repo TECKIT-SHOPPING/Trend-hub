@@ -161,7 +161,8 @@
                             <tr class="bg-gray-100">
                                 <th class="py-3 px-6 border-b text-xl">제목</th>
                                 <th class="py-3 px-6 border-b text-xl">작성일시</th>
-                                <th class="py-3 px-6 border-b text-xl">답변상태</th>
+                                <th class="py-3 px-6 border-b text-xl">사용자ID</th>
+                                <th class="py-3 px-6 border-b text-xl text-right">답변상태</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -171,8 +172,9 @@
                                     <a th:href="@{|/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>
                                 </td>
                                 <td class="py-3 px-6 text-xl" th:text="${qnaList.createDate}"></td>
+                                <td class="py-3 px-6 text-xl" th:text="${qnaList.loginId}"></td>
                                 <!-- 답변상태 표시 -->
-                                <td class="py-3 px-6 text-xl">
+                                <td class="py-3 px-6 text-xl text-right"> <!-- 여기에 text-right 추가 -->
                                     <span th:if="${qnaList.answered}" style="color: orange;">답변완료</span>
                                     <span th:unless="${qnaList.answered}">미답변</span>
                                 </td>
@@ -211,8 +213,9 @@
                     <!-- Section: 배송/교환/반품안내 -->
                     <div id="section-shipping" class="section-content">
                         <h2 class="text-4xl font-bold mb-8">배송/교환/반품안내</h2>
-                        <!--<h2 style="font-size: 20px;"> 배송/교환/반품안내 </h2> 나중에 참고하고 싶으면 이거 참고-->
-                        <!-- 여기에 배송/교환/반품안내 내용 추가 -->
+                        <div class="imageset" style="max-width: 100%; overflow: hidden;">
+                            <img class="imageset-img" src="/images/EBB0B0EC86A1.jpg" alt="배송/교환/반품안내 이미지" style="width: 100%; height: auto;">
+                        </div>
                     </div>
                 </div>
             </div>
