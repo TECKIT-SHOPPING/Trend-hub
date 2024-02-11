@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+
 @Slf4j
 @RequestMapping("/products")
 @RequiredArgsConstructor
@@ -48,7 +49,8 @@ public class ProductController {
                          @RequestParam(value = "page", defaultValue = "0") int page) {
         Product product = this.productService.getProduct(id);
         System.out.println("product_id = " + product.getProductId());
-        Page<QnA> qnAList = this.qnaService.getQnAList(page);
+        Long productId = product.getProductId();
+        Page<QnA> qnAList = this.qnaService.getQnAList(page, productId);
         model.addAttribute("product", product);
         model.addAttribute("paging", qnAList);
         return "products/productDetail";

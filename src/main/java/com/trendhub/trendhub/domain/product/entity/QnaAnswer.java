@@ -29,4 +29,5 @@ public class QnaAnswer {
     private String loginId;
     private LocalDateTime createDate;
     private String name;
+    private boolean answered;
 }

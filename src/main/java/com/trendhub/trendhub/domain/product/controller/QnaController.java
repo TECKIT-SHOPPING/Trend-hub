@@ -34,11 +34,15 @@ public class QnaController {
     private final UserService userService;
 
     @GetMapping(value = "/detail/{id}")
-    public String qnaDetail(Model model, @PathVariable("id") Long id) {
+    public String qnaDetail(Model model, @PathVariable("id") Long id, Principal principal) {
         QnA qnA = this.qnaService.getQnaDetail(id);
         List<QnaAnswer> qnaAnswer = this.qnaService.getQnaAnswer();
+        String logInid = principal.getName();
+        User user = this.userService.getUser(logInid);
+        System.out.println("유저 role 상태 = " + user.getRole());
         model.addAttribute("qnaDetail", qnA);
         model.addAttribute("qnaAnswer", qnaAnswer);
+        model.addAttribute("user", user);
         return "products/qnaDetail";
     }
 

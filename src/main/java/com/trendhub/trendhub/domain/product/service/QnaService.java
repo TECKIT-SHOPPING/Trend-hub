@@ -31,9 +31,9 @@ public class QnaService {
         this.qnaRepository.save(saveQnA);
     }
 
-    public Page<QnA> getQnAList(int page) {
+    public Page<QnA> getQnAList(int page, Long productId) {
         Pageable pageable = PageRequest.of(page, 10);
-        return this.qnaRepository.findAll(pageable);
+        return this.qnaRepository.findByProduct_ProductId(pageable, productId);
     }
 
     public QnA getQnaDetail(Long productId) {
@@ -46,7 +46,8 @@ public class QnaService {
     }
 
     public void createQnaAnswer(QnaAnswerDto qnaAnswerDto, QnA qnA, User user) {
-        QnaAnswer saveQnaAnswer = qnaAnswerDto.toEntity(qnA, user);
+        boolean roleFlag = user.getRole().equals("ADMIN");
+        QnaAnswer saveQnaAnswer = qnaAnswerDto.toEntity(qnA, user, roleFlag);
         this.qnaAnswerRepository.save(saveQnaAnswer);
     }
 

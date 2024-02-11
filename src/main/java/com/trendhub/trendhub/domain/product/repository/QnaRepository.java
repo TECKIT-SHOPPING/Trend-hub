@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface QnaRepository extends JpaRepository<QnA, Long> {
     List<QnaAnswer> findAnswersById(Long productId);
-    Page<QnA> findAll(Pageable pageable);
+    Page<QnA> findByProduct_ProductId(Pageable pageable, Long productId);
     /*List<QnA> findByProductId(Long productId);*/
 }
