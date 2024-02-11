@@ -46,9 +46,11 @@
                                 </div>
                             </div>
                             <div class="textset">
-                                <h2 class="textset-tit">민감 피부 마스크 시트(피부진정)</h2>
+                                <h2 class="textset-tit" th:text="${product.name}"></h2>
                             </div>
-                            <p class="contents-price">32,000 <span>원</span>
+                            <p class="contents-price">
+                                <span th:text="${#numbers.formatDecimal(product.price, 0, 0)}"></span>
+                                <span>원</span>
                             </p>
                         </div>
                         <div class="contents-right-group">
@@ -82,7 +84,9 @@
                             </ul>
                             <div class="contents-total">
                                 <strong>총 결제금액</strong>
-                                <p class="contents-price">32,000 <span>원</span>
+                                <p class="contents-price">
+                                    <span><strong th:text="${#numbers.formatDecimal(product.price, 0, 0)}"></strong></span>
+                                    <span>원</span>
                                 </p>
                             </div>
                         </div>
@@ -113,7 +117,7 @@
                         </li>
                         <li class="tabset-item">
                             <a class="tabset-link" href="#section-reviews">
-                                <h2 style="font-size: 20px;">후기</h2>
+                                <h2 style="font-size: 20px;">상품후기</h2>
                             </a>
                         </li>
                         <li class="tabset-item">
@@ -127,7 +131,7 @@
                     <!-- Section: 상세정보 -->
                     <div id="section-details" class="section-content">
                         <!-- 여기에 상세정보 내용 추가 -->
-                        <h2 style="font-size: 20px;"> 상세정보 </h2>
+                        <h2 class="text-4xl font-bold mb-8">상세정보</h2>
                         <div class="contents-container container-md">
                             <div class="imageset">
                                 <img class="imageset-img" src="/images/img_basic_N52_1.png" alt="이미지">
@@ -144,53 +148,47 @@
                         </div>
                     </div>
                     <!-- Section: 상품문의 -->
-                    <div id="section-inquiry" class="section-content">
-                        <h2 style="font-size: 20px;"> 상품문의 </h2>
-                        <!-- 여기에 상품문의 내용 추가 -->
-                        <div style="display: flex;">
+                    <div id="section-inquiry" class="section-content mt-10">
+                        <h2 class="text-4xl font-bold mb-8">상품문의</h2>
+                        <div class="flex mb-6">
                             <!-- Thymeleaf 문법을 사용하여 productId를 JavaScript 함수로 전달합니다 -->
-                            <button style="display: inline-block; font-size: 20px; background-color: #333; color: #fff;"
-                                    th:onclick="openInquirePopup([[${product.productId}]])">상품문의 작성하기
-                            </button>
-
-                            <div class="divider lg:divider-horizontal">OR</div>
-                            <button style="display: inline-block; font-size: 20px; background-color: #ddd;">나의 문의 조회
-                            </button>
+                            <button class="btn btn-active mr-6 px-8 py-2 text-2xl" th:onclick="openInquirePopup([[${product.productId}]])">상품문의 작성하기</button>
                         </div>
 
-                        <table>
+                        <table class="w-full border-collapse border border-gray-300 mt-8">
                             <thead>
-                            <tr>
-                                <th>제목</th>
-                                <th>작성일시</th>
+                            <tr class="bg-gray-100">
+                                <th class="py-3 px-6 border-b text-xl">제목</th>
+                                <th class="py-3 px-6 border-b text-xl">작성일시</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="qnaList, loop : ${paging}">
-                                <td>
+                            <tr th:each="qnaList, loop : ${paging}" class="border-b">
+                                <td class="py-3 px-6 text-xl">
                                     <a th:href="@{|/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>
                                 </td>
-                                <td th:text="${qnaList.createDate}"></td>
+                                <td class="py-3 px-6 text-xl" th:text="${qnaList.createDate}"></td>
                             </tr>
                             </tbody>
                         </table>
+
                         <!-- 페이징처리 시작 -->
-                        <div th:if="${!paging.isEmpty()}">
-                            <ul class="pagination justify-content-center">
+                        <div th:if="${!paging.isEmpty()}" class="mt-8">
+                            <ul class="pagination flex justify-center">
                                 <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
                                     <a class="page-link" th:href="@{|/products/${product.productId}?page=${paging.number-1}#section-inquiry|}">
-                                        <span>이전</span>
+                                        <span class="text-xl">이전</span>
                                     </a>
                                 </li>
                                 <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
                                     th:if="${page >= paging.number-5 and page <= paging.number+5}"
                                     th:classappend="${page == paging.number} ? 'active'"
-                                    class="page-item">
-                                    <a th:text="${page}" class="page-link" th:href="@{|/products/${product.productId}?page=${page}#section-inquiry|}"></a>
+                                    class="page-item mx-2">
+                                    <a th:text="${page + 1}" class="page-link" th:href="@{|/products/${product.productId}?page=${page}#section-inquiry|}"></a>
                                 </li>
                                 <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
                                     <a class="page-link" th:href="@{|/products/${product.productId}?page=${paging.number+1}#section-inquiry|}">
-                                        <span>다음</span>
+                                        <span class="text-xl">다음</span>
                                     </a>
                                 </li>
                             </ul>
@@ -199,12 +197,13 @@
                     </div>
                     <!-- Section: 후기 -->
                     <div id="section-reviews" class="section-content">
-                        <h2 style="font-size: 20px;"> 상품후기 </h2>
+                        <h2 class="text-4xl font-bold mb-8">상품후기</h2>
                         <!-- 여기에 후기 내용 추가 -->
                     </div>
                     <!-- Section: 배송/교환/반품안내 -->
                     <div id="section-shipping" class="section-content">
-                        <h2 style="font-size: 20px;"> 배송/교환/반품안내 </h2>
+                        <h2 class="text-4xl font-bold mb-8">배송/교환/반품안내</h2>
+                        <!--<h2 style="font-size: 20px;"> 배송/교환/반품안내 </h2> 나중에 참고하고 싶으면 이거 참고-->
                         <!-- 여기에 배송/교환/반품안내 내용 추가 -->
                     </div>
                 </div>
