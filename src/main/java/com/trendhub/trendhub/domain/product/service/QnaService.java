@@ -31,9 +31,9 @@ public class QnaService {
         this.qnaRepository.save(saveQnA);
     }
 
-    public Page<QnA> getQnAList(int page) {
+    public Page<QnA> getQnAList(int page, Long productId) {
         Pageable pageable = PageRequest.of(page, 10);
-        return this.qnaRepository.findAll(pageable);
+        return this.qnaRepository.findByProduct_ProductId(pageable, productId);
     }
 
     public QnA getQnaDetail(Long productId) {

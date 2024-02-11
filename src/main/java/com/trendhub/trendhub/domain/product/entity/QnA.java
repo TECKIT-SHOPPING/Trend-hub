@@ -30,7 +30,7 @@ public class QnA {
     private String inquireType;
 
     @ManyToOne
-    @JoinColumn(name = "PRODUCT_ID")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
