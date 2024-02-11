@@ -4,7 +4,9 @@ import com.trendhub.trendhub.domain.likes.entity.Likes;
 import com.trendhub.trendhub.domain.likes.service.LikesService;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
+import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.Product;
+import com.trendhub.trendhub.domain.product.entity.QnA;
 import com.trendhub.trendhub.domain.product.repository.ProductRepository;
 import com.trendhub.trendhub.domain.product.repository.QnaRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
@@ -31,6 +33,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final LikesService likesService;
     private final UserRepository userRepository;
+    private final QnaRepository qnaRepository;
 
 
 
