@@ -178,4 +178,16 @@ public class ProductService {
             List<ProductDto> result = productRepository.findTop20ByOrderByCreateMonthDesc();
             return result;
         }
+
+    public List<ProductDto> totalLikeTop20() {
+        List<ProductDto> result = productRepository.totalLikeTop20();
+        return result;
     }
+
+    public List<ProductDto> findByFWsale() {
+        List<ProductDto> result = productRepository.findByFWsale();
+        return result;
+    }
+
+
+}

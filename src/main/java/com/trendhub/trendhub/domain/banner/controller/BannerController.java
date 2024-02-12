@@ -20,13 +20,29 @@ public class BannerController {
     private final BannerService bannerService;
     private final ProductService productService;
 
+    // 배너
     @GetMapping("{id}")
-    public String banner(Model model,
-                         @PathVariable("id") Long id){
+    public String banner(Model model, @PathVariable("id") Long id) {
         Banner banner = bannerService.getBanner(id);
-        List<ProductDto> product = productService.findTop20ByOrderByCreateMonthDesc();
         model.addAttribute("banner", banner);
-        model.addAttribute("product", product);
-        return "banner1";
+
+        List<ProductDto> product;
+
+        if (banner.getBannerId()==1) {
+            product = productService.findTop20ByOrderByCreateMonthDesc();
+            model.addAttribute("product", product);
+            return "banner";
+        } else if (banner.getBannerId()==2) {
+            product = productService.totalLikeTop20();
+            model.addAttribute("product", product);
+            return "banner";
+        } else if (banner.getBannerId()==3) {
+            product = productService.findByFWsale();
+            model.addAttribute("product", product);
+            return "banner";
+        }
+
+        return "error";
     }
+
 }

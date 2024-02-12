@@ -22,4 +22,9 @@ public interface ProductRepositoryCustom{
     Page<ProductDto> searchProductList(String keyword, User user, Pageable pageable);
 
     List<ProductDto> findTop20ByOrderByCreateMonthDesc();
+
+    List<ProductDto> totalLikeTop20();
+
+    List<ProductDto> findByFWsale();
+
 }

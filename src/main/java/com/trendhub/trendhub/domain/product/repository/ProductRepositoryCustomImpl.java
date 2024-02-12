@@ -295,4 +295,43 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 .fetch();
         return result;
     }
+
+    @Override
+    public List<ProductDto> totalLikeTop20(){
+        List<ProductDto> result = jpaQueryFactory
+                .select(Projections.constructor(ProductDto.class,
+                        product.productId,
+                        product.image,
+                        product.name,
+                        product.price,
+                        product.discount,
+                        product.totalLike,
+                        Expressions.asBoolean(false).as("liked")
+                ))
+                .from(product)
+                .orderBy(product.totalLike.desc())
+                .limit(20)
+                .fetch();
+        return result;
+    }
+
+    @Override
+    public List<ProductDto> findByFWsale(){
+        List<ProductDto> result = jpaQueryFactory
+                .select(Projections.constructor(ProductDto.class,
+                        product.productId,
+                        product.image,
+                        product.name,
+                        product.price,
+                        product.discount,
+                        product.totalLike,
+                        Expressions.asBoolean(false).as("liked")
+                ))
+                .from(product)
+                .where(product.season.seasonId.eq(2L))
+                .orderBy(product.createAt.month().desc())
+                .limit(20)
+                .fetch();
+        return result;
+    }
 }
