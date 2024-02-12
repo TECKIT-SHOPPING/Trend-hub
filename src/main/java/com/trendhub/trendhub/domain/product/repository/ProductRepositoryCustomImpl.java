@@ -290,6 +290,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                         Expressions.asBoolean(false).as("liked")
                 ))
                 .from(product)
+                .where(product.discount.between(0,40))
                 .orderBy(product.createAt.month().desc())
                 .limit(20)
                 .fetch();
@@ -309,6 +310,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                         Expressions.asBoolean(false).as("liked")
                 ))
                 .from(product)
+                .where(product.discount.between(0,40))
                 .orderBy(product.totalLike.desc())
                 .limit(20)
                 .fetch();
@@ -329,6 +331,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 ))
                 .from(product)
                 .where(product.season.seasonId.eq(2L))
+                .where(product.discount.between(0,40))
                 .orderBy(product.createAt.month().desc())
                 .limit(20)
                 .fetch();
