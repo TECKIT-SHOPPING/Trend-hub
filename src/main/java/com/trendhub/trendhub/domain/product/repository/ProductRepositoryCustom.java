@@ -20,4 +20,6 @@ public interface ProductRepositoryCustom{
     Page<ProductDto> categoryProductList(Long mainCategory, Long subCategory, User user, Pageable pageable);
 
     Page<ProductDto> searchProductList(String keyword, User user, Pageable pageable);
+
+    List<ProductDto> findTop20ByOrderByCreateMonthDesc();
 }

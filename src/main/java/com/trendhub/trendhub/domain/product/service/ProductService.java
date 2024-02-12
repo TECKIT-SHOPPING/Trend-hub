@@ -173,4 +173,9 @@ public class ProductService {
 
         return result;
     }
-}
+
+    public List<ProductDto> findTop20ByOrderByCreateMonthDesc() {
+            List<ProductDto> result = productRepository.findTop20ByOrderByCreateMonthDesc();
+            return result;
+        }
+    }

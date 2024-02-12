@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.entity.QBrand;
+import com.trendhub.trendhub.domain.product.entity.QProduct;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.global.config.querydsl.QuerydslUtil;
 import lombok.RequiredArgsConstructor;
@@ -274,5 +275,24 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         }
 
         return ORDERS;
+    }
+
+    @Override
+    public List<ProductDto> findTop20ByOrderByCreateMonthDesc(){
+        List<ProductDto> result = jpaQueryFactory
+                .select(Projections.constructor(ProductDto.class,
+                        product.productId,
+                        product.image,
+                        product.name,
+                        product.price,
+                        product.discount,
+                        product.totalLike,
+                        Expressions.asBoolean(false).as("liked")
+                ))
+                .from(product)
+                .orderBy(product.createAt.month().desc())
+                .limit(20)
+                .fetch();
+        return result;
     }
 }
