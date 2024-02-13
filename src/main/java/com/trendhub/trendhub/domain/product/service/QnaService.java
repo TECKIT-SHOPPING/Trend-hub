@@ -47,9 +47,7 @@ public class QnaService {
 
     public void createQnaAnswer(QnaAnswerDto qnaAnswerDto, QnA qna, User user) {
         boolean roleFlag = user.getRole().equals("ADMIN");
-        System.out.println("roleFlag = " + roleFlag);
         QnaAnswer saveQnaAnswer = qnaAnswerDto.toEntity(qna, user, roleFlag);
-        System.out.println("saveQnaAnswer = " + saveQnaAnswer);
         this.qnaAnswerRepository.save(saveQnaAnswer);
     }
 
