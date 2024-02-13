@@ -36,7 +36,6 @@ public class ProductService {
     private final QnaRepository qnaRepository;
 
 
-
     public List<ProductDto> findTop10ViewCountDesc() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() != "anonymousUser") {
@@ -173,4 +172,36 @@ public class ProductService {
 
         return result;
     }
+
+    public List<ProductDto> findTop20ByOrderByCreateMonthDesc() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            user = userRepository.findByLoginId(authentication.getName()).get();
+        }
+        List<ProductDto> result = productRepository.findTop20ByOrderByCreateMonthDesc(user);
+        return result;
+    }
+
+    public List<ProductDto> totalLikeTop20() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            user = userRepository.findByLoginId(authentication.getName()).get();
+        }
+        List<ProductDto> result = productRepository.totalLikeTop20(user);
+        return result;
+    }
+
+    public List<ProductDto> findByFWsale() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            user = userRepository.findByLoginId(authentication.getName()).get();
+        }
+        List<ProductDto> result = productRepository.findByFWsale(user);
+        return result;
+    }
+
+
 }

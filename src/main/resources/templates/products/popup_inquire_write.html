@@ -8,16 +8,16 @@
 <div layout:fragment="content">
 
     <div class="product-info">
-            <div class="avatar">
-                <div class="rounded overflow-hidden">
-                    <img th:src="${product.image}" class="w-80 h-96 object-cover" />
-                </div>
+        <div class="avatar">
+            <div class="rounded overflow-hidden">
+                <img th:src="${product.image}" class="w-80 h-96 object-cover" />
             </div>
-            <div class="product-details">
-                <h2>제품명:
-                    <span style="font-weight: bold; font-size: 12pt" th:text="${product.name}" ></span></h2>
-                <p>가격: <span style="font-weight: bold; font-size: 12pt" th:text="${product.price}"></span> 원</p>
-            </div>
+        </div>
+        <div class="product-details">
+            <h2>제품명:
+                <span style="font-weight: bold; font-size: 12pt" th:text="${product.name}" ></span></h2>
+            <p>가격: <span style="font-weight: bold; font-size: 12pt" th:text="${product.price}"></span> 원</p>
+        </div>
     </div>
 
     <form th:action="@{|/qna/${productId}|}" th:object="${qnaDto}" method="post">
