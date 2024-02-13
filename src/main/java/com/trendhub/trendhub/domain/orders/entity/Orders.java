@@ -87,6 +87,11 @@ public class Orders extends BaseTimeEntity {
 
     public void setPaymentDone() {
         date = LocalDateTime.now();
+    }
 
+    public boolean isShippingInfo() {
+        if (name != null && phone != null && address1 != null && address2 != null && zipcode != null ) return true;
+
+        return false;
     }
 }

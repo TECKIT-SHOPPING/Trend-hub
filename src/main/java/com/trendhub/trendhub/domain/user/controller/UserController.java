@@ -1,5 +1,7 @@
 package com.trendhub.trendhub.domain.user.controller;
 
+import com.trendhub.trendhub.domain.orders.entity.Orders;
+import com.trendhub.trendhub.domain.orders.service.OrderService;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.review.dto.MypageReviewDto;
 import com.trendhub.trendhub.domain.review.service.ReviewService;
@@ -37,6 +39,7 @@ public class UserController {
 
     private final UserService userService;
     private final ReviewService reviewService;
+    private final OrderService orderService;
     private final Rq rq;
 
     @GetMapping("/join")
@@ -231,6 +234,9 @@ public class UserController {
         String logInid = principal.getName();
         User user = this.userService.getUser(logInid);
         model.addAttribute("user", user);
+
+        List<Orders> orders = orderService.findByUser(rq.getUserInfo());
+        rq.setAttribute("orders", orders);
         return "users/myPage_1";
     }
 

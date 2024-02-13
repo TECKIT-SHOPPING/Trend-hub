@@ -5,13 +5,24 @@
 </head>
 
 <div layout:fragment="content">
-    <div>
+    <div style="font-size: 20px">
         <div>주문번호: [[${order.ordersId}]]</div>
         <div>주문코드: [[${order.code}]]</div>
         <div>주문자: [[${order.user.username}]]</div>
         <div>주문상품: [[${order.name}]]</div>
         <div>결제금액: [[${order.sumOrderPrice}]]</div>
     </div>
+    <hr style="border-width: 5px;">
+    <th:block th:if="${order.shippingInfo}">
+        <div style="font-size: 20px">
+            <div>배송 받을 고객 정보</div>
+            <div>이름: [[${order.name}]]</div>
+            <div>전화번호: [[${order.phone}]]</div>
+            <div>우편번호: [[${order.zipcode}]]</div>
+            <div>배송지 주소: [[${order.address1}]]</div>
+            <div>[[${order.address2}]]</div>
+        </div>
+    </th:block>
 
     <th:block th:if="${order.payable}">
         <script>

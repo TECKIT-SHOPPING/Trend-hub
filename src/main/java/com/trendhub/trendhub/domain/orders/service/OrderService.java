@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -81,5 +82,9 @@ public class OrderService {
         order.setAddress1(orderPayInfo.getAddress1());
         order.setAddress2(orderPayInfo.getAddress2());
         order.setZipcode(orderPayInfo.getZipcode());
+    }
+
+    public List<Orders> findByUser(User user) {
+        return orderRepository.findByUser(user);
     }
 }
