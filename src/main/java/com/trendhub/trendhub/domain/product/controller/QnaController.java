@@ -86,9 +86,9 @@ public class QnaController {
                                   @Valid @ModelAttribute("qnaAnswerDto") QnaAnswerDto qnaAnswerDto)
     {
         String logInid = principal.getName();
-        QnA qnA = this.qnaService.getQnaDetail(id);
+        QnA qna = this.qnaService.getQnaDetail(id);
         User user = this.userService.getUser(logInid);
-        this.qnaService.createQnaAnswer(qnaAnswerDto, qnA, user);
+        this.qnaService.createQnaAnswer(qnaAnswerDto, qna, user);
         return String.format("redirect:/qna/detail/%s", id);
     }
 }

@@ -61,6 +61,14 @@
             <p th:if="${#fields.hasErrors('content')}" th:errors="${qnaDto.content}" class="fieldError"
                style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
         </div>
+        <div class="form-control">
+            <label class="label cursor-pointer">
+                <h4 class="label-text">
+                    <span>비밀 글🔑</span>
+                    <input type="checkbox" th:field="${qnaDto.secret}" th:checked="${qnaDto.secret}" class="checkbox" />
+                </h4>
+            </label>
+        </div>
     </form>
 </div>
 </body>
