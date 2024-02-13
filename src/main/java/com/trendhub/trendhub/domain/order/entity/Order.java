@@ -1,4 +1,4 @@
-package com.trendhub.trendhub.domain.orders.entity;
+package com.trendhub.trendhub.domain.order.entity;
 
 import com.trendhub.trendhub.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -11,10 +11,10 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Orders {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ordersId;
+    private Long orderId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

@@ -1,6 +1,6 @@
 package com.trendhub.trendhub.domain.orderDetail.entity;
 
-import com.trendhub.trendhub.domain.orders.entity.Orders;
+import com.trendhub.trendhub.domain.order.entity.Order;
 import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.product.entity.ProductOption;
 import jakarta.persistence.*;
@@ -18,7 +18,7 @@ public class OrderDetail {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    private Orders order;
+    private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -27,6 +27,7 @@ public class OrderDetail {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_option_id")
     private ProductOption productOption;
+
 
     private int price;
 

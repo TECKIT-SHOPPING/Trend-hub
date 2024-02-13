@@ -18,7 +18,7 @@
                 </thead>
 
                 <tbody style="font-size: 13px; line-height: 50px;">
-                <tr style="text-align: center;">
+                <tr style="text-align: center;" th:each="review : ${reviews}">
                     <td style="width: 30%;" colspan="2">
                         <div style="display: flex; justify-content: center;">
                             <img style="width: 45px; height: 45px;" th:src="${review.productImage}" alt="Product Image">

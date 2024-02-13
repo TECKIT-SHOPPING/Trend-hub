@@ -21,4 +21,9 @@ public class ProductOption {
     private int quantity;
     private int size;
     private String color;
+
+    public String getColor() {
+        return this.color;
+    }
+
 }
