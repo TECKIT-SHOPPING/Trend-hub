@@ -1,3 +1,6 @@
+package com.trendhub.trendhub.domain.order.controller;
+
+
 import com.trendhub.trendhub.domain.order.entity.Order;
 import com.trendhub.trendhub.domain.order.service.OrderService;
 import org.springframework.stereotype.Controller;

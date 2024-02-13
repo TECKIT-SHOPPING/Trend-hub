@@ -31,7 +31,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<Order> getOrdersByUser(Long userId) {
-        return orderRepository.findByUserId(userId);
+        return orderRepository.findByUser_UserId(userId);
     }
 
     @Transactional
