@@ -42,4 +42,12 @@ public class CartService {
     public boolean isExistCartProduct(User userInfo, Product product) {
         return cartRepository.existsByUserAndProduct(userInfo, product);
     }
+
+    public List<Cart> findByUser(User userInfo) {
+        return cartRepository.findByUser(userInfo);
+    }
+
+    public void delete(Cart cart) {
+        cartRepository.delete(cart);
+    }
 }
