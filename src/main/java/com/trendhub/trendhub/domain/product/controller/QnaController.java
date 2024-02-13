@@ -39,7 +39,8 @@ public class QnaController {
         List<QnaAnswer> qnaAnswer = this.qnaService.getQnaAnswer();
         String logInid = principal.getName();
         User user = this.userService.getUser(logInid);
-        System.out.println("유저 role 상태 = " + user.getRole());
+        Product product = this.productService.getProduct(id);
+        model.addAttribute("product", product);
         model.addAttribute("qnaDetail", qnA);
         model.addAttribute("qnaAnswer", qnaAnswer);
         model.addAttribute("user", user);
@@ -81,10 +82,10 @@ public class QnaController {
     }
 
     @PostMapping("/create/{id}")
-    public String createQnaAnswer(Model model, @PathVariable("id") Long id,
-                                  @RequestParam(value = "content") String content, Principal principal,
-                                  @Valid @ModelAttribute("qnaAnswerDto") QnaAnswerDto qnaAnswerDto)
+    public String createQnaAnswer(@PathVariable("id") Long id, @RequestParam(value = "content") String content,
+                                  Principal principal, @Valid @ModelAttribute("qnaAnswerDto") QnaAnswerDto qnaAnswerDto)
     {
+
         String logInid = principal.getName();
         QnA qna = this.qnaService.getQnaDetail(id);
         User user = this.userService.getUser(logInid);
