@@ -3,6 +3,7 @@ package com.trendhub.trendhub.global.rq;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.global.config.security.SecurityUser;
 import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequestScope
 @RequiredArgsConstructor
 public class Rq {
+    private final HttpServletRequest request;
     private final EntityManager entityManager;
     private User userInfo;
 
@@ -44,5 +46,8 @@ public class Rq {
         }
 
         return userInfo;
+    }
+    public void setAttribute(String key, Object value) {
+            request.setAttribute(key, value);
     }
 }
