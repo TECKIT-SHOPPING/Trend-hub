@@ -6,8 +6,7 @@ import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
-import com.trendhub.trendhub.domain.product.entity.QBrand;
-import com.trendhub.trendhub.domain.product.entity.QProduct;
+import com.trendhub.trendhub.domain.product.entity.Season;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.global.config.querydsl.QuerydslUtil;
 import lombok.RequiredArgsConstructor;
@@ -161,7 +160,6 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         }
 
 
-
         int total = jpaQueryFactory
                 .selectFrom(product)
                 .from(product)
@@ -192,7 +190,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                     .from(product)
                     .leftJoin(product.brand, brand)
                     .on(brand.eq(product.brand))
-                    .where(product.name.like("%"+keyword+"%").or(brand.name.like("%"+keyword+"%")))
+                    .where(product.name.like("%" + keyword + "%").or(brand.name.like("%" + keyword + "%")))
                     .offset(pageable.getOffset())
                     .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                     .limit(pageable.getPageSize())
@@ -216,7 +214,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                     .on(likes.product.eq(product).and(likes.user.eq(user)))
                     .leftJoin(product.brand, brand)
                     .on(brand.eq(product.brand))
-                    .where(product.name.like("%"+keyword+"%").or(brand.name.like("%"+keyword+"%")))
+                    .where(product.name.like("%" + keyword + "%").or(brand.name.like("%" + keyword + "%")))
                     .offset(pageable.getOffset())
                     .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                     .limit(pageable.getPageSize())
@@ -224,11 +222,10 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         }
 
 
-
         int total = jpaQueryFactory
                 .selectFrom(product)
                 .from(product)
-                .where(product.name.like("%"+keyword+"%").or(brand.name.like("%"+keyword+"%")))
+                .where(product.name.like("%" + keyword + "%").or(brand.name.like("%" + keyword + "%")))
                 .fetch()
                 .size();
 
@@ -278,63 +275,132 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     }
 
     @Override
-    public List<ProductDto> findTop20ByOrderByCreateMonthDesc(){
-        List<ProductDto> result = jpaQueryFactory
-                .select(Projections.constructor(ProductDto.class,
-                        product.productId,
-                        product.image,
-                        product.name,
-                        product.price,
-                        product.discount,
-                        product.totalLike,
-                        Expressions.asBoolean(false).as("liked")
-                ))
-                .from(product)
-                .where(product.discount.between(0,40))
-                .orderBy(product.createAt.month().desc())
-                .limit(20)
-                .fetch();
+    public List<ProductDto> findTop20ByOrderByCreateMonthDesc(User user) {
+        List<ProductDto> result;
+        if (user == null) {
+            result = jpaQueryFactory
+                    .select(Projections.constructor(ProductDto.class,
+                            product.productId,
+                            product.image,
+                            product.name,
+                            product.price,
+                            product.discount,
+                            product.totalLike,
+                            Expressions.asBoolean(false).as("liked")
+                    ))
+                    .from(product)
+                    .where(product.discount.between(0, 40))
+                    .orderBy(product.createAt.month().desc())
+                    .limit(20)
+                    .fetch();
+        } else {
+            result = jpaQueryFactory
+                    .select(Projections.constructor(ProductDto.class,
+                            product.productId,
+                            product.image,
+                            product.name,
+                            product.price,
+                            product.discount,
+                            product.totalLike,
+                            new CaseBuilder()
+                                    .when(likes.likesId.isNotNull()).then(true)
+                                    .otherwise(false).as("liked")
+                    ))
+                    .from(product)
+                    .leftJoin(likes)
+                    .on(likes.product.eq(product).and(likes.user.eq(user)))
+                    .where(product.discount.between(0, 40))
+                    .orderBy(product.createAt.month().desc())
+                    .limit(20)
+                    .fetch();
+
+        }
         return result;
     }
 
     @Override
-    public List<ProductDto> totalLikeTop20(){
-        List<ProductDto> result = jpaQueryFactory
-                .select(Projections.constructor(ProductDto.class,
-                        product.productId,
-                        product.image,
-                        product.name,
-                        product.price,
-                        product.discount,
-                        product.totalLike,
-                        Expressions.asBoolean(false).as("liked")
-                ))
-                .from(product)
-                .where(product.discount.between(0,40))
-                .orderBy(product.totalLike.desc())
-                .limit(20)
-                .fetch();
+    public List<ProductDto> totalLikeTop20(User user) {
+        List<ProductDto> result;
+        if (user == null) {
+            result = jpaQueryFactory
+                    .select(Projections.constructor(ProductDto.class,
+                            product.productId,
+                            product.image,
+                            product.name,
+                            product.price,
+                            product.discount,
+                            product.totalLike,
+                            Expressions.asBoolean(false).as("liked")
+                    ))
+                    .from(product)
+                    .where(product.discount.between(0, 40))
+                    .orderBy(product.totalLike.desc())
+                    .limit(20)
+                    .fetch();
+        } else {
+            result = jpaQueryFactory
+                    .select(Projections.constructor(ProductDto.class,
+                            product.productId,
+                            product.image,
+                            product.name,
+                            product.price,
+                            product.discount,
+                            product.totalLike,
+                            new CaseBuilder()
+                                    .when(likes.likesId.isNotNull()).then(true)
+                                    .otherwise(false).as("liked")
+                    ))
+                    .from(product)
+                    .leftJoin(likes)
+                    .on(likes.product.eq(product).and(likes.user.eq(user)))
+                    .where(product.discount.between(0, 40))
+                    .orderBy(product.totalLike.desc())
+                    .limit(20)
+                    .fetch();
+        }
         return result;
     }
 
     @Override
-    public List<ProductDto> findByFWsale(){
-        List<ProductDto> result = jpaQueryFactory
-                .select(Projections.constructor(ProductDto.class,
-                        product.productId,
-                        product.image,
-                        product.name,
-                        product.price,
-                        product.discount,
-                        product.totalLike,
-                        Expressions.asBoolean(false).as("liked")
-                ))
-                .from(product)
-                .where(product.season.seasonId.eq(2L))
-                .where(product.discount.between(0,40))
-                .orderBy(product.createAt.month().desc())
-                .limit(20)
-                .fetch();
+    public List<ProductDto> findByFWsale(User user) {
+        List<ProductDto> result;
+        if (user == null) {
+            result = jpaQueryFactory
+                    .select(Projections.constructor(ProductDto.class,
+                            product.productId,
+                            product.image,
+                            product.name,
+                            product.price,
+                            product.discount,
+                            product.totalLike,
+                            Expressions.asBoolean(false).as("liked")
+                    ))
+                    .from(product)
+                    .where(product.season.seasonId.eq(2L).and(product.discount.between(0, 40)))
+                    .orderBy(product.createAt.month().desc())
+                    .limit(20)
+                    .fetch();
+        } else {
+            result = jpaQueryFactory
+                    .select(Projections.constructor(ProductDto.class,
+                            product.productId,
+                            product.image,
+                            product.name,
+                            product.price,
+                            product.discount,
+                            product.totalLike,
+                            new CaseBuilder()
+                                    .when(likes.likesId.isNotNull()).then(true)
+                                    .otherwise(false).as("liked")
+                    ))
+                    .from(product)
+                    .leftJoin(likes)
+                    .on(likes.product.eq(product).and(likes.user.eq(user)))
+                    .where(product.season.seasonId.eq(2L).and(product.discount.between(0, 40)))
+                    .orderBy(product.createAt.month().desc())
+                    .limit(20)
+                    .fetch();
+        }
         return result;
     }
 }

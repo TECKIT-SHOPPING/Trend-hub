@@ -6,6 +6,7 @@ import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
 import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.Product;
+import com.trendhub.trendhub.domain.product.entity.Season;
 import com.trendhub.trendhub.domain.product.entity.QnA;
 import com.trendhub.trendhub.domain.product.repository.ProductRepository;
 import com.trendhub.trendhub.domain.product.repository.QnaRepository;
@@ -34,7 +35,6 @@ public class ProductService {
     private final LikesService likesService;
     private final UserRepository userRepository;
     private final QnaRepository qnaRepository;
-
 
 
     public List<ProductDto> findTop10ViewCountDesc() {
@@ -175,17 +175,32 @@ public class ProductService {
     }
 
     public List<ProductDto> findTop20ByOrderByCreateMonthDesc() {
-            List<ProductDto> result = productRepository.findTop20ByOrderByCreateMonthDesc();
-            return result;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            user = userRepository.findByLoginId(authentication.getName()).get();
         }
+        List<ProductDto> result = productRepository.findTop20ByOrderByCreateMonthDesc(user);
+        return result;
+    }
 
     public List<ProductDto> totalLikeTop20() {
-        List<ProductDto> result = productRepository.totalLikeTop20();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            user = userRepository.findByLoginId(authentication.getName()).get();
+        }
+        List<ProductDto> result = productRepository.totalLikeTop20(user);
         return result;
     }
 
     public List<ProductDto> findByFWsale() {
-        List<ProductDto> result = productRepository.findByFWsale();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            user = userRepository.findByLoginId(authentication.getName()).get();
+        }
+        List<ProductDto> result = productRepository.findByFWsale(user);
         return result;
     }
 

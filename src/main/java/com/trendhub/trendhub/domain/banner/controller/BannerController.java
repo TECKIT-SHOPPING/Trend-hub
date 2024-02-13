@@ -24,25 +24,19 @@ public class BannerController {
     @GetMapping("{id}")
     public String banner(Model model, @PathVariable("id") Long id) {
         Banner banner = bannerService.getBanner(id);
-        model.addAttribute("banner", banner);
+        List<ProductDto> product = null;
 
-        List<ProductDto> product;
-
-        if (banner.getBannerId()==1) {
+        if (banner.getBannerId() == 1) {
             product = productService.findTop20ByOrderByCreateMonthDesc();
-            model.addAttribute("product", product);
-            return "banner";
-        } else if (banner.getBannerId()==2) {
+        } else if (banner.getBannerId() == 2) {
             product = productService.totalLikeTop20();
-            model.addAttribute("product", product);
-            return "banner";
-        } else if (banner.getBannerId()==3) {
+        } else if (banner.getBannerId() == 3) {
             product = productService.findByFWsale();
-            model.addAttribute("product", product);
-            return "banner";
         }
 
-        return "error";
+        model.addAttribute("banner", banner);
+        model.addAttribute("product", product);
+        return "banner";
     }
 
 }
