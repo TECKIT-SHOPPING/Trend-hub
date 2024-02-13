@@ -1,12 +1,118 @@
-<!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-<head>
-    <title>TrendHub</title>
-    <script>
+<html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<div layout:fragment="content">
+    <th:block th:fragment="custom-css">
+        <style>
+            .content-container {
+                width: 40%;
+                margin: 0 auto;
+            }
+            .form-group label {
+                font-size: 1.5rem;
+                text-align: center;
+            }
+            #preview-container img {
+                margin: 1rem auto;
+                display: block;
+                width: 500px;
+                height: 500px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 5px;
+            }
+            .form-control-file {
+                display: block;
+                margin: 0 auto;
+            }
+
+            .btn-primary {
+                font-size: 1.5rem;
+                padding: 0.75rem 1.5rem;
+                background-color: black;
+                color: white;
+            }
+            .btn-primary:hover {
+                background-color: white;
+                color: black;
+            }
+
+            .form-group {
+                text-align: center;
+                padding: 1rem;
+                border-radius: 5px;
+                margin-bottom: 1rem;
+            }
+
+            .custom-file-upload {
+                display: inline;
+                padding: 6px 12px;
+                cursor: pointer;
+                background-color: black; /* 배경색 검정 */
+                color: white; /* 글씨색 흰색 */
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 1.5rem;
+            }
+
+            .custom-file-upload:hover {
+                background-color: white; /* 배경색 흰색 */
+                color: black; /* 글씨색 검정 */
+            }
+
+            #preview-container {
+                width: 500px;
+                height: 500px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                margin: 1rem auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </th:block>
+    <div th:if="${message}">
+        <h2 th:text="${message}" class="text-center text-success"/>
+    </div>
+    <div class="content-container">
+        <form method="POST" enctype="multipart/form-data" th:action="@{/coordi/write}" role="form" class="my-5" onsubmit="return checkFileSelected();">
+            <div class="form-group">
+                <label for="file-upload" class="custom-file-upload">코디작성 사진 등록</label>
+                <input id="file-upload" type="file" name="file" onchange="previewFiles()" multiple class="form-control-file" style="display: none;"/>
+            </div>
+            <div class="form-group">
+                <label>선택한 파일:</label>
+                <div id="preview-container">이미지 미리보기</div>
+            </div>
+            <div class="form-group text-center">
+                <input type="submit" value="등록하기" class="btn btn-primary btn-block" />
+            </div>
+        </form>
+    </div>
+        <ul>
+            <li th:each="file : ${files}">
+                <a th:href="${file}" th:text="${file}" />
+            </li>
+        </ul>
+    </div>
+
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
         function previewFiles() {
             var previewContainer = document.querySelector('#preview-container');
             var fileInput = document.querySelector('input[type=file]');
-            var files = fileInput.files;
+            var files = fileInput.files; // 파일 목록을 가져옵니다.
+
+            // 여러 파일이 선택되었을 때
+            if (files.length > 1) {
+                alert('사진은 1장만 선택할 수 있습니다.');
+                fileInput.value = '';
+                return;
+            }
+
+
+            var file = fileInput.files[0];
 
             var allowedExtensions = ['jpg', 'jpeg', 'png'];
 
@@ -15,69 +121,42 @@
 
             previewContainer.innerHTML = '';
 
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
+            // 파일 확장자 가져오기
+            var fileExtension = file.name.split('.').pop().toLowerCase();
 
-                // 파일 확장자 가져오기
-                var fileExtension = file.name.split('.').pop().toLowerCase();
-
-                if (!allowedExtensions.includes(fileExtension)) {
-                    alert('jpg, jpeg, png 확장자만 허용됩니다.');
-                    fileInput.value = '';
-                    return;
-                }
-
-                if (file.size > maxSize) {
-                    alert('파일 크기가 10MB 제한을 초과하는 파일이 있습니다. 더 작은 파일을 선택해주세요.');
-                    fileInput.value = '';
-                    return;
-                }
-
-                var reader = new FileReader();
-                var previewImg = document.createElement('img');
-                previewImg.height = 100;
-                previewImg.alt = '이미지 미리보기';
-
-                reader.onloadend = function () {
-                    previewImg.src = reader.result;
-                };
-
-                reader.readAsDataURL(file);
-                previewContainer.appendChild(previewImg);
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert('jpg, jpeg, png 확장자만 허용됩니다.');
+                fileInput.value = '';
+                return;
             }
+
+            if (file.size > maxSize) {
+                alert('파일 크기가 10MB 제한을 초과하는 파일이 있습니다. 더 작은 파일을 선택해주세요.');
+                fileInput.value = '';
+                return;
+            }
+
+            var reader = new FileReader();
+            var previewImg = document.createElement('img');
+            previewImg.height = 100;
+            previewImg.alt = '이미지 미리보기';
+
+            reader.onloadend = function () {
+                previewImg.src = reader.result;
+            };
+
+            reader.readAsDataURL(file);
+            previewContainer.appendChild(previewImg);
+        }
+
+        function checkFileSelected() {
+            var fileInput = document.querySelector('input[type=file]');
+            if (!fileInput.files.length) {
+                alert('사진을 선택해주세요.');
+                return false; // form 제출 중단
+            }
+            return true; // form 제출 계속
         }
     </script>
-</head>
-<body>
-
-<div th:if="${message}">
-    <h2 th:text="${message}"/>
 </div>
-<div>
-    <form method="POST" enctype="multipart/form-data" th:action="@{/coordi/write}" role="form">
-        <table>
-            <tr>
-                <td>업로드할 파일:</td>
-                <td><input type="file" name="file" onchange="previewFiles()" multiple/></td>
-            </tr>
-            <tr>
-                <td>선택한 파일:</td>
-                <td id="preview-container"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="등록하기" /></td>
-            </tr>
-        </table>
-    </form>
-</div>
-<div>
-    <ul>
-        <li th:each="file : ${files}">
-            <a th:href="${file}" th:text="${file}" />
-        </li>
-    </ul>
-</div>
-
-</body>
 </html>
