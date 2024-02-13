@@ -34,6 +34,7 @@ public class BannerController {
             product = productService.findByFWsale();
         }
 
+
         model.addAttribute("banner", banner);
         model.addAttribute("product", product);
         return "banner";
