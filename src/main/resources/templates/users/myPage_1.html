@@ -18,38 +18,38 @@
                 </tr>
                 </thead>
 
-                <tbody style="font-size: 13px; line-height: 50px;">
+                <tbody style="font-size: 13px; line-height: 50px;" th:each="order : ${orders}">
                 <tr style="text-align: center;">
                     <td style="width: 25%;" colspan="2">
                         <div style="display: flex; justify-content: center;">
-                            <img style="width: 45px; height: 45px;" th:src="@{/images/img_basic_N19_1.png}">
+                            <img style="width: 45px; height: 45px;" th:src="${order.productImage}" alt="Product Image">
                             <div style="display: flex; flex-direction: column;">
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span>상품명</span>
+                                    <span th:text="${order.productName}">상품명</span>
                                 </div>
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span>상품옵션</span>
+                                    <span th:text="${order.productOption}">상품옵션</span>
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td style="width: 15%;">
-                        <div>주문일자</div>
+                        <div th:text="${order.date}">주문일자</div>
                     </td>
                     <td style="width: 15%;">
-                        <div>주문번호</div>
+                        <div th:text="${order.ordersId}">주문번호</div>
                     </td>
                     <td style="width: 15%;">
-                        <div>주문금액</div>
+                        <div th:text="${order.price}">주문금액</div>
                     </td>
                     <td style="width: 15%;" colspan="2">
                         <div>
-                            <span>주문상태</span>
+                            <span th:text="${order.status}">주문상태</span>
                             <button class="btn btn-outline-danger" style="margin-left: 20px; font-size: 13px;">반품</button>
                         </div>
                     </td>
                     <td style="width: 15%;">
-                        <button class="btn btn-primary" style="margin-left: 20px; font-size: 13px;">후기작성 </button>
+                        <button class="btn btn-primary" style="margin-left: 20px; font-size: 13px;">후기작성</button>
                     </td>
                 </tr>
                 </tbody>

@@ -21,22 +21,22 @@
                 <tr style="text-align: center;">
                     <td style="width: 30%;" colspan="2">
                         <div style="display: flex; justify-content: center;">
-                            <img style="width: 45px; height: 45px;" th:src="@{/images/img_basic_N19_1.png}">
+                            <img style="width: 45px; height: 45px;" th:src="${review.productImage}" alt="Product Image">
                             <div style="display: flex; flex-direction: column;">
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span>상품명</span>
+                                    <span th:text="${review.productName}">상품명</span>
                                 </div>
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span>상품옵션</span>
+                                    <span th:text="${review.productOption}">상품옵션</span>
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td style="width: 40%;">
-                        <div>주문일자</div>
+                        <div class="content" th:text="${review.content}">후기내용</div>
                     </td>
                     <td style="width: 20%;">
-                        <div>주문일자</div>
+                        <div th:text="${review.orderDate}">주문일자</div>
                     </td>
                     <td style="width: 10%;" colspan="2">
                         <div style="display: flex; width: 100px; height: 60px; align-items: center;">

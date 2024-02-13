@@ -85,3 +85,23 @@
     });
   });
 })();
+
+window.onload = function() {
+  // 수정 버튼을 가져오고 클릭 이벤트에 대한 핸들러를 추가합니다.
+  var editButton = document.querySelector('.btn.btn-outline-dark');
+  editButton.addEventListener('click', function() {
+    var reviewContent = this.parentNode.parentNode.previousSibling.previousSibling.firstChild;
+    var newContent = prompt("후기를 수정해주세요:", reviewContent.textContent);
+    if (newContent !== null) {
+      reviewContent.textContent = newContent;
+    }
+  });
+
+  // 삭제 버튼을 가져오고 클릭 이벤트에 대한 핸들러를 추가합니다.
+  var deleteButton = document.querySelector('.btn.btn-dark');
+  deleteButton.addEventListener('click', function() {
+    if (confirm("이 후기를 정말로 삭제하시겠습니까?")) {
+      this.parentNode.parentNode.parentNode.remove();
+    }
+  });
+}
