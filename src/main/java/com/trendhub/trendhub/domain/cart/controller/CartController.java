@@ -27,7 +27,14 @@ public class CartController {
     public String showCartList(){
         List<Cart> cartList = cartService.getCartList(rq.getUserInfo());
 
+        long cartProductTotalPrice = cartList
+                .stream()
+                .map(Cart::getProduct)
+                .mapToLong(Product::getPrice)
+                .sum();
+
         rq.setAttribute("cartList", cartList);
+        rq.setAttribute("cartProductTotalPrice", cartProductTotalPrice);
 
         return "products/cart";
     }

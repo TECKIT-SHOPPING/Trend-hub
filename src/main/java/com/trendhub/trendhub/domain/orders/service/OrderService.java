@@ -1,5 +1,7 @@
 package com.trendhub.trendhub.domain.orders.service;
 
+import com.trendhub.trendhub.domain.cart.entity.Cart;
+import com.trendhub.trendhub.domain.cart.service.CartService;
 import com.trendhub.trendhub.domain.orders.Repository.OrderRepository;
 import com.trendhub.trendhub.domain.orders.dto.OrderPayInfo;
 import com.trendhub.trendhub.domain.orders.entity.Orders;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final CartService cartService;
 
     @Transactional
     public Orders orderProduct(User userInfo, Product product) {
@@ -27,6 +30,29 @@ public class OrderService {
         order.addProduct(product);
 
         orderRepository.save(order);
+
+        return order;
+    }
+
+    @Transactional
+    public Orders orderProductFromCart(User userInfo) {
+        List<Cart> cartItems = cartService.findByUser(userInfo);
+
+        if (cartItems != null || cartItems.isEmpty()) {
+            throw new IllegalArgumentException("장바구니가 비어 있습니다.");
+        }
+
+        Orders order = Orders.builder()
+                .user(userInfo)
+                .build();
+
+        cartItems.stream()
+                .forEach(order::addItem);
+
+        orderRepository.save(order);
+
+        cartItems.stream()
+                .forEach(cartService::delete);
 
         return order;
     }
@@ -87,4 +113,6 @@ public class OrderService {
     public List<Orders> findByUser(User user) {
         return orderRepository.findByUser(user);
     }
+
+
 }

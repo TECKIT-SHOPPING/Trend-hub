@@ -1,27 +1,46 @@
 <html layout:decorate="layouts/layout">
 <div layout:fragment="content">
+    <script>
+        var errorMessage = "[[${cartOrderErrorMessage}]]";
+
+        if(errorMessage) {
+            alert(errorMessage)
+        }
+    </script>
+
     <ul style="display:flex; flex-direction: column; align-items:center; margin-top: 50px;">
         <li th:each="cart : ${cartList}">
             <th:block th:with="product = ${cart.product}">
-                <div class="card-body">
+                <div class="card-body" style="font-size: 15px">
                     <h2 class="card-title">
                         <span th:text="${product.name}"></span>
                     </h2>
+                    <div class="flex items-center">
+                        <div>
+                            <img th:src="${product.image}" style="width: 100px; height: 100px">
+                        </div>
 
-                    <div>
-                        <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>
-                        <span>원</span>
+                        <div class="flex items-center">
+                            <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                            <span>원</span>
+                            <form th:action="|/cart/${product.productId}|" method="POST">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-primary" style="color: #000000">삭제</button>
+                            </form>
+                        </div>
                     </div>
 
-                    <div>
-                        <form th:action="|/cart/${product.productId}|" method="POST">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn btn-primary" style="color: #000000">삭제</button>
-                        </form>
-                    </div>
+
                 </div>
             </th:block>
         </li>
+
+        <div class="flex flex-col justify-center mt-3">
+            <span>총액 : <span th:text="${#numbers.formatDecimal(cartProductTotalPrice, 0, 'COMMA', 0, 'POINT')}"></span>원</span>
+            <form th:action="@{/order/orderProductFromCart}" method="POST">
+                <button type="submit" class="btn btn-primary" style="color: #000000">전체 주문</button>
+            </form>
+        </div>
     </ul>
 
 

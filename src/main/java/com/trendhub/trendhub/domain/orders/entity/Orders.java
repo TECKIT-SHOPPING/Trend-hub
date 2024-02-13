@@ -1,5 +1,6 @@
 package com.trendhub.trendhub.domain.orders.entity;
 
+import com.trendhub.trendhub.domain.cart.entity.Cart;
 import com.trendhub.trendhub.domain.orderDetail.entity.OrderDetail;
 import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.user.entity.User;
@@ -57,6 +58,10 @@ public class Orders extends BaseTimeEntity {
         orderDetails.add(orderDetail);
     }
 
+    public void addItem(Cart cart) {
+        addProduct(cart.getProduct());
+    }
+
     public String getCode() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -94,4 +99,5 @@ public class Orders extends BaseTimeEntity {
 
         return false;
     }
+
 }

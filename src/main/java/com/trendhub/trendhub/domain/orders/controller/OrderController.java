@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -96,6 +97,19 @@ public class OrderController {
         Orders order = orderService.orderProduct(rq.getUserInfo(),  product);
 
         return "redirect:/order/" + order.getOrdersId();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/orderProductFromCart")
+    public String orderProductFromCart(RedirectAttributes redirectAttributes) {
+        try {
+            Orders order = orderService.orderProductFromCart(rq.getUserInfo());
+            return "redirect:/order/" + order.getOrdersId();
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("cartOrderErrorMessage", e.getMessage());
+            return "redirect:/cart";
+        }
+
     }
 
     @PreAuthorize("isAuthenticated()")
