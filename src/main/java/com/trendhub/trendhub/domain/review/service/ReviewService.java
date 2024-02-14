@@ -4,6 +4,7 @@ import com.trendhub.trendhub.domain.review.dto.MypageReviewDto;
 import com.trendhub.trendhub.domain.review.entity.Review;
 import com.trendhub.trendhub.domain.review.repository.ReviewRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
+@Transactional
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
@@ -34,4 +35,13 @@ public class ReviewService {
         Pageable pageable = PageRequest.of(page, 10);
         return this.reviewRepository.findAll(pageable);
     }
+    public List<Review> findByCoordi(Long id) {
+        return reviewRepository.findByCoordiIdList(id);
+    }
+
+    public Page<Review> getReviewList(int page, Long coordiId) {
+        Pageable pageable = PageRequest.of(page-1, 5);
+        return reviewRepository.findByCoordiId(pageable, coordiId);
+    }
+
 }
