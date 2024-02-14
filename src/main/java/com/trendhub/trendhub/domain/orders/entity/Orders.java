@@ -100,4 +100,11 @@ public class Orders extends BaseTimeEntity {
         return false;
     }
 
+    public String getPayStatus() {
+        if (date != null)
+            return "결제완료 (" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")";
+
+        return "결제대기";
+    }
+
 }
