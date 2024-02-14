@@ -47,7 +47,7 @@ public class OrderController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
-    public String showOrder(@PathVariable long id, Model model) {
+    public String showOrder(@PathVariable("id") long id, Model model) {
         Orders order = orderService.findById(id).orElse(null);
 
         if (order == null) {
@@ -67,7 +67,7 @@ public class OrderController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{id}/requestPay")
-    public String showRequestPay(@PathVariable long id, Model model, OrderPayInfo orderPayInfo) {
+    public String showRequestPay(@PathVariable("id") long id, Model model, OrderPayInfo orderPayInfo) {
         Orders order = orderService.findById(id).orElse(null);
 
         if (order == null) {
@@ -90,7 +90,7 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{productId}")
     public String orderProduct(
-            @PathVariable long productId
+            @PathVariable("productId") long productId
     ) {
         Product product = productService.getProduct(productId);
 
