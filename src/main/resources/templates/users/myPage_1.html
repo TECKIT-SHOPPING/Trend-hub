@@ -9,13 +9,11 @@
                         <h2 class="title">
                             <span>주문 번호: </span>
                             <span th:text="${order.ordersId}"></span>
-                            <span>제품 이름: </span>
-                            <span th:text="${order.name}"></span>
                         </h2>
                         <div>
                             <div>
-                                <div>주문번호: [[${order.sumOrderPrice}]]</div>
-                                <div>주문번호: [[${order.ordersId}]]</div>
+                                <div>제품 이름: [[${order.name}]]</div>
+                                <div>주문액: [[${order.sumOrderPrice}]]</div>
                                 <div>주문자: [[${order.user.username}]]</div>
                                 <div>주문상품: [[${order.name}]]</div>
                             </div>
