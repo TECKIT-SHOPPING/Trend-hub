@@ -41,7 +41,8 @@
                         <div th:text="${order.ordersId}">주문번호</div>
                     </td>
                     <td style="width: 15%;">
-                        <div th:text="${order.sumOrderPrice}">주문금액</div>
+                        <div th:text="${#numbers.formatDecimal(order.sumOrderPrice, 0, 'COMMA', 0, 'POINT')}">주문금액</div>
+<!--                        <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>-->
                     </td>
                     <td style="width: 15%;" colspan="2">
                         <div>
