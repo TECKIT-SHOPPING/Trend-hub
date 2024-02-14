@@ -68,7 +68,7 @@ public class Orders extends BaseTimeEntity {
         return getCreateAt().format(formatter) + UUID.randomUUID().toString() + "_" + getOrdersId();
     }
 
-    public String getName() {
+    public String getOrderName() {
         String name = orderDetails.get(0).getProduct().getName();
 
         if (orderDetails.size() > 1) {
@@ -98,6 +98,13 @@ public class Orders extends BaseTimeEntity {
         if (name != null && phone != null && address1 != null && address2 != null && zipcode != null ) return true;
 
         return false;
+    }
+
+    public String getPayStatus() {
+        if (date != null)
+            return "결제완료 (" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")";
+
+        return "결제대기";
     }
 
 }
