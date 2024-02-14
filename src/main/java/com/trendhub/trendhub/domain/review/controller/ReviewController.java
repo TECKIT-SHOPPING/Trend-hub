@@ -70,24 +70,3 @@ public class ReviewController {
         return String.format("redirect:/products/%s", productId);
     }
 }
-
-
-/*
-    Product product = productService.getProduct(productId);
-        if (bindingResult.hasErrors()) {
-                model.addAttribute("product", product);
-                model.addAttribute("productId", productId);
-                model.addAttribute("qnaDto", qnaDto);
-                return "products/popup_inquire_write";
-                }
-                try {
-                String logInid = principal.getName();
-                User user = this.userService.getUser(logInid);
-                this.qnaService.createQna(qnaDto, product, user);
-                } catch (Exception e) {
-                model.addAttribute("product", product);
-                model.addAttribute("productId", productId);
-                model.addAttribute("qnaDto", qnaDto);
-                model.addAttribute("errorMessage", e.getMessage());
-                return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
-                }*/

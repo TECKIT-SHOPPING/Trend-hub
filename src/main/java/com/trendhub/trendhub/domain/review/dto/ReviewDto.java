@@ -24,6 +24,7 @@ public class ReviewDto {
     private Integer height;
     @Digits(integer = 3, fraction = 0, message = "숫자 3자리만 입력 가능합니다.")
     private Integer weight;
+
     private LocalDateTime date;
     private String color;
     private String size;
