@@ -50,11 +50,12 @@
 </head>
 <div layout:fragment="content">
     <script>
-        var errorMessage = "[[${cartErrorMessage}]]";
+        var errorMessage = "[[${orderErrorMessage}]]";
 
         if(errorMessage) {
             alert(errorMessage)
         }
+
     </script>
 
     <!-- [E]basic-N3 -->
@@ -143,30 +144,40 @@
                             </div>
                         </div>
                         <div class="custom-container">
-                            <span class="label">사이즈</span>
+                            <span class="label">색상 / 사이즈</span>
                             <form>
-                                <select name="size" class="custom-select">
-                                    <option value="none">=== 선택 ===</option>
-                                    <option value="90">90</option>
-                                    <option value="95">95</option>
-                                    <option value="100">100</option>
-                                    <option value="105">105</option>
+                                <select name="size" class="custom-select" id="productOption2">
+                                    <option value="0">=== 선택 ===</option>
+                                    <option class="productOption" th:each="option : ${productOption}"
+                                            th:value="${option.productOptionId}"
+                                            th:utext="${option.color + '/' + option.size}"></option>
+<!--                                    <option value="90">90</option>-->
+<!--                                    <option value="95">95</option>-->
+<!--                                    <option value="100">100</option>-->
+<!--                                    <option value="105">105</option>-->
                                 </select>
                             </form>
-                            <span class="label">색상</span>
-                            <form>
-                                <select name="color" class="custom-select">
-                                    <option value="none">=== 선택 ===</option>
-                                    <option value="white">white</option>
-                                    <option value="black">black</option>
-                                </select>
-                            </form>
+<!--                            <span class="label">색상</span>-->
+<!--                            <form>-->
+<!--                                <select name="color" class="custom-select">-->
+<!--                                    <option value="none">=== 선택 ===</option>-->
+<!--                                    <option th:each="option : ${productOption}"-->
+<!--                                            th:value="${option.color}"-->
+<!--                                            th:utext="${option.color}"></option>-->
+<!--&lt;!&ndash;                                    <option value="white">white</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="black">black</option>&ndash;&gt;-->
+<!--                                </select>-->
+<!--                            </form>-->
                         </div>
                         <div class="contents-btn-group">
-                            <form class="btnset btnset-line" th:action="|/cart/${product.productId}|" method="POST">
+                            <form class="btnset btnset-line" th:action="|/cart/${product.productId}|" onclick="submitOrderInfo(this)" method="POST">
+                                <input type="hidden" name="amount" value="1">
+                                <input type="hidden" name="productOptionId" value="1">
                                 <button type="submit" style="width: 100%; height: 100%;">장바구니</button>
                             </form>
-                            <form class="btnset btnset-line" th:action="|/order/${product.productId}|" method="POST">
+                            <form class="btnset btnset-line" th:action="|/order/${product.productId}|" onclick="submitOrderInfo(this)" method="POST">
+                                <input type="hidden" name="amount" value="1">
+                                <input type="hidden" name="productOptionId" value="1">
                                 <button type="submit" style="width: 100%; height: 100%;">구매하기</button>
                             </form>
                             <!--                            <button class="btnset btnset-line" type="button" onClick="location.href='/cart'">장바구니-->
@@ -327,6 +338,19 @@
             productList.push(productUrl[1]);
             localStorage.setItem('productList', JSON.stringify(productList));
         });
+
+        function submitOrderInfo(form) {
+            var amountElement = document.querySelector('.contents-amount-num');
+            var productOptionElement = document.getElementById('productOption2');
+
+            var amount = amountElement.textContent;
+            var productOptionId = productOptionElement.options[productOptionElement.selectedIndex].value;
+
+            form.amount.value = amount;
+            form.productOptionId.value = productOptionId;
+
+            form.submit();
+        }
     </script>
 </div>
 </html>

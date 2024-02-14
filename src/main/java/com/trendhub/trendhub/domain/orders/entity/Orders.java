@@ -3,6 +3,7 @@ package com.trendhub.trendhub.domain.orders.entity;
 import com.trendhub.trendhub.domain.cart.entity.Cart;
 import com.trendhub.trendhub.domain.orderDetail.entity.OrderDetail;
 import com.trendhub.trendhub.domain.product.entity.Product;
+import com.trendhub.trendhub.domain.product.entity.ProductOption;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -47,7 +48,6 @@ public class Orders extends BaseTimeEntity {
     private Long price;
 
     public void addProduct(Product product) {
-
         OrderDetail orderDetail = OrderDetail.builder()
                 .order(this)
                 .product(product)
@@ -58,8 +58,20 @@ public class Orders extends BaseTimeEntity {
         orderDetails.add(orderDetail);
     }
 
+    public void addProduct(Product product, int amount, ProductOption productOption) {
+        OrderDetail orderDetail = OrderDetail.builder()
+                .order(this)
+                .product(product)
+                .price(product.getPrice())
+                .count(amount)
+                .productOption(productOption)
+                .build();
+
+        orderDetails.add(orderDetail);
+    }
+
     public void addItem(Cart cart) {
-        addProduct(cart.getProduct());
+        addProduct(cart.getProduct(), cart.getCount(), cart.getProductOption());
     }
 
     public String getCode() {
@@ -69,7 +81,7 @@ public class Orders extends BaseTimeEntity {
     }
 
     public String getOrderName() {
-        String name = orderDetails.get(0).getProduct().getName();
+        String name = orderDetails.get(0).getProduct().getName() + " " + orderDetails.get(0).getCount() + "개";
 
         if (orderDetails.size() > 1) {
             name += " 외 %d건".formatted(orderDetails.size() - 1);
@@ -80,7 +92,7 @@ public class Orders extends BaseTimeEntity {
 
     public long sumOrderPrice() {
         return orderDetails.stream()
-                .mapToLong(OrderDetail::getPrice)
+                .mapToLong(orderDetail -> orderDetail.getPrice() * orderDetail.getCount())
                 .sum();
     }
 
@@ -118,5 +130,12 @@ public class Orders extends BaseTimeEntity {
         System.out.println(image);
         return image;
     }
+
+    public String getOrderProductOption() {
+        String orderProductOption = orderDetails.get(0).getProductOption().getColor() + "/" + orderDetails.get(0).getProductOption().getSize();
+
+        return orderProductOption;
+    }
+
 
 }
