@@ -10,7 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRepositoryCustom {
+
+public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findAll(Pageable pageable);
     Page<Review> findByProduct_ProductId(Pageable pageable, Long productId);
 
