@@ -39,7 +39,6 @@ public class QnaController {
         List<QnaAnswer> qnaAnswer = this.qnaService.getQnaAnswer();
         String logInid = principal.getName();
         User user = this.userService.getUser(logInid);
-        System.out.println("유저 role 상태 = " + user.getRole());
         model.addAttribute("qnaDetail", qnA);
         model.addAttribute("qnaAnswer", qnaAnswer);
         model.addAttribute("user", user);

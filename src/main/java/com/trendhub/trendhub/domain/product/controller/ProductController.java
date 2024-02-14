@@ -46,7 +46,12 @@ public class ProductController {
         Product product = this.productService.getProduct(id);
         Long productId = product.getProductId();
         Page<QnA> qnAList = this.qnaService.getQnAList(page, productId);
-        String logInid = principal.getName();
+        String logInid;
+        if (principal != null) {
+            logInid = principal.getName();
+        } else {
+            logInid = null;
+        }
         User user = this.userService.getUser(logInid);
         model.addAttribute("user", user);
         model.addAttribute("product", product);
