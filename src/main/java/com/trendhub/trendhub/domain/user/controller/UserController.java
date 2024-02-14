@@ -149,6 +149,7 @@ public class UserController {
         String logInid = principal.getName();
         User user = this.userService.getUser(logInid);
         model.addAttribute("user", user);
+        model.addAttribute("duplicateNickname", false);
 
         return "users/userInfoModify";
     }
@@ -227,8 +228,8 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/change-profile")
-    public String changeProfile(
-            @RequestPart MultipartFile profile
+    public String changeProfile (
+            @RequestPart(name = "profile") MultipartFile profile
     ) {
         userService.changeProfile(rq.getUserInfo(), profile);
 

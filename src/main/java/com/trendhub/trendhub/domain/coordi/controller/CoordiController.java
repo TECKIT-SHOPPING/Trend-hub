@@ -5,14 +5,19 @@ import com.trendhub.trendhub.domain.coordi.dto.CoordiDto;
 import com.trendhub.trendhub.domain.coordi.service.CoordiService;
 import com.trendhub.trendhub.domain.review.entity.Review;
 import com.trendhub.trendhub.domain.review.service.ReviewService;
+import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/coordi")
@@ -54,22 +59,26 @@ public class CoordiController {
         return "coordi";
     }
 
+
     @GetMapping("/{coordiId}")
     public String coordiDetail(Model model, @PathVariable("coordiId") Long id,
                                @RequestParam(value = "page", defaultValue = "1") int page){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.getPrincipal() != "anonymousUser") {
+            User user = null;
+            String loginId = authentication.getName();
+            user = userService.getUser(loginId);
+            model.addAttribute("userId", user.getUserId());
+        } else {
+            model.addAttribute("userId", null);
+        }
+
         CoordiDetailDto coordiDetailDto = coordiService.findById(id);
 
         Page<Review> reviewPage = reviewService.getReviewList(page, id);
 
-        //댓글
-        // List<Review> reviewList = reviewService.findByCoordi(id);
-
-        System.out.println("coordiDto = " + coordiDetailDto);
-        System.out.println("reviewPage.getNumber() = " + reviewPage.getNumber());
-        // System.out.println("reviewList = " + reviewList);
-
         model.addAttribute("coordiDetailDto", coordiDetailDto);
-        // model.addAttribute("reviewList", reviewList);
         model.addAttribute("paging", reviewPage);
 
         return "coordiDetail";
