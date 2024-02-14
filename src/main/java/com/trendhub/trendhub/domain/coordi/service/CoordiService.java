@@ -37,7 +37,7 @@ public class CoordiService {
     public List<Coordi> getList() {
         return this.coordiRepository.findAll();
     }
-    public void postCoordi(MultipartFile multipartFile) {
+    public Long postCoordi(MultipartFile multipartFile) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() == "anonymousUser") {
             throw new IllegalStateException("로그인해주세요.");
@@ -57,6 +57,8 @@ public class CoordiService {
                 .build();
 
         coordiRepository.save(saveCoordi);
+
+        return saveCoordi.getCoordiId();
     }
 
     public List<CoordiDto> findTop5ViewCountDesc() {
@@ -111,6 +113,19 @@ public class CoordiService {
         pageable = PageRequest.of(page - 1, 20, Sort.by(sort));
 
         return coordiRepository.coordiPage(user, pageable);
+    }
+
+    public CoordiDetailDto findById(Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            String loginId = authentication.getName();
+            user = userRepository.findByLoginId(loginId).get();
+        }
+        CoordiDetailDto coordiDetailDto = coordiRepository.findCoordiById(user, id);
+        
+
+        return coordiDetailDto;
     }
 
 }

@@ -7,6 +7,7 @@ import com.trendhub.trendhub.domain.review.entity.Review;
 import com.trendhub.trendhub.domain.review.repository.ReviewRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.global.service.S3Service;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,10 +35,6 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
-    public Page<Review> getReviewList(int page, Long productId) {
-        Pageable pageable = PageRequest.of(page, 10);
-        return this.reviewRepository.findByProduct_ProductId(pageable, productId);
-    }
 
     public void createReview(User user, Product product, ReviewDto reviewDto/*, MultipartFile file*/) {
         /*String imageUrl;
@@ -48,4 +45,14 @@ public class ReviewService {
         Review saveReview = reviewDto.toEntity(user, product);
         this.reviewRepository.save(saveReview);
     }
+
+    public List<Review> findByCoordi(Long id) {
+        return reviewRepository.findByCoordiIdList(id);
+    }
+
+    public Page<Review> getReviewList(int page, Long coordiId) {
+        Pageable pageable = PageRequest.of(page-1, 5);
+        return reviewRepository.findByCoordiId(pageable, coordiId);
+    }
+
 }
