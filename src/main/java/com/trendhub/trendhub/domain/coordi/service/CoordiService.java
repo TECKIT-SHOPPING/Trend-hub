@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -129,4 +131,30 @@ public class CoordiService {
         return coordiDetailDto;
     }
 
+    public int deleteCoordi(Long coordiId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = null;
+        if (authentication.getPrincipal() != "anonymousUser") {
+            String loginId = authentication.getName();
+            user = userRepository.findByLoginId(loginId).get();
+        } else {
+            return 101;
+        }
+
+        Optional<Coordi> _findCoordi = coordiRepository.findById(coordiId);
+        if (_findCoordi.isEmpty()) {
+            return 102;
+        }
+        Coordi findCoordi = _findCoordi.get();
+
+
+        if (findCoordi.getUser().getUserId() != user.getUserId()) {
+            return 103;
+        }
+
+        coordiRepository.delete(findCoordi);
+
+        return 100;
+    }
 }
