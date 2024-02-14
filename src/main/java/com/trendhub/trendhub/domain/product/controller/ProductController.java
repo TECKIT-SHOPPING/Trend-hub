@@ -42,10 +42,11 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String detail(Model model, @PathVariable("id") Long id,
-                         @RequestParam(value = "page", defaultValue = "0") int page, Principal principal) {
+                         @RequestParam(value = "qnaPage", defaultValue = "0") int qnaPage, Principal principal) {
         Product product = this.productService.getProduct(id);
         Long productId = product.getProductId();
-        Page<QnA> qnAList = this.qnaService.getQnAList(page, productId);
+        Page<QnA> qnAList = this.qnaService.getQnAList(qnaPage, productId);
+
         String logInid;
         if (principal != null) {
             logInid = principal.getName();
@@ -55,7 +56,7 @@ public class ProductController {
         User user = this.userService.getUser(logInid);
         model.addAttribute("user", user);
         model.addAttribute("product", product);
-        model.addAttribute("paging", qnAList);
+        model.addAttribute("qnaPaging", qnAList);
         return "products/productDetail";
     }
 

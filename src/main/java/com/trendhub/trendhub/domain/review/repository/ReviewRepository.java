@@ -1,6 +1,8 @@
 package com.trendhub.trendhub.domain.review.repository;
 
 import com.trendhub.trendhub.domain.review.entity.Review;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRepositoryCustom {
@@ -11,4 +13,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRep
 //            "JOIN FETCH od.order o " +
 //            "WHERE r.user = :user")
 //    List<Review> findByUser(@Param("user") User user);
+    Page<Review> findAll(Pageable pageable);
 }

@@ -13,6 +13,8 @@ public class ProductDto {
     private int discount;
     private int totalLike;
     private Boolean liked;
+    private String size;
+    private String color;
 
     public ProductDto(Long productId, String image, String name, int price, int discount, int totalLike, Boolean liked) {
         this.productId = productId;
@@ -24,5 +26,4 @@ public class ProductDto {
         this.totalLike = totalLike;
         this.liked = liked;
     }
-
 }
