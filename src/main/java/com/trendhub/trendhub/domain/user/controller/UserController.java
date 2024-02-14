@@ -180,12 +180,20 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/check-nickname")
     public String checkNickname(
-            ChangeNicknameDto changeNicknameDto,
+            @Valid ChangeNicknameDto changeNicknameDto,
+            BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                redirectAttributes.addFlashAttribute(error.getField() + "ErrorMessage", error.getDefaultMessage());
+            }
+            return "redirect:/members/modify";
+        }
+
         try {
             userService.checkNickname(changeNicknameDto);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("nicknameErrorMessage", e.getMessage());
             return "redirect:/members/modify";
         }
@@ -196,12 +204,20 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/change-nickname")
     public String changeNickname(
-            ChangeNicknameDto changeNicknameDto,
+            @Valid ChangeNicknameDto changeNicknameDto,
+            BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                redirectAttributes.addFlashAttribute(error.getField() + "ErrorMessage", error.getDefaultMessage());
+            }
+            return "redirect:/members/modify";
+        }
+
         try {
             userService.changeNickname(rq.getUserInfo(), changeNicknameDto);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("nicknameErrorMessage", e.getMessage());
             return "redirect:/members/modify";
         }
