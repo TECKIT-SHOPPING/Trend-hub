@@ -2,86 +2,61 @@
 <div layout:fragment="content">
     <div style="display:flex; flex-direction: column; align-items:center; margin-top: 50px;">
         <th:block th:replace="~{fragments/myPage :: myPageFragment}"></th:block>
-        <ul>
-            <li th:each="order : ${orders}">
-                <div>
-                    <div>
-                        <h2 class="title">
-                            <span>주문 번호: </span>
-                            <span th:text="${order.ordersId}"></span>
-                        </h2>
-                        <div>
-                            <div>
-                                <div>제품 이름: [[${order.orderName}]]</div>
-                                <div>주문액: [[${order.sumOrderPrice}]]</div>
-                                <div>주문자: [[${order.user.username}]]</div>
-                                <div>주문상품: [[${order.orderName}]]</div>
-                                <div>결제상태: [[${order.payStatus}]]</div>
+
+        <div style="margin-top: 60px;">
+            <div style="display: flex; align-items:center; font-size: 15px; margin-bottom: 5px;">
+                <img style="width: 20px; height: 15px; margin-right: 3px;" th:src="@{/images/exp.png}"> 배송목록
+            </div>
+            <table class="table" style="width: 1200px; margin-bottom: 50px;">
+                <thead style="border-top: 1px solid black; border-bottom: 1px solid black; font-size: 16px;">
+                <tr style="text-align: center;">
+                    <th style="width: 25%;" colspan="2">상품정보</th>
+                    <th style="width: 15%;">주문일자</th>
+                    <th style="width: 15%;">주문번호</th>
+                    <th style="width: 15%;">주문금액</th>
+                    <th style="width: 15%;" colspan="2">주문상태</th>
+                    <th style="width: 15%;">후기작성</th>
+                </tr>
+                </thead>
+
+                <tbody style="font-size: 13px; line-height: 50px;">
+                <tr th:each="order : ${orders}" style="text-align: center;">
+                    <td style="width: 25%;" colspan="2">
+                        <div style="display: flex; justify-content: center;">
+                            <img style="width: 45px; height: 45px;" th:src="${order.productImage}">
+                            <div style="display: flex; flex-direction: column;">
+                                <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
+                                    <span th:text="${order.orderName}">상품명</span>
+                                </div>
+                                <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
+                                    <span>상품옵션</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-actions justify-end">
-                            <a th:href="|/order/${order.ordersId}|" class="btn btn-sm btn-primary">자세히 보기</a>
+                    </td>
+                    <td style="width: 15%;">
+                        <div th:text="${order.orderCreateAt}">주문일자</div>
+                    </td>
+                    <td style="width: 15%;">
+                        <div th:text="${order.ordersId}">주문번호</div>
+                    </td>
+                    <td style="width: 15%;">
+                        <div th:text="${order.sumOrderPrice}">주문금액</div>
+                    </td>
+                    <td style="width: 15%;" colspan="2">
+                        <div>
+                            <span th:text="${order.payStatus}">주문상태</span>
+                            <a th:href="|/order/${order.ordersId}|" style="margin-left: 20px; font-size: 13px;" class="btn btn-outline-danger">자세히 보기</a>
                         </div>
-                    </div>
-                </div>
-                <hr class="border-5">
-            </li>
-        </ul>
 
-
-<!--        <div style="margin-top: 60px;">-->
-<!--            <div style="display: flex; align-items:center; font-size: 15px; margin-bottom: 5px;">-->
-<!--                <img style="width: 20px; height: 15px; margin-right: 3px;" th:src="@{/images/exp.png}"> 배송목록-->
-<!--            </div>-->
-<!--            <table class="table" style="width: 1200px; margin-bottom: 50px;">-->
-<!--                <thead style="border-top: 1px solid black; border-bottom: 1px solid black; font-size: 16px;">-->
-<!--                <tr style="text-align: center;">-->
-<!--                    <th style="width: 25%;" colspan="2">상품정보</th>-->
-<!--                    <th style="width: 15%;">주문일자</th>-->
-<!--                    <th style="width: 15%;">주문번호</th>-->
-<!--                    <th style="width: 15%;">주문금액</th>-->
-<!--                    <th style="width: 15%;" colspan="2">주문상태</th>-->
-<!--                    <th style="width: 15%;">후기작성</th>-->
-<!--                </tr>-->
-<!--                </thead>-->
-
-<!--                <tbody style="font-size: 13px; line-height: 50px;">-->
-<!--                <tr style="text-align: center;">-->
-<!--                    <td style="width: 25%;" colspan="2">-->
-<!--                        <div style="display: flex; justify-content: center;">-->
-<!--                            <img style="width: 45px; height: 45px;" th:src="@{/images/img_basic_N19_1.png}">-->
-<!--                            <div style="display: flex; flex-direction: column;">-->
-<!--                                <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">-->
-<!--                                    <span>상품명</span>-->
-<!--                                </div>-->
-<!--                                <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">-->
-<!--                                    <span>상품옵션</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                    <td style="width: 15%;">-->
-<!--                        <div>주문일자</div>-->
-<!--                    </td>-->
-<!--                    <td style="width: 15%;">-->
-<!--                        <div>주문번호</div>-->
-<!--                    </td>-->
-<!--                    <td style="width: 15%;">-->
-<!--                        <div>주문금액</div>-->
-<!--                    </td>-->
-<!--                    <td style="width: 15%;" colspan="2">-->
-<!--                        <div>-->
-<!--                            <span>주문상태</span>-->
-<!--                            <button class="btn btn-outline-danger" style="margin-left: 20px; font-size: 13px;">반품</button>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                    <td style="width: 15%;">-->
-<!--                        <button class="btn btn-primary" style="font-size: 13px;">후기작성 </button>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--        </div>-->
+                    </td>
+                    <td style="width: 15%;">
+                        <button class="btn btn-primary" style="font-size: 13px;">후기작성 </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </html>
