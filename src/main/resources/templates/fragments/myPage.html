@@ -11,8 +11,8 @@
                 <div style="display:flex; flex-direction: column; justify-content: start; font-size:20px; margin-left: 20px; flex-grow: 1;">
                     <div style="display:flex;">
                     <span style="font-weight: bold; font-size: 50px;" th:text="${user.nickname}">jinyong</span>
-                        <div>
-                            <button onclick="location.href='/members/modify'" style="font-size: 12px; margin-left: 6px; font-weight: lighter;" class="btn btn-primary">* 회원정보수정</button>
+                        <div style="display: flex; align-items: center;">
+                            <button onclick="location.href='/members/modify'" style="font-size: 12px; margin-left: 6px; color: dodgerblue;">* 회원정보수정</button>
                         </div>
                     </div>
                     <span style="font-weight: bold;" th:text="${user.level}">Lv 1</span>

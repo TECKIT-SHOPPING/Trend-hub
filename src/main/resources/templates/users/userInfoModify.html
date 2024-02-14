@@ -32,122 +32,117 @@
                     form.checkNewPassword.focus();
                     return;
                 }
-
                 form.submit();
             }
         </script>
 
         <th:block th:replace="~{fragments/myPage :: myPageFragment}"></th:block>
-
-        <hr>
-
-        <div>아이디</div>
-        <div th:text="${@rq.userInfo.userId}"></div>
-
-        <div>비밀번호 변경</div>
-        <form th:action="@{/members/change-password}" method="POST" onsubmit="submitChangePasswordForm(this); return false;">
-            <input type="hidden" name="_method" value="PUT">
-            <div>
-                <label>기존 비밀번호</label>
-                <input type="password" name="originPassword" placeholder="비밀번호" class="input input-bordered">
+        <div style="display: flex; flex-direction: column; align-items: center; font-size: 24px; margin-top: 40px; margin-bottom: 150px;">
+            <div style="display:flex; flex-direction: column; align-items: center; width: 550px; height: auto; border: 2px solid lightgray; border-radius: 20px; padding-top: 20px; padding-bottom: 20px; margin-bottom: 20px;">
+                <img style="width: 200px; height: 200px;" th:src="${@rq.userInfo.profile}">
+                <form style="display: flex; justify-content: center; width: 550px; margin-top: 20px;"
+                      th:action="@{/members/change-profile}" method="POST"
+                      enctype="multipart/form-data">
+                    <div style="width: 300px;">
+                        <input type="hidden" name="_method" value="PUT">
+                        <input type="file" name="profile">
+                    </div>
+                    <button type="submit" class="btn btn-outline-secondary" style="font-size: 16px;">프로필 사진
+                        저장
+                    </button>
+                </form>
             </div>
 
-            <div>
-                <label>새 비밀번호</label>
-                <input type="password" name="newPassword" placeholder="비밀번호" class="input input-bordered">
+            <span style="display: flex; width: 545px; margin-bottom: 30px;">
+             <div style="width: 230px; font-weight: bold;">아이디</div>
+             <div th:text="${@rq.userInfo.userId}"></div>
+            </span>
+            <form th:action="@{/members/change-password}" method="POST"
+                  onsubmit="submitChangePasswordForm(this); return false;">
+                <input type="hidden" name="_method" value="PUT">
+                <div style="display: flex; width: auto; margin-bottom: 30px;">
+                    <label style="width: 230px; font-weight: bold;">기존 비밀번호</label>
+                    <input style="width: 240px;" type="password" name="originPassword" placeholder="비밀번호를 입력하세요">
+                </div>
+                <div th:if="${originPasswordErrorMessage}"
+                     style="margin-bottom:5px; text-align: start; font-size: 17px; color: red; font-weight: bold;"
+                     class="fieldError">
+                    <p th:text="${originPasswordErrorMessage}"></p>
+                </div>
+
+                <div style="display: flex; width: auto; margin-bottom: 30px;">
+                    <label style="width: 230px; font-weight: bold;">새 비밀번호</label>
+                    <input style=" width: 240px;" type="password" name="newPassword" placeholder="비밀번호를 입력하세요">
+                </div>
+                <div th:if="${newPasswordErrorMessage}"
+                     style="margin-bottom:5px; text-align: start; font-size: 17px; color: red; font-weight: bold;"
+                     class="fieldError">
+                    <p th:text="${newPasswordErrorMessage}"></p>
+                </div>
+
+                <div style="display: flex; width: auto; margin-bottom: 30px;">
+                    <label style="width: 230px; font-weight: bold;">새 비밀번호 확인</label>
+                    <input style="flex-grow: 1;" type="password" name="checkNewPassword" placeholder="비밀번호를 입력하세요">
+                    <button type="submit" class="btn btn-outline-primary" style="font-size: 16px; margin-left: 5px;">
+                        변경하기
+                    </button>
+                </div>
+                <div th:if="${checkNewPasswordErrorMessage}"
+                     style="margin-bottom:5px; text-align: start; font-size: 17px; color: red; font-weight: bold;"
+                     class="fieldError">
+                    <p th:text="${checkNewPasswordErrorMessage}"></p>
+                </div>
+            </form>
+            <div th:if="${passwordErrorMessage}"
+                 style="margin-bottom:5px; text-align: start; font-size: 17px; color: red; font-weight: bold;"
+                 class="fieldError">
+                <p th:text="${passwordErrorMessage}"></p>
             </div>
 
-            <div>
-                <label>새 비밀번호 확인</label>
-                <input type="password" name="checkNewPassword" placeholder="비밀번호" class="input input-bordered">
+
+            <form th:action="@{/members/check-nickname}" method="GET">
+                <div style="display: flex; width: auto; margin-left: 76px; margin-bottom: 30px;">
+                    <label style="width: 230px; font-weight: bold;">닉네임</label>
+                    <div>
+                        <input type="text" name="nickname" placeholder="닉네임">
+                        <button type="submit" class="btn btn-outline-danger" style="font-size: 16px; ">
+                            중복확인
+                        </button>
+                        <form th:action="@{/members/change-nickname}" method="POST">
+                            <input type="hidden" name="_method" value="PUT">
+                            <button type="submit" class="btn btn-outline-primary"
+                                    style="font-size: 16px;">변경하기
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div th:if="${nicknameErrorMessage}"
+                     style="text-align: center; font-size: 17px; color: red; font-weight: bold;"
+                     class="fieldError">
+                    <p th:text="${nicknameErrorMessage}"></p>
+                </div>
+            </form>
+            <div style="width: 550px;">
+                <div style="font-weight: bold; margin-bottom: 5px">주소 정보</div>
+                <form th:action="@{/members/address}" method="POST" style="width: 600px;">
+                        <input style="border: 1px solid lightgray; margin-bottom: 15px;" type="text" id="zipcode" name="zipcode" placeholder="우편번호">
+                        <input type="button" class="btn btn-outline-dark" style="font-size: 16px;  margin-bottom: 5px" onclick="execDaumPostcode()"
+                               value="우편번호 검색"><br>
+                        <input style="border: 1px solid lightgray;  margin-bottom: 15px" type="text" id="address1" name="address1" placeholder="도로명주소">
+                        <span id="guide" style="color:#999;display:none"></span>
+                        <input style="border: 1px solid lightgray;" type="text" id="extraAddress" placeholder="참고항목">
+                        <input style="border: 1px solid lightgray; width: 490px;" type="text" id="address2" name="address2" placeholder="상세주소">
+                        <button type="submit" class="btn btn-outline-primary" style="font-size: 16px;">저장하기</button>
+                </form>
             </div>
-
-            <button type="submit" class="btn btn-primary" style="color: #000000">비밀번호 변경</button>
-        </form>
-
-        <div th:if="${originPasswordErrorMessage}" style="text-align: center; font-size: 17px; color: red; font-weight: bold;"
-             class="fieldError">
-            <p th:text="${originPasswordErrorMessage}"></p>
         </div>
-
-        <div th:if="${newPasswordErrorMessage}" style="text-align: center; font-size: 17px; color: red; font-weight: bold;"
-             class="fieldError">
-            <p th:text="${newPasswordErrorMessage}"></p>
-        </div>
-
-        <div th:if="${checkNewPasswordErrorMessage}" style="text-align: center; font-size: 17px; color: red; font-weight: bold;"
-             class="fieldError">
-            <p th:text="${checkNewPasswordErrorMessage}"></p>
-        </div>
-
-        <div th:if="${passwordErrorMessage}" style="text-align: center; font-size: 17px; color: red; font-weight: bold;"
-             class="fieldError">
-            <p th:text="${passwordErrorMessage}"></p>
-        </div>
-
-        <hr>
-
-        <div>닉네임 중복 확인</div>
-        <form th:action="@{/members/check-nickname}" method="GET">
-            <div>
-                <label>닉네임</label>
-                <input type="text" name="nickname" placeholder="닉네임" class="input input-bordered">
-            </div>
-
-            <button type="submit" class="btn btn-primary" style="color: #000000">닉네임 중복 확인</button>
-        </form>
-        <div th:if="${nicknameErrorMessage}" style="text-align: center; font-size: 17px; color: red; font-weight: bold;"
-             class="fieldError">
-            <p th:text="${nicknameErrorMessage}"></p>
-        </div>
-
-        <div>닉네임 변경</div>
-        <form th:action="@{/members/change-nickname}" method="POST">
-            <input type="hidden" name="_method" value="PUT">
-            <div>
-                <label>닉네임</label>
-                <input type="text" name="nickname" placeholder="닉네임" class="input input-bordered">
-            </div>
-
-            <button type="submit" class="btn btn-primary" style="color: #000000">닉네임 변경</button>
-        </form>
-
-        <hr>
-
-        <div>프로필 이미지 변경</div>
-        <img th:src="${@rq.userInfo.profile}">
-        <form th:action="@{/members/change-profile}" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="_method" value="PUT">
-            <div>
-                <input type="file" name="profile" class="input input-bordered">
-            </div>
-
-            <button type="submit" class="btn btn-primary" style="color: #000000">프로필 이미지 변경</button>
-        </form>
-
-        <hr>
-
-        <div>주소 정보</div>
-        <form th:action="@{/members/address}" method="POST">
-            <div>
-                <input type="text" id="zipcode" name="zipcode" placeholder="우편번호">
-                <input type="button" class="btn btn-primary" style="color: #000000" onclick="execDaumPostcode()" value="우편번호 검색"><br>
-                <input type="text" id="address1" name="address1" placeholder="도로명주소">
-                <span id="guide" style="color:#999;display:none"></span>
-                <input type="text" id="address2" name="address2" placeholder="상세주소">
-                <input type="text" id="extraAddress" placeholder="참고항목">
-            </div>
-
-            <button type="submit" class="btn btn-primary" style="color: #000000">저장하기</button>
-        </form>
-
 
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
         <script>
             //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
             function execDaumPostcode() {
                 new daum.Postcode({
-                    oncomplete: function(data) {
+                    oncomplete: function (data) {
                         // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
                         // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
@@ -157,15 +152,15 @@
 
                         // 법정동명이 있을 경우 추가한다. (법정리는 제외)
                         // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
                             extraRoadAddr += data.bname;
                         }
                         // 건물명이 있고, 공동주택일 경우 추가한다.
-                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
                             extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
                         }
                         // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                        if(extraRoadAddr !== ''){
+                        if (extraRoadAddr !== '') {
                             extraRoadAddr = ' (' + extraRoadAddr + ')';
                         }
 
@@ -174,7 +169,7 @@
                         document.getElementById("address1").value = roadAddr;
 
                         // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
-                        if(roadAddr !== ''){
+                        if (roadAddr !== '') {
                             document.getElementById("extraAddress").value = extraRoadAddr;
                         } else {
                             document.getElementById("extraAddress").value = '';
@@ -182,12 +177,12 @@
 
                         var guideTextBox = document.getElementById("guide");
                         // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-                        if(data.autoRoadAddress) {
+                        if (data.autoRoadAddress) {
                             var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
                             guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
                             guideTextBox.style.display = 'block';
 
-                        } else if(data.autoJibunAddress) {
+                        } else if (data.autoJibunAddress) {
                             var expJibunAddr = data.autoJibunAddress;
                             guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
                             guideTextBox.style.display = 'block';
