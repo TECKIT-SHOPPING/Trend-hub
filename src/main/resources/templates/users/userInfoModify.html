@@ -141,10 +141,9 @@
                     <input style="border: 1px solid lightgray;  margin-bottom: 15px" type="text" id="address1"
                            name="address1" placeholder="도로명주소">
                     <span id="guide" style="color:#999;display:none"></span>
-                    <input style="border: 1px solid lightgray;" type="text" id="extraAddress" placeholder="참고항목">
-                    <input style="border: 1px solid lightgray; width: 490px;" type="text" id="address2" name="address2"
+                    <input style="border: 1px solid lightgray;" type="text" id="address2" name="address2"
                            placeholder="상세주소">
-                    <button type="submit" class="btn btn-outline-primary" style="font-size: 16px;">저장하기</button>
+                    <button type="submit" class="btn btn-outline-primary" style="font-size: 16px; margin-bottom: 5px;">저장하기</button>
                 </form>
             </div>
         </div>
@@ -181,11 +180,11 @@
                         document.getElementById("address1").value = roadAddr;
 
                         // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
-                        if (roadAddr !== '') {
-                            document.getElementById("extraAddress").value = extraRoadAddr;
-                        } else {
-                            document.getElementById("extraAddress").value = '';
-                        }
+                        // if (roadAddr !== '') {
+                        //     document.getElementById("extraAddress").value = extraRoadAddr;
+                        // } else {
+                        //     document.getElementById("extraAddress").value = '';
+                        // }
 
                         var guideTextBox = document.getElementById("guide");
                         // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.

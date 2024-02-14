@@ -5,14 +5,14 @@
 
         <div style="margin-top: 60px;">
             <div style="display: flex; align-items:center; font-size: 30px; margin-bottom: 5px;">
-                <img style="width: 40px; height: 30px; margin-right: 3px;" th:src="@{/images/exp.png}"> 배송목록
+                <img style="width: 40px; height: 30px; margin-right: 10px;" th:src="@{/images/exp.png}">주문목록
             </div>
-            <table class="table" style="width: 1500px; margin-bottom: 50px;">
+            <table class="table" style="width: 1400px; margin-bottom: 50px;">
                 <thead style="border-top: 1px solid black; border-bottom: 1px solid black; font-size: 20px;">
                 <tr style="text-align: center;">
                     <th style="width: 25%;" colspan="2">상품정보</th>
-                    <th style="width: 15%;">주문일자</th>
-                    <th style="width: 15%;">주문번호</th>
+                    <th style="width: 20%;">주문일자</th>
+                    <th style="width: 10%;">주문번호</th>
                     <th style="width: 15%;">주문금액</th>
                     <th style="width: 15%;" colspan="2">주문상태</th>
                     <th style="width: 15%;">후기작성</th>
@@ -35,10 +35,10 @@
                             </div>
                         </div>
                     </td>
-                    <td style="width: 15%;">
-                        <div th:text="${order.orderCreateAt}">주문일자</div>
+                    <td style="width: 20%;">
+                        <div id="dateField" th:text="${order.orderCreateAt}">주문일자</div>
                     </td>
-                    <td style="width: 15%;">
+                    <td style="width: 10%;">
                         <div th:text="${order.ordersId}">주문번호</div>
                     </td>
                     <td style="width: 15%;">
@@ -60,6 +60,18 @@
             </table>
         </div>
     </div>
-    <div style="height: 350px;"></div>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        var dateField = document.getElementById('dateField');
+        var date = new Date(dateField.textContent);
+        dateField.textContent = date.getFullYear() + '-' +
+            ('0' + (date.getMonth()+1)).slice(-2) + '-' +
+            ('0' + date.getDate()).slice(-2) + ' ' +
+            ('0' + date.getHours()).slice(-2) + ':' +
+            ('0' + date.getMinutes()).slice(-2) + ':' +
+            ('0' + date.getSeconds()).slice(-2);
+    </script>
+    <div style="height: 200px;"></div>
 </div>
 </html>
