@@ -67,6 +67,9 @@ public class OrderService {
 
     public void payDone(Orders order) {
         order.setPaymentDone();
+
+       int userPoint = order.getUser().getPoint();
+       order.getUser().setPoint(userPoint + (int) (order.sumOrderPrice() * 0.07));
     }
 
     public void checkCanPay(String orderCode, long pgPayPrice) {
