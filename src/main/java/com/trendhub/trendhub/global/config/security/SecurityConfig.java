@@ -45,6 +45,8 @@ public class SecurityConfig {
                                         .requestMatchers("/members/modify").authenticated()
                                         .requestMatchers("/members/myPage/2").authenticated()
                                         .requestMatchers("/members/myPage/3").authenticated()
+                                        .requestMatchers("/order/**").authenticated()
+                                        .requestMatchers("/cart/**").authenticated()
                                         .requestMatchers("/**").permitAll()
                 )
                 .exceptionHandling(
