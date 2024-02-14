@@ -46,6 +46,7 @@ public class ProductController {
         Product product = this.productService.getProduct(id);
         Long productId = product.getProductId();
         Page<QnA> qnAList = this.qnaService.getQnAList(qnaPage, productId);
+
         String logInid;
         if (principal != null) {
             logInid = principal.getName();
