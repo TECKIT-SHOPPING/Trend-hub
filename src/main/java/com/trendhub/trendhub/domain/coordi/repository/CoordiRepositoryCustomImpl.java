@@ -123,6 +123,7 @@ public class CoordiRepositoryCustomImpl implements CoordiRepositoryCustom {
             result = jpaQueryFactory
                     .select(Projections.constructor(CoordiDetailDto.class,
                             coordi.coordiId,
+                            coordi.user.userId,
                             coordi.image,
                             coordi.totalLike,
                             Expressions.asBoolean(false).as("liked")
@@ -134,6 +135,7 @@ public class CoordiRepositoryCustomImpl implements CoordiRepositoryCustom {
             result = jpaQueryFactory
                     .select(Projections.constructor(CoordiDetailDto.class,
                             coordi.coordiId,
+                            coordi.user.userId,
                             coordi.image,
                             coordi.totalLike,
                             new CaseBuilder()

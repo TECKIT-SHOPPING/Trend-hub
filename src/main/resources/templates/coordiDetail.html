@@ -7,24 +7,22 @@
             .wider-column {
                 width: 300px;
             }
-
-            .contents-container1 { position: relative;}
-
-            /*.textset { margin-bottom: 0;}*/
         </style>
     </th:block>
 
-    <div style="display: flex; flex-direction: column; justify-content: center;">
-        <div class="contents-contagginer1 container-md">
+    <div style="display: flex; flex-direction: column; justify-content: center; width: 80%; margin: 0 auto;">
+        <div style="width: 100%;">
             <div class="textset">
-                <h2 class="textset-tit" style="text-align: left; margin-left: 100px; font-size: 18px;">My Style</h2>
+                <h2 class="textset-tit" style="text-align: left; margin-left: 100px; font-size: 3rem; font-weight: bold;">My Style</h2>
                 <div class="hr-container" style="display: flex; justify-content: center;">
                     <hr class="hr-style first-hr" style="border: solid 1px black; width: 88%;">
                 </div>
             </div>
         </div>
         <div class="basic-N45" data-bid="aGLrPw1vOT">
-            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;" class="contents-container1 container-md2">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 88%; margin: 0 auto;" class="contents-container1 container-md2">
+                <button th:if="${userId == coordiDetailDto.userId}" class="btn btn-dark" th:onclick="|deleteCoordi('${coordiDetailDto.coordiId}')|" style="font-size: 13px; margin-left: auto; padding: 20px; border-radius: 30px;">코디 삭제 버튼</button>
+
                 <div style="position: relative;">
                     <img class="object-cover" style = "width: 500px; height: 500px;" th:src="${coordiDetailDto.image}" alt="베스트코디 이미지">
                     <div style="display: flex; flex-direction: row;">
@@ -39,9 +37,9 @@
                         <span th:text="${coordiDetailDto.totalLike}" style="margin-left: 5px; margin-top: 5px; font-size: 2rem;"></span>
                     </div>
                 </div>
-                <hr class="hr-style second-hr" style="border: solid 1px black; width: 70%; margin-top: 80px; margin-bottom: 10px;">
-                <div id="section-inquiry" class="section-content mt-10" style="overflow-y: visible; max-height: 600px;">
-                    <h2 class="text-4xl font-bold mb-8" style="text-align: left; font-size: 18px;">댓글</h2>
+                <hr class="hr-style second-hr" style="border: solid 1px black; width: 100%; margin-top: 80px; margin-bottom: 10px;">
+                <div id="section-inquiry" class="section-content mt-10" style="overflow-y: visible; max-height: 500px; width: 100%;">
+                    <h2 class="text-4xl font-bold mb-8" style="text-align: left; font-size: 2.5rem;">댓글</h2>
 
                     <table class="w-full border-collapse border border-gray-300 mt-8">
                         <thead>
@@ -110,7 +108,7 @@
                 </div>
 
                 <div class="hr-container" style="display: flex; justify-content: center;">
-                    <hr class="hr-style first-hr" style="border: solid 1px black; width: 88%;">
+                    <hr class="hr-style first-hr" style="border: solid 1px black; width: 100%; margin-top: 200px;">
                 </div>
             </div>
         </div>
@@ -162,14 +160,14 @@
                 });
         }
 
-        window.onload = function() {
-            var firstHr = document.querySelector('.first-hr');
-            var secondHr = document.querySelector('.second-hr');
-            var containerWidth = document.querySelector('.hr-container').offsetWidth;
-
-            firstHr.style.width = containerWidth * 0.88 + 'px';
-            secondHr.style.width = containerWidth * 0.88 + 'px';
-        };
+        // window.onload = function() {
+        //     var firstHr = document.querySelector('.first-hr');
+        //     var secondHr = document.querySelector('.second-hr');
+        //     var containerWidth = document.querySelector('.hr-container').offsetWidth;
+        //
+        //     firstHr.style.width = containerWidth * 0.88 + 'px';
+        //     secondHr.style.width = containerWidth * 0.88 + 'px';
+        // };
 
         function deleteReview(reviewId) {
             const token = /*[[${_csrf.token}]]*/ '';
@@ -187,6 +185,39 @@
                             throw new Error('HTTP error ' + response.status);
                         }
                         location.reload();
+                    })
+                    .catch(error => {
+                        console.log('There has been a problem with your fetch operation: ' + error.message);
+                    });
+            }
+        }
+
+        function deleteCoordi(coordiId) {
+            const token = /*[[${_csrf.token}]]*/ '';
+            if (confirm('정말로 코디를 삭제하시겠습니까?')) {
+                fetch('/api/coordi/' + coordiId, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data === 100) {
+                            window.location.href='/coordi';
+                            return;
+                        }else if (data === 101) {
+                            if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                                window.location.href = '/members/login';
+                            }
+                        }else if (data === 102) {
+                            alert("코디가 존재하지 않습니다.");
+                            return;
+                        }else if (data === 103) {
+                            alert("일치하지 않는 유저입니다.");
+                            return;
+                        }
                     })
                     .catch(error => {
                         console.log('There has been a problem with your fetch operation: ' + error.message);
