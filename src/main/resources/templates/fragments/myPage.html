@@ -3,22 +3,27 @@
 <div th:fragment="myPageFragment" th:object="${user}">
     <div style="display:flex; flex-direction: column; align-items:center;">
         <div style="display:flex; justify-content: space-between; width: fit-content;">
-            <div style="display: flex; align-items: center; width: 1000px;" >
+            <div style="display: flex; align-items: center; width: 1000px;">
                 <div>
                     <img style="width: 180px; height: 180px;"
                          th:src="${@rq.userInfo.profile}"/>
                 </div>
                 <div style="display:flex; flex-direction: column; justify-content: start; font-size:20px; margin-left: 20px; flex-grow: 1;">
                     <div style="display:flex;">
-                    <span style="font-weight: bold; font-size: 50px;" th:text="${user.nickname}">jinyong</span>
+                        <span style="font-weight: bold; font-size: 50px;" th:text="${user.nickname}">jinyong</span>
                         <div style="display: flex; align-items: center;">
-                            <button onclick="location.href='/members/modify'" style="font-size: 12px; margin-left: 6px; color: dodgerblue;">* 회원정보수정</button>
+                            <button onclick="location.href='/members/modify'"
+                                    style="font-size: 12px; margin-left: 6px; color: dodgerblue;">* 회원정보수정
+                            </button>
                         </div>
                     </div>
-                    <span style="font-weight: bold;" th:text="${user.level}">Lv 1</span>
                     <span style="display: flex; align-items: center;">
-                        <img style="width: 15px; height: 15px;" th:src="@{/images/point.png}">
-                        <div style="font-weight: bold; margin-left: 3px;" th:text="${user.point}"></div>
+                        <biv style=" font-size: 25px; margin-left: 5px; margin-right: 5px;">Lv</biv>
+                        <div style="font-weight: bold; margin-left: 3px;" th:text="${user.level}"></div>
+                    </span>
+                    <span style="display: flex; align-items: center;">
+                        <img style="width: 30px; height: 30px; margin-right: 3px;" th:src="@{/images/point.png}">
+                        <div style="font-weight: bold; margin-left: 3px;" th:text="${#numbers.formatInteger(user.point, 3, 'COMMA') + '원'}"></div>
                     </span>
                 </div>
                 <div style="display: flex; flex-direction: column; justify-content: space-between;">
