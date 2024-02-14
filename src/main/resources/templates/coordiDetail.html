@@ -26,12 +26,6 @@
             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;" class="contents-container1 container-md2">
                 <div style="position: relative;">
                     <img class="object-cover" style = "width: 500px; height: 500px;" th:src="${coordiDetailDto.image}" alt="베스트코디 이미지">
-<!--                    <div class="like-container" style="position: absolute; bottom: -40px; left: 0; display: flex; align-items: center;">-->
-<!--                        <button class="like-button" onclick="toggleLikeCoordi(this)" style="padding: 5px; width: 30px; height: 30px;">-->
-<!--                            <img class="like-icon" src="../images/unlike.png" width="20" height="20"/>-->
-<!--                        </button>-->
-<!--                        <span class="like-count" th:text="${coordiDetailDto.totalLike}" style="margin-left: 5px;"></span>-->
-<!--                    </div>-->
                     <div style="display: flex; flex-direction: row;">
                         <div class="cardset-actions"
                              th:attr="data-heart=${coordiDetailDto.coordiId}"
@@ -68,7 +62,7 @@
                             <td class="py-3 px-6 text-xl text-center wider-column" th:text="${review.content}"></td>
                             <td class="py-3 px-6 text-xl text-center" th:text="${review.createAt}"></td>
                             <td>
-                                <button class="btn btn-dark" style="margin-left: 10px; font-size: 13px;">삭제</button>
+                                <button th:if="${userId == review.user.userId}" class="btn btn-dark" th:onclick="|deleteReview('${review.reviewId}')|" style="margin-left: 10px; font-size: 13px;">삭제</button>
                             </td>
                         </tr>
                         </tbody>
@@ -157,6 +151,29 @@
             firstHr.style.width = containerWidth * 0.88 + 'px';
             secondHr.style.width = containerWidth * 0.88 + 'px';
         };
+
+        function deleteReview(reviewId) {
+            const token = /*[[${_csrf.token}]]*/ '';
+            if (confirm('정말로 이 후기를 삭제하시겠습니까?')) {
+                fetch('/api/reviews/' + reviewId, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                    .then(response => {
+                        console.log(response)
+                        if (!response.ok) {
+                            throw new Error('HTTP error ' + response.status);
+                        }
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.log('There has been a problem with your fetch operation: ' + error.message);
+                    });
+            }
+        }
 
     </script>
 </div>
