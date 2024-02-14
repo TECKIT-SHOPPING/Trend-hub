@@ -7,7 +7,7 @@
 
     <script th:inline="javascript">
         const orderCode = /*[[ ${order.code} ]]*/ null;
-        const buyerUsername = /*[[ ${order.user.username} ]]*/ null;
+        const buyerUsername = /*[[ ${order.user.email} ]]*/ null;
         const orderName = /*[[ ${order.orderName} ]]*/ null;
         const orderPayPrice = /*[[ ${order.sumOrderPrice} ]]*/ null;
         const toss_clientKey = /*[[ ${@environment.getProperty('custom.tossPayments.clientKey')} ]]*/ null;
