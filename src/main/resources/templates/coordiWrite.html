@@ -7,10 +7,12 @@
                 width: 40%;
                 margin: 0 auto;
             }
+
             .form-group label {
                 font-size: 1.5rem;
                 text-align: center;
             }
+
             #preview-container img {
                 margin: 1rem auto;
                 display: block;
@@ -20,6 +22,7 @@
                 border-radius: 4px;
                 padding: 5px;
             }
+
             .form-control-file {
                 display: block;
                 margin: 0 auto;
@@ -31,6 +34,7 @@
                 background-color: black;
                 color: white;
             }
+
             .btn-primary:hover {
                 background-color: white;
                 color: black;
@@ -47,22 +51,22 @@
                 display: inline;
                 padding: 6px 12px;
                 cursor: pointer;
-                background-color: black; /* 배경색 검정 */
-                color: white; /* 글씨색 흰색 */
+                background-color: white; /* 배경색 검정 */
+                color: black; /* 글씨색 흰색 */
                 border: 1px solid #ddd;
                 border-radius: 4px;
                 font-size: 1.5rem;
             }
 
-            .custom-file-upload:hover {
-                background-color: white; /* 배경색 흰색 */
-                color: black; /* 글씨색 검정 */
-            }
+            /*.custom-file-upload:hover {*/
+            /*    background-color: white; !* 배경색 흰색 *!*/
+            /*    color: black; !* 글씨색 검정 *!*/
+            /*}*/
 
             #preview-container {
-                width: 500px;
+                width: 400px;
                 height: 500px;
-                border: 1px solid #ddd;
+                border: 3px solid #ddd;
                 border-radius: 4px;
                 margin: 1rem auto;
                 display: flex;
@@ -71,30 +75,32 @@
             }
         </style>
     </th:block>
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 100px;">
+        <div style="font-weight: bold; text-decoration-line: underline; font-size: 35px;">코디 등록</div>
+    </div>
     <div th:if="${message}">
         <h2 th:text="${message}" class="text-center text-success"/>
     </div>
     <div class="content-container">
-        <form method="POST" enctype="multipart/form-data" th:action="@{/coordi/write}" role="form" class="my-5" onsubmit="return checkFileSelected();">
+        <form method="POST" enctype="multipart/form-data" th:action="@{/coordi/write}" role="form" class="my-5"
+              onsubmit="return checkFileSelected();">
             <div class="form-group">
-                <label for="file-upload" class="custom-file-upload">코디작성 사진 등록</label>
-                <input id="file-upload" type="file" name="file" onchange="previewFiles()" multiple class="form-control-file" style="display: none;"/>
-            </div>
-            <div class="form-group">
-                <label>선택한 파일:</label>
-                <div id="preview-container">이미지 미리보기</div>
+                <label id="preview-container" for="file-upload" class="custom-file-upload"> + 여기를 눌러 사진을 등록해보세요</label>
+                <input id="file-upload" accept="image/*" type="file" name="file" onchange="previewFiles()" multiple
+                       class="form-control-file" style="display: none;"/>
             </div>
             <div class="form-group text-center">
-                <input type="submit" value="등록하기" class="btn btn-primary btn-block" />
+                <input type="submit" value="코디 등록하기"
+                       style="width: 300px; height: 60px; background-color: black; color: white; font-size: 22px; border-radius: 20px;"/>
             </div>
         </form>
     </div>
-        <ul>
-            <li th:each="file : ${files}">
-                <a th:href="${file}" th:text="${file}" />
-            </li>
-        </ul>
-    </div>
+    <ul>
+        <li th:each="file : ${files}">
+            <a th:href="${file}" th:text="${file}"/>
+        </li>
+    </ul>
+</div>
 
 </div>
 <div layout:fragment="script">
@@ -158,5 +164,6 @@
             return true; // form 제출 계속
         }
     </script>
+    <div style="height: 200px;"></div>
 </div>
 </html>
