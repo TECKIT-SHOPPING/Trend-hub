@@ -3,7 +3,6 @@ package com.trendhub.trendhub.domain.coordi.controller;
 import com.trendhub.trendhub.domain.coordi.dto.CoordiDetailDto;
 import com.trendhub.trendhub.domain.coordi.dto.CoordiDto;
 import com.trendhub.trendhub.domain.coordi.service.CoordiService;
-import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.review.entity.Review;
 import com.trendhub.trendhub.domain.review.service.ReviewService;
 import com.trendhub.trendhub.domain.user.entity.User;
@@ -59,6 +58,7 @@ public class CoordiController {
 
         return "coordi";
     }
+
 
     @GetMapping("/{coordiId}")
     public String coordiDetail(Model model, @PathVariable("coordiId") Long id,
