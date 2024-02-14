@@ -57,13 +57,13 @@
                     <div style="display: flex; flex-direction: row;">
                         <div class="cardset-actions"
                              th:attr="data-heart=${coordiDetailDto.coordiId}"
-                             onclick="toggleLikeCoordi(this)">
+                             onclick="toggleLikeCoordi(this)" style = "margin-top: 6px;">
                             <img th:if="${coordiDetailDto.liked}" src="../images/like.png"
                                  width="34" height="34" />
                             <img th:unless="${coordiDetailDto.liked}" src="../images/unlike.png"
                                  width="34" height="34"/>
                         </div>
-                        <span th:text="${coordiDetailDto.totalLike}" style="margin-left: 5px; font-size: 2rem;"></span>
+                        <span th:text="${coordiDetailDto.totalLike}" style="margin-left: 5px; margin-top: 5px; font-size: 2rem;"></span>
                     </div>
                 </div>
                 <hr class="hr-style second-hr" style="border: solid 1px black; width: 100%; margin-top: 80px; margin-bottom: 10px;">

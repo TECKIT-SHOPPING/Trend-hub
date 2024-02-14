@@ -3,6 +3,8 @@ package com.trendhub.trendhub.domain.coordi.controller;
 import com.trendhub.trendhub.domain.coordi.dto.CoordiDetailDto;
 import com.trendhub.trendhub.domain.coordi.dto.CoordiDto;
 import com.trendhub.trendhub.domain.coordi.service.CoordiService;
+import com.trendhub.trendhub.domain.review.entity.Review;
+import com.trendhub.trendhub.domain.review.service.ReviewService;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.review.entity.Review;
 import com.trendhub.trendhub.domain.review.service.ReviewService;
