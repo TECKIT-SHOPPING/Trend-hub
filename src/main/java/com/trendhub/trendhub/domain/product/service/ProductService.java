@@ -77,6 +77,8 @@ public class ProductService {
     public Product getProduct(Long id) {
         Optional<Product> product = this.productRepository.findById(id);
         if (product.isPresent()) {
+            Product findProduct = product.get();
+            findProduct.addViewCount();
             return product.get();
         } else {
             throw new DataNotFoundException("post not found");

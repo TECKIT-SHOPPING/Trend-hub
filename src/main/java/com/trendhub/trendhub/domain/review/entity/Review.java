@@ -9,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,6 +32,9 @@ public class Review extends BaseTimeEntity {
     private User user;
 
     private String content;
+    private LocalDateTime date;
+    private String color;
+    private String size;
 
     // 별점
     private Integer star;
