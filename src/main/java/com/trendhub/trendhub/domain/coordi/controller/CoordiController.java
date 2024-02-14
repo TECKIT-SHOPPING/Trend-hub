@@ -21,6 +21,7 @@ public class CoordiController {
 
     private final CoordiService coordiService;
     private final UserService userService;
+    private final ReviewService reviewService;
 
     /**
      * 코디 작성 화면 조회
