@@ -7,13 +7,42 @@
             .wider-column {
                 width: 300px;
             }
+
+            #comment-form-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 20px;
+            }
+
+            #comment-input {
+                width: 100%;
+                margin-bottom: 10px;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            #submit-comment-btn {
+                background-color: #000000;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            #submit-comment-btn:hover {
+                background-color: #ffffff;
+                color: #000000;
+            }
         </style>
     </th:block>
 
     <div style="display: flex; flex-direction: column; justify-content: center; width: 80%; margin: 0 auto;">
         <div style="width: 100%;">
             <div class="textset">
-                <h2 class="textset-tit" style="text-align: left; margin-left: 100px; font-size: 3rem; font-weight: bold;">My Style</h2>
+                <h2 class="textset-tit" style="text-align: left; margin-left: 130px; font-size: 3rem; font-weight: bold;">My Style</h2>
                 <div class="hr-container" style="display: flex; justify-content: center;">
                     <hr class="hr-style first-hr" style="border: solid 1px black; width: 88%;">
                 </div>
@@ -74,14 +103,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr th:userId != null class="border-b">
-                                <td class="py-3 px-6 text-xl">
-                                    <form id="comment-form" onsubmit="submitComment(event)">
-                                        <textarea id="comment-input" cols="100" rows="4" required maxlength="20" placeholder="댓글을 입력하세요"></textarea>
-                                        <button type="submit" class="btn btn-secondary">댓글 등록</button>
+                        <tr th:if="${userId != null}" class="border-b">
+                            <td class="py-3 px-6 text-xl">
+                                <div id="comment-form-container">
+                                    <form id="comment-form" onsubmit="submitComment(event)" style="display: flex; flex-direction: row; align-items: center; width: 100%; justify-content: space-around;">
+                                        <textarea id="comment-input" cols="100" rows="4" required maxlength="20" placeholder="댓글을 입력하세요" style="width: 70%;"></textarea>
+                                        <button type="submit" id="submit-comment-btn" style="width: 10%; padding: 20px;">댓글 등록</button>
                                     </form>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 
