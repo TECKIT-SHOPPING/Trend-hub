@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRepositoryCustom {
     Page<Review> findAll(Pageable pageable);
 
     @Query("select r from Review r join fetch r.user where r.coordi.coordiId = :coordiId")
