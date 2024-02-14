@@ -68,7 +68,7 @@ public class Orders extends BaseTimeEntity {
         return getCreateAt().format(formatter) + UUID.randomUUID().toString() + "_" + getOrdersId();
     }
 
-    public String getName() {
+    public String getOrderName() {
         String name = orderDetails.get(0).getProduct().getName();
 
         if (orderDetails.size() > 1) {
