@@ -3,6 +3,7 @@ package com.trendhub.trendhub.domain.cart.controller;
 
 import com.trendhub.trendhub.domain.cart.entity.Cart;
 import com.trendhub.trendhub.domain.cart.service.CartService;
+import com.trendhub.trendhub.domain.orders.dto.OrderProductInfo;
 import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.product.service.ProductService;
 import com.trendhub.trendhub.global.rq.Rq;
@@ -29,9 +30,14 @@ public class CartController {
 
         long cartProductTotalPrice = cartList
                 .stream()
-                .map(Cart::getProduct)
-                .mapToLong(Product::getPrice)
+                .mapToLong(cart -> (long) cart.getProduct().getPrice() * cart.getCount())
                 .sum();
+
+//        long cartProductTotalPrice = cartList
+//                .stream()
+//                .map(Cart::getProduct)
+//                .mapToLong(Product::getPrice)
+//                .sum();
 
         rq.setAttribute("cartList", cartList);
         rq.setAttribute("cartProductTotalPrice", cartProductTotalPrice);
@@ -42,12 +48,14 @@ public class CartController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{id}")
     public String addCartProduct(@PathVariable("id") Long productId,
-                                 RedirectAttributes redirectAttributes){
+                                 RedirectAttributes redirectAttributes,
+                                 OrderProductInfo orderProductInfo
+    ){
         try {
             Product product = productService.getProduct(productId);
-            cartService.addCartProduct(rq.getUserInfo(), product);
+            cartService.addCartProduct(rq.getUserInfo(), product, orderProductInfo);
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("cartErrorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("orderErrorMessage", e.getMessage());
             return "redirect:/products/" + productId;
         }
 

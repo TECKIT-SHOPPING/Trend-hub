@@ -26,10 +26,11 @@
                             <img style="width: 60px; height: 60px;" th:src="${order.productImage}">
                             <div style="flex-grow:1; display: flex; flex-direction: column;">
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span th:text="${order.orderName}">상품명</span>
+<!--                                    <span th:text="${order.orderName}">상품명</span>-->
+                                    <span th:text="${order.orderName.length() > 21 ? order.orderName.substring(0, 21) + '...' : order.orderName}">상품명</span>
                                 </div>
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span>상품옵션</span>
+                                    <span th:text="${order.orderProductOption}">상품옵션</span>
                                 </div>
                             </div>
                         </div>
