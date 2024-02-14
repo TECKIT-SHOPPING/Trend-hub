@@ -14,4 +14,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRep
 //            "WHERE r.user = :user")
 //    List<Review> findByUser(@Param("user") User user);
     Page<Review> findAll(Pageable pageable);
+    Page<Review> findByProduct_ProductId(Pageable pageable, Long productId);
 }

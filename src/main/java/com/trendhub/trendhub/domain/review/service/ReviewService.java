@@ -1,9 +1,12 @@
 package com.trendhub.trendhub.domain.review.service;
 
+import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.review.dto.MypageReviewDto;
+import com.trendhub.trendhub.domain.review.dto.ReviewDto;
 import com.trendhub.trendhub.domain.review.entity.Review;
 import com.trendhub.trendhub.domain.review.repository.ReviewRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
+import com.trendhub.trendhub.global.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +22,7 @@ import java.util.List;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final S3Service s3Service;
 
     public List<MypageReviewDto> findByUser(User user) {
         List<MypageReviewDto> mypageReviewDtos = reviewRepository.findByUser(user);
@@ -30,8 +34,18 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
-    public Page<Review> getList(int page) {
+    public Page<Review> getReviewList(int page, Long productId) {
         Pageable pageable = PageRequest.of(page, 10);
-        return this.reviewRepository.findAll(pageable);
+        return this.reviewRepository.findByProduct_ProductId(pageable, productId);
+    }
+
+    public void createReview(User user, Product product, ReviewDto reviewDto/*, MultipartFile file*/) {
+        /*String imageUrl;
+        if (file.isEmpty()) imageUrl = null;
+        else {
+            imageUrl = s3Service.createVideo(file);
+        }*/
+        Review saveReview = reviewDto.toEntity(user, product);
+        this.reviewRepository.save(saveReview);
     }
 }
