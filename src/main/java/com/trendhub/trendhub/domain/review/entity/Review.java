@@ -25,12 +25,12 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     private String content;
 
     // 별점
-    private int star;
+    private Integer star;
 }
