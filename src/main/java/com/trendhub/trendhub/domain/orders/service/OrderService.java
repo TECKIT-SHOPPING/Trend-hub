@@ -38,7 +38,7 @@ public class OrderService {
     public Orders orderProductFromCart(User userInfo) {
         List<Cart> cartItems = cartService.findByUser(userInfo);
 
-        if (cartItems != null || cartItems.isEmpty()) {
+        if (cartItems == null || cartItems.isEmpty()) {
             throw new IllegalArgumentException("장바구니가 비어 있습니다.");
         }
 
