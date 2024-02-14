@@ -1,5 +1,6 @@
 package com.trendhub.trendhub.domain.coordi.service;
 
+import com.trendhub.trendhub.domain.coordi.dto.CoordiDetailDto;
 import com.trendhub.trendhub.domain.coordi.dto.CoordiDto;
 import com.trendhub.trendhub.domain.coordi.dto.CoordiLikeDto;
 import com.trendhub.trendhub.domain.coordi.entity.Coordi;
