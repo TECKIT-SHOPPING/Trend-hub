@@ -124,13 +124,6 @@
 
                     form.submit();
                 }
-
-                document.addEventListener("DOMContentLoaded", function () {
-                    var submitButton = document.getElementById("submitButton");
-                    submitButton.addEventListener("click", function () {
-                        submitOrderPayInfoForm(document.forms["payForm"]);
-                    });
-                });
             </script>
             <div class="container">
                 <h1 style="font-size: 3rem; margin-top: 30px; margin-bottom: 20px;">결제정보</h1>
@@ -153,7 +146,7 @@
                         <div>
                             <input class="input input-bordered" type="text" id="zipcode" name="zipcode"
                                    placeholder="우편번호">
-                            <button class="btnset btnset-line" style="padding: 5px;" onclick="execDaumPostcode()">우편번호 검색</button>
+                            <button class="btnset btnset-line" style="padding: 5px;" type="button" onclick="execDaumPostcode()">우편번호 검색</button>
                             <br>
                             <input class="input input-bordered" type="text" id="address1" name="address1"
                                    placeholder="도로명주소">
@@ -224,7 +217,7 @@
                     </script>
 
                     <div style="text-align: center; margin-top: 15px;">
-                        <button class="btnset btnset-line" type="submit">결제 요청</button>
+                        <button class="btnset btnset-line" type="button" onclick="submitOrderPayInfoForm(this.form)">결제 요청</button>
                     </div>
 
                 </form>
