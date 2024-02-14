@@ -37,7 +37,12 @@ public class QnaController {
     public String qnaDetail(Model model, @PathVariable("id") Long id, Principal principal) {
         QnA qnA = this.qnaService.getQnaDetail(id);
         List<QnaAnswer> qnaAnswer = this.qnaService.getQnaAnswer();
-        String logInid = principal.getName();
+        String logInid;
+        if (principal != null) {
+            logInid = principal.getName();
+        } else {
+            logInid = null;
+        }
         User user = this.userService.getUser(logInid);
         model.addAttribute("qnaDetail", qnA);
         model.addAttribute("qnaAnswer", qnaAnswer);
