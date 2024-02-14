@@ -42,51 +42,17 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String detail(Model model, @PathVariable("id") Long id,
-                         @RequestParam(value = "page", defaultValue = "0") int page) {
+                         @RequestParam(value = "page", defaultValue = "0") int page, Principal principal) {
         Product product = this.productService.getProduct(id);
-        System.out.println("product_id = " + product.getProductId());
         Long productId = product.getProductId();
         Page<QnA> qnAList = this.qnaService.getQnAList(page, productId);
+        String logInid = principal.getName();
+        User user = this.userService.getUser(logInid);
+        model.addAttribute("user", user);
         model.addAttribute("product", product);
         model.addAttribute("paging", qnAList);
         return "products/productDetail";
     }
-
-    /*@PreAuthorize("isAuthenticated()")
-    @GetMapping("/qna/{id}")
-    public String getInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal, QnaDto qnaDto) {
-        ;
-        if (principal.getName().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 먼저 진행해주세요.");
-        }
-        model.addAttribute("productId", productId);
-        model.addAttribute("qnaDto", qnaDto);
-        return "products/popup_inquire_write";
-    }*/
-
-
-
-    /*@PostMapping("/qna/{id}")
-    public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
-                                   @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("productId", productId);
-            model.addAttribute("qnaDto", qnaDto);
-            return "products/popup_inquire_write";
-        }
-//        try {
-        String logInid = principal.getName();
-        Product product = this.productService.getProduct(productId);
-        User user = this.userService.getUser(logInid);
-        this.productService.createQna(qnaDto, product, user);
-//        } catch (Exception e) {
-//            model.addAttribute("productId", productId);
-//            model.addAttribute("qnaDto", qnaDto);
-//            model.addAttribute("errorMessage", e.getMessage());
-//            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
-//        }
-        return "products/completeQnA";
-    }*/
 
     @GetMapping("/{mainCategory}/{subCategory}")
     public String categoryProductList(
@@ -122,27 +88,27 @@ public class ProductController {
     }
 // 수정 2/10
 
-//    @PostMapping("/qna/{id}")
-//    public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
-//                                   @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            model.addAttribute("productId", productId);
-//            model.addAttribute("qnaDto", qnaDto);
-//            return "products/popup_inquire_write";
-//        }
-//        try {
-//            String logInid = principal.getName();
-//            Product product = this.productService.getProduct(productId);
-//            User user = this.userService.getUser(logInid);
-//            this.productService.createQna(qnaDto, product, user);
-//        } catch (Exception e) {
-//            model.addAttribute("productId", productId);
-//            model.addAttribute("qnaDto", qnaDto);
-//            model.addAttribute("errorMessage", e.getMessage());
-//            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
-//        }
-//        return "products/completeQnA";
-//    }
+    @PostMapping("/qna/{id}")
+    public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
+                                   @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("productId", productId);
+            model.addAttribute("qnaDto", qnaDto);
+            return "products/popup_inquire_write";
+        }
+        try {
+            Product product = this.productService.getProduct(productId);
+            String logInid = principal.getName();
+            User user = this.userService.getUser(logInid);
+            this.productService.createQna(qnaDto, product, user);
+        } catch (Exception e) {
+            model.addAttribute("productId", productId);
+            model.addAttribute("qnaDto", qnaDto);
+            model.addAttribute("errorMessage", e.getMessage());
+            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
+        }
+        return "products/completeQnA";
+    }
 
     @GetMapping("/search")
     public String searchProduct(

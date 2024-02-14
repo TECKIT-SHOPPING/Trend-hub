@@ -48,4 +48,5 @@ public class QnA {
     private String image;
     private int price;
     private boolean answered;
+    private boolean secret;
 }

@@ -45,13 +45,23 @@ public class QnaService {
         }
     }
 
-    public void createQnaAnswer(QnaAnswerDto qnaAnswerDto, QnA qnA, User user) {
+    public void createQnaAnswer(QnaAnswerDto qnaAnswerDto, QnA qna, User user) {
         boolean roleFlag = user.getRole().equals("ADMIN");
-        QnaAnswer saveQnaAnswer = qnaAnswerDto.toEntity(qnA, user, roleFlag);
+        QnaAnswer saveQnaAnswer = qnaAnswerDto.toEntity(qna, user, roleFlag);
         this.qnaAnswerRepository.save(saveQnaAnswer);
     }
 
     public List<QnaAnswer> getQnaAnswer() {
         return qnaAnswerRepository.findAll();
+    }
+
+    public boolean canRead(User user, QnA qna) {
+        if (qna == null) return false;
+
+        if (!qna.isSecret()) return true;
+        if (user == null) return false;
+        if (user.getRole() != null && user.getRole().equals("ADMIN")) return true;
+
+        return user.equals(qna.getUser());
     }
 }

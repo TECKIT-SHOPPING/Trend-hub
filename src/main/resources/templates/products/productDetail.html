@@ -1,4 +1,5 @@
-<html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="">
+<html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang=""
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css"/>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -93,7 +94,8 @@
                             <div class="contents-total">
                                 <strong>총 결제금액</strong>
                                 <p class="contents-price">
-                                    <span><strong th:text="${#numbers.formatDecimal(product.price, 0, 0)}"></strong></span>
+                                    <span><strong
+                                            th:text="${#numbers.formatDecimal(product.price, 0, 0)}"></strong></span>
                                     <span>원</span>
                                 </p>
                             </div>
@@ -166,9 +168,10 @@
                         <h2 class="text-4xl font-bold mb-8">상품문의</h2>
                         <div class="flex mb-6">
                             <!-- Thymeleaf 문법을 사용하여 productId를 JavaScript 함수로 전달합니다 -->
-                            <button class="btn btn-active mr-6 px-8 py-2 text-2xl" th:onclick="openInquirePopup([[${product.productId}]])">상품문의 작성하기</button>
+                            <button class="btn btn-active mr-6 px-8 py-2 text-2xl"
+                                    th:onclick="openInquirePopup([[${product.productId}]])">상품문의 작성하기
+                            </button>
                         </div>
-
                         <table class="w-full border-collapse border border-gray-300 mt-8">
                             <thead>
                             <tr class="bg-gray-100">
@@ -182,7 +185,9 @@
                             <!-- 상품문의 목록 반복 -->
                             <tr th:each="qnaList, loop : ${paging}" class="border-b">
                                 <td class="py-3 px-6 text-xl">
-                                    <a th:href="@{|/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>
+                                    <a th:href="@{|/qna/detail/${qnaList.id}|}" th:if="${@qnaService.canRead(user, qnaList)}" th:text="${qnaList.title}"></a>
+                                    <span th:unless="${@qnaService.canRead(user, qnaList)}">비밀 글 입니다🔑</span>
+                                    <!--<a th:href="@{|/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>-->
                                 </td>
                                 <td class="py-3 px-6 text-xl" th:text="${qnaList.createDate}"></td>
                                 <td class="py-3 px-6 text-xl" th:text="${qnaList.loginId}"></td>
@@ -199,7 +204,8 @@
                         <div th:if="${!paging.isEmpty()}" class="mt-8">
                             <ul class="pagination flex justify-center">
                                 <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                                    <a class="page-link" th:href="@{|/products/${product.productId}?page=${paging.number-1}#section-inquiry|}">
+                                    <a class="page-link"
+                                       th:href="@{|/products/${product.productId}?page=${paging.number-1}#section-inquiry|}">
                                         <span class="text-xl">이전</span>
                                     </a>
                                 </li>
@@ -207,10 +213,12 @@
                                     th:if="${page >= paging.number-5 and page <= paging.number+5}"
                                     th:classappend="${page == paging.number} ? 'active'"
                                     class="page-item mx-2">
-                                    <a th:text="${page + 1}" class="page-link" th:href="@{|/products/${product.productId}?page=${page}#section-inquiry|}"></a>
+                                    <a th:text="${page + 1}" class="page-link"
+                                       th:href="@{|/products/${product.productId}?page=${page}#section-inquiry|}"></a>
                                 </li>
                                 <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                                    <a class="page-link" th:href="@{|/products/${product.productId}?page=${paging.number+1}#section-inquiry|}">
+                                    <a class="page-link"
+                                       th:href="@{|/products/${product.productId}?page=${paging.number+1}#section-inquiry|}">
                                         <span class="text-xl">다음</span>
                                     </a>
                                 </li>
@@ -219,15 +227,16 @@
                         <!-- 페이징처리 끝 -->
                     </div>
                     <!-- Section: 후기 -->
-                    <div id="section-reviews" class="section-content">
+                    <div id="section-reviews" class="section-content mt-8">
                         <h2 class="text-4xl font-bold mb-8">상품후기</h2>
                         <!-- 여기에 후기 내용 추가 -->
                     </div>
                     <!-- Section: 배송/교환/반품안내 -->
                     <div id="section-shipping" class="section-content">
                         <h2 class="text-4xl font-bold mb-8">배송/교환/반품안내</h2>
-                        <div class="imageset" style="max-width: 100%; overflow: hidden;">
-                            <img class="imageset-img" src="/images/EBB0B0EC86A1.jpg" alt="배송/교환/반품안내 이미지" style="width: 100%; height: auto;">
+                        <div class="imageset" style="max-width: 100%; height: 100%;">
+                            <img class="imageset-img" src="/images/EBB0B0EC86A1.jpg" alt="배송/교환/반품안내 이미지"
+                                 style="width: 100%; height: auto;">
                         </div>
                     </div>
                 </div>
@@ -242,7 +251,7 @@
             // productId를 사용하여 팝업을 열거나 로그인 팝업을 표시하는 로직을 구현
             const principalName = [[${#authentication.principal}]]
 
-            if ( principalName === 'anonymousUser' || principalName === undefined ) {
+            if (principalName === 'anonymousUser' || principalName === undefined) {
                 alert('로그인이 필요합니다.');
             } else {
                 window.open(`/qna/${productId}`, 'inquire', 'width=500,height=600');

@@ -30,6 +30,7 @@ public class QnaDto {
     private String name;
     private String image;
     private int price;
+    private boolean secret;
 
     public QnA toEntity(Product product, User user) {
         return QnA.builder()
@@ -43,6 +44,7 @@ public class QnaDto {
                 .image(product.getImage())
                 .name(product.getName())
                 .price(product.getPrice())
+                .secret(this.secret)
                 .build();
     }
 }

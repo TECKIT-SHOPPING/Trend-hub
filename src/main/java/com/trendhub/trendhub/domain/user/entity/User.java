@@ -41,8 +41,12 @@ public class User extends BaseTimeEntity {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
-
+        if (this.role != null && this.role.equals("ADMIN")) {
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        }
+        else {
+            authorities.add(new SimpleGrantedAuthority("MEMBER"));
+        }
         return authorities;
     }
 
