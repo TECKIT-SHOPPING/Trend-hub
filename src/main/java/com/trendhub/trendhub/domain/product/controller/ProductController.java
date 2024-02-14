@@ -10,6 +10,8 @@ import com.trendhub.trendhub.domain.product.service.MainCategoryService;
 import com.trendhub.trendhub.domain.product.service.ProductService;
 import com.trendhub.trendhub.domain.product.service.QnaService;
 import com.trendhub.trendhub.domain.product.service.SubCategoryService;
+import com.trendhub.trendhub.domain.review.entity.Review;
+import com.trendhub.trendhub.domain.review.service.ReviewService;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
 import com.trendhub.trendhub.global.service.PageCustom;
@@ -39,13 +41,17 @@ public class ProductController {
     private final MainCategoryService mainCategoryService;
     private final SubCategoryService subCategoryService;
     private final QnaService qnaService;
+    private final ReviewService reviewService;
 
     @GetMapping("/{id}")
     public String detail(Model model, @PathVariable("id") Long id,
-                         @RequestParam(value = "qnaPage", defaultValue = "0") int qnaPage, Principal principal) {
+                         @RequestParam(value = "qnaPage", defaultValue = "0") int qnaPage
+                         , @RequestParam(value = "reviewPage", defaultValue = "0") int reviewPage,
+                         Principal principal) {
         Product product = this.productService.getProduct(id);
         Long productId = product.getProductId();
         Page<QnA> qnAList = this.qnaService.getQnAList(qnaPage, productId);
+        Page<Review> reviewList = this.reviewService.getReviewList(reviewPage, productId);
 
         String logInid;
         if (principal != null) {
@@ -57,6 +63,8 @@ public class ProductController {
         model.addAttribute("user", user);
         model.addAttribute("product", product);
         model.addAttribute("qnaPaging", qnAList);
+        model.addAttribute("reviewList", reviewList);
+
         return "products/productDetail";
     }
 

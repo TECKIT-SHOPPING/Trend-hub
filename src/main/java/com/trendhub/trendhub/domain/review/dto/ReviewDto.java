@@ -1,11 +1,9 @@
-/*
 package com.trendhub.trendhub.domain.review.dto;
 
-package com.trendhub.trendhub.domain.product.dto;
-
 import com.trendhub.trendhub.domain.product.entity.Product;
-import com.trendhub.trendhub.domain.product.entity.QnA;
+import com.trendhub.trendhub.domain.review.entity.Review;
 import com.trendhub.trendhub.domain.user.entity.User;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -22,29 +20,30 @@ public class ReviewDto {
 
     )
     private String content;
+    @Digits(integer = 3, fraction = 0, message = "숫자 3자리만 입력 가능합니다.")
+    private Integer height;
+    @Digits(integer = 3, fraction = 0, message = "숫자 3자리만 입력 가능합니다.")
+    private Integer weight;
+
     private LocalDateTime date;
     private String color;
     private String size;
     private Long reviewId;
     private String image;
     private Integer star;
-    private Integer height;
-    private Integer weight;
     private String gender;
 
-    public QnA toEntity(Product product, User user) {
-        return QnA.builder()
-                .title(this.title)
-                .inquireType(this.inquireType)
-                .content(this.getContent())
-                .createDate(LocalDateTime.now())
-                .product(product)
+    public Review toEntity(User user, Product product) {
+        return Review.builder()
+                .reviewId(this.reviewId)
+                .star(this.star)
+                .content(this.content)
+                .gender(this.gender)
+                .date(LocalDateTime.now())
                 .user(user)
-                .loginId(user.getLoginId())
-                .image(product.getImage())
-                .name(product.getName())
-                .price(product.getPrice())
-                .secret(this.secret)
+                .height(this.height)
+                .weight(this.weight)
+                .product(product)
                 .build();
     }
-}*/
+}
