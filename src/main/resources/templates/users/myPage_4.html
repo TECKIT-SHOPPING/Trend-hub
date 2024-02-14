@@ -3,11 +3,11 @@
     <div style="display:flex; flex-direction: column; align-items:center; margin-top: 50px;">
         <th:block th:replace="~{fragments/myPage :: myPageFragment}"></th:block>
         <div style="margin-top: 60px;">
-            <div style="display: flex; align-items:center; font-size: 15px; margin-bottom: 5px;">
-                <img style="width: 20px; height: 15px; margin-right: 3px;" th:src="@{/images/review.png}"> 후기모음
+            <div style="display: flex; align-items:center; font-size: 30px; margin-bottom: 5px;">
+                <img style="width: 40px; height: 30px; margin-right: 3px;" th:src="@{/images/review.png}"> 후기모음
             </div>
-            <table class="table" style="width: 1200px; margin-bottom: 50px;">
-                <thead style="border-top: 1px solid black; border-bottom: 1px solid black; font-size: 16px;">
+            <table class="table" style="width: 1500px; margin-bottom: 50px;">
+                <thead style="border-top: 1px solid black; border-bottom: 1px solid black; font-size: 20px;">
                 <tr style="text-align: center;">
                     <th style="width: 30%;" colspan="2">상품정보</th>
                     <th style="width: 40%;">후기내용</th>
@@ -20,8 +20,8 @@
                 <tr th:each="review : ${reviewList}" style="text-align: center;">
                     <td style="width: 30%;" colspan="2">
                         <div style="display: flex; justify-content: center;">
-                            <img style="width: 45px; height: 45px;" th:src="${review.image}">
-                            <div style="display: flex; flex-direction: column;">
+                            <img style="width: 60px; height: 60px;" th:src="${review.image}">
+                            <div style="flex-grow: 1; display: flex; flex-direction: column;">
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
                                     <span th:text="${review.title}">상품명</span>
                                 </div>
