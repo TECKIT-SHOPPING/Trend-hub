@@ -54,6 +54,7 @@ public class QnaController {
         Product product = productService.getProduct(productId);
         model.addAttribute("product", product);
         model.addAttribute("productId", productId);
+        System.out.println("product Image = " + product.getImage());
         model.addAttribute("qnaDto", qnaDto);
         /*model.addAttribute("product", productService.getProductsByIds(List.of(productId)).get(0));*/  // 현재 getProductsByIds 함수는 여러 개 가져오는 함수, 단건 조회 할 수 있는 함수가 필요
         return "products/popup_inquire_write";
