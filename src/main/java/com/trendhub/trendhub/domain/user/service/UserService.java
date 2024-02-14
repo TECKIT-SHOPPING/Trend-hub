@@ -158,6 +158,14 @@ public class UserService implements UserDetailsService {
         );
     }
 
+    public void checkNickname1(String nickname) {
+        userRepository.findByNickname(nickname).ifPresent(
+                user -> {
+                    throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+                }
+        );
+    }
+
     @Transactional
     public void changeNickname(User userInfo, ChangeNicknameDto changeNicknameDto) {
         checkNickname(changeNicknameDto);
