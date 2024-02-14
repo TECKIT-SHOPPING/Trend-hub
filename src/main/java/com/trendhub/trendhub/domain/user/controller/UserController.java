@@ -1,6 +1,10 @@
 package com.trendhub.trendhub.domain.user.controller;
 
+import com.trendhub.trendhub.domain.orders.entity.Orders;
+import com.trendhub.trendhub.domain.orders.service.OrderService;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
+import com.trendhub.trendhub.domain.review.dto.MypageReviewDto;
+import com.trendhub.trendhub.domain.review.service.ReviewService;
 import com.trendhub.trendhub.domain.user.dto.*;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.service.UserService;
@@ -34,6 +38,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final ReviewService reviewService;
+    private final OrderService orderService;
     private final Rq rq;
 
     @GetMapping("/join")
@@ -127,15 +133,16 @@ public class UserController {
 
         return ResponseEntity.ok().build();
     } // 로그인 찾기 Post 기능
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/info")
-    public String userInfo () {
+    public String userInfo() {
         return "users/userInfo";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify")
-    public String userInfoModify (
+    public String userInfoModify(
             Principal principal,
             Model model
     ) {
@@ -148,7 +155,7 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/change-password")
-    public String changePassword (
+    public String changePassword(
             @Valid ChangePasswordDto changePasswordDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
@@ -172,13 +179,21 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/check-nickname")
-    public String checkNickname (
-            ChangeNicknameDto changeNicknameDto,
+    public String checkNickname(
+            @Valid ChangeNicknameDto changeNicknameDto,
+            BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                redirectAttributes.addFlashAttribute(error.getField() + "ErrorMessage", error.getDefaultMessage());
+            }
+            return "redirect:/members/modify";
+        }
+
         try {
             userService.checkNickname(changeNicknameDto);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("nicknameErrorMessage", e.getMessage());
             return "redirect:/members/modify";
         }
@@ -188,13 +203,21 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/change-nickname")
-    public String changeNickname (
-            ChangeNicknameDto changeNicknameDto,
+    public String changeNickname(
+            @Valid ChangeNicknameDto changeNicknameDto,
+            BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                redirectAttributes.addFlashAttribute(error.getField() + "ErrorMessage", error.getDefaultMessage());
+            }
+            return "redirect:/members/modify";
+        }
+
         try {
             userService.changeNickname(rq.getUserInfo(), changeNicknameDto);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("nicknameErrorMessage", e.getMessage());
             return "redirect:/members/modify";
         }
@@ -204,7 +227,7 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/change-profile")
-    public String changeProfile (
+    public String changeProfile(
             @RequestPart MultipartFile profile
     ) {
         userService.changeProfile(rq.getUserInfo(), profile);
@@ -214,18 +237,22 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/address")
-    public String address (AddressDto addressDto) {
+    public String address(AddressDto addressDto) {
         userService.saveAddress(rq.getUserInfo(), addressDto);
 
         return "redirect:/members/modify";
     }
     // 이메일 및 이름 가져와서 맞는지 확인하기
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/myPage/1")
     public String mypage_exp(Principal principal, Model model) {
         String logInid = principal.getName();
         User user = this.userService.getUser(logInid);
         model.addAttribute("user", user);
+
+        List<Orders> orders = orderService.findByUser(rq.getUserInfo());
+        rq.setAttribute("orders", orders);
         return "users/myPage_1";
     }
 
@@ -252,7 +279,9 @@ public class UserController {
     public String mypage_riview(Principal principal, Model model) {
         String logInid = principal.getName();
         User user = this.userService.getUser(logInid);
+        List<MypageReviewDto> reviewList = reviewService.findByUser(user);
         model.addAttribute("user", user);
+        model.addAttribute("reviewList", reviewList);
         return "users/myPage_4";
     }
 }

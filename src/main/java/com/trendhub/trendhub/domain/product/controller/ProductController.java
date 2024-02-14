@@ -25,10 +25,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -46,51 +42,23 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String detail(Model model, @PathVariable("id") Long id,
-                         @RequestParam(value = "page", defaultValue = "0") int page) {
+                         @RequestParam(value = "qnaPage", defaultValue = "0") int qnaPage, Principal principal) {
         Product product = this.productService.getProduct(id);
-        System.out.println("product_id = " + product.getProductId());
         Long productId = product.getProductId();
-        Page<QnA> qnAList = this.qnaService.getQnAList(page, productId);
+        Page<QnA> qnAList = this.qnaService.getQnAList(qnaPage, productId);
+
+        String logInid;
+        if (principal != null) {
+            logInid = principal.getName();
+        } else {
+            logInid = null;
+        }
+        User user = this.userService.getUser(logInid);
+        model.addAttribute("user", user);
         model.addAttribute("product", product);
-        model.addAttribute("paging", qnAList);
+        model.addAttribute("qnaPaging", qnAList);
         return "products/productDetail";
     }
-
-    /*@PreAuthorize("isAuthenticated()")
-    @GetMapping("/qna/{id}")
-    public String getInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal, QnaDto qnaDto) {
-        ;
-        if (principal.getName().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 먼저 진행해주세요.");
-        }
-        model.addAttribute("productId", productId);
-        model.addAttribute("qnaDto", qnaDto);
-        return "products/popup_inquire_write";
-    }*/
-
-
-
-    /*@PostMapping("/qna/{id}")
-    public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
-                                   @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("productId", productId);
-            model.addAttribute("qnaDto", qnaDto);
-            return "products/popup_inquire_write";
-        }
-//        try {
-        String logInid = principal.getName();
-        Product product = this.productService.getProduct(productId);
-        User user = this.userService.getUser(logInid);
-        this.productService.createQna(qnaDto, product, user);
-//        } catch (Exception e) {
-//            model.addAttribute("productId", productId);
-//            model.addAttribute("qnaDto", qnaDto);
-//            model.addAttribute("errorMessage", e.getMessage());
-//            return "products/popup_inquire_write"; // 에러 발생 시에는 다시 원래의 입력 페이지를 보여줍니다.
-//        }
-        return "products/completeQnA";
-    }*/
 
     @GetMapping("/{mainCategory}/{subCategory}")
     public String categoryProductList(
@@ -135,8 +103,8 @@ public class ProductController {
             return "products/popup_inquire_write";
         }
         try {
-            String logInid = principal.getName();
             Product product = this.productService.getProduct(productId);
+            String logInid = principal.getName();
             User user = this.userService.getUser(logInid);
             this.productService.createQna(qnaDto, product, user);
         } catch (Exception e) {

@@ -21,13 +21,14 @@
     </div>
 
     <form th:action="@{|/qna/${productId}|}" th:object="${qnaDto}" method="post">
-        <h3>제목
+        <h3>사이즈
             <span style="margin-left: 0.4rem; font-size: var(--fs-p1); color: var(--danger);">*</span>
         </h3>
-        <input name="inquireContent" type="text" id="title" th:field="${qnaDto.title}"
-               style="width: 350px; height: 30px; font-size: 13px; border:1px solid gray;" placeholder="15자 이내 입력" />
-        <p th:if="${#fields.hasErrors('title')}" th:errors="${qnaDto.title}" class="fieldError"
-           style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
+        <div class="join">
+            <button class="join-item btn">작아요</button>
+            <button class="join-item btn btn-active">적당해요</button>
+            <button class="join-item btn">커요</button>
+        </div>
 
         <h3>문의 유형
             <span style="margin-left: 0.4rem; font-size: var(--fs-p1); color: var(--danger);">*</span>

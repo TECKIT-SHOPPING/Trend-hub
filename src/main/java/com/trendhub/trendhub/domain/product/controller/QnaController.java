@@ -37,9 +37,13 @@ public class QnaController {
     public String qnaDetail(Model model, @PathVariable("id") Long id, Principal principal) {
         QnA qnA = this.qnaService.getQnaDetail(id);
         List<QnaAnswer> qnaAnswer = this.qnaService.getQnaAnswer();
-        String logInid = principal.getName();
+        String logInid;
+        if (principal != null) {
+            logInid = principal.getName();
+        } else {
+            logInid = null;
+        }
         User user = this.userService.getUser(logInid);
-        System.out.println("유저 role 상태 = " + user.getRole());
         model.addAttribute("qnaDetail", qnA);
         model.addAttribute("qnaAnswer", qnaAnswer);
         model.addAttribute("user", user);
@@ -52,26 +56,31 @@ public class QnaController {
         if (principal.getName().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 먼저 진행해주세요.");
         }
+        Product product = productService.getProduct(productId);
+        model.addAttribute("product", product);
         model.addAttribute("productId", productId);
+        System.out.println("product Image = " + product.getImage());
         model.addAttribute("qnaDto", qnaDto);
-        model.addAttribute("product", productService.getProductsByIds(List.of(productId)).get(0));  // 현재 getProductsByIds 함수는 여러 개 가져오는 함수, 단건 조회 할 수 있는 함수가 필요
+        /*model.addAttribute("product", productService.getProductsByIds(List.of(productId)).get(0));*/  // 현재 getProductsByIds 함수는 여러 개 가져오는 함수, 단건 조회 할 수 있는 함수가 필요
         return "products/popup_inquire_write";
     }
 
     @PostMapping("/{id}")
     public String postInquireWrite(Model model, @PathVariable("id") Long productId, Principal principal,
                                    @Valid @ModelAttribute("qnaDto") QnaDto qnaDto, BindingResult bindingResult) {
+        Product product = productService.getProduct(productId);
         if (bindingResult.hasErrors()) {
+            model.addAttribute("product", product);
             model.addAttribute("productId", productId);
             model.addAttribute("qnaDto", qnaDto);
             return "products/popup_inquire_write";
         }
         try {
             String logInid = principal.getName();
-            Product product = this.productService.getProduct(productId);
             User user = this.userService.getUser(logInid);
             this.qnaService.createQna(qnaDto, product, user);
         } catch (Exception e) {
+            model.addAttribute("product", product);
             model.addAttribute("productId", productId);
             model.addAttribute("qnaDto", qnaDto);
             model.addAttribute("errorMessage", e.getMessage());
@@ -86,9 +95,9 @@ public class QnaController {
                                   @Valid @ModelAttribute("qnaAnswerDto") QnaAnswerDto qnaAnswerDto)
     {
         String logInid = principal.getName();
-        QnA qnA = this.qnaService.getQnaDetail(id);
+        QnA qna = this.qnaService.getQnaDetail(id);
         User user = this.userService.getUser(logInid);
-        this.qnaService.createQnaAnswer(qnaAnswerDto, qnA, user);
+        this.qnaService.createQnaAnswer(qnaAnswerDto, qna, user);
         return String.format("redirect:/qna/detail/%s", id);
     }
 }

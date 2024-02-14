@@ -2,6 +2,7 @@
 <div layout:fragment="content">
     <div style="display:flex; flex-direction: column; align-items:center; margin-top: 50px;">
         <th:block th:replace="~{fragments/myPage :: myPageFragment}"></th:block>
+
         <div style="margin-top: 60px;">
             <div style="display: flex; align-items:center; font-size: 15px; margin-bottom: 5px;">
                 <img style="width: 20px; height: 15px; margin-right: 3px;" th:src="@{/images/exp.png}"> 배송목록
@@ -19,13 +20,13 @@
                 </thead>
 
                 <tbody style="font-size: 13px; line-height: 50px;">
-                <tr style="text-align: center;">
+                <tr th:each="order : ${orders}" style="text-align: center;">
                     <td style="width: 25%;" colspan="2">
                         <div style="display: flex; justify-content: center;">
-                            <img style="width: 45px; height: 45px;" th:src="@{/images/img_basic_N19_1.png}">
+                            <img style="width: 45px; height: 45px;" th:src="${order.productImage}">
                             <div style="display: flex; flex-direction: column;">
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span>상품명</span>
+                                    <span th:text="${order.orderName}">상품명</span>
                                 </div>
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
                                     <span>상품옵션</span>
@@ -34,19 +35,21 @@
                         </div>
                     </td>
                     <td style="width: 15%;">
-                        <div>주문일자</div>
+                        <div th:text="${order.orderCreateAt}">주문일자</div>
                     </td>
                     <td style="width: 15%;">
-                        <div>주문번호</div>
+                        <div th:text="${order.ordersId}">주문번호</div>
                     </td>
                     <td style="width: 15%;">
-                        <div>주문금액</div>
+                        <div th:text="${#numbers.formatDecimal(order.sumOrderPrice, 0, 'COMMA', 0, 'POINT')}">주문금액</div>
+<!--                        <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>-->
                     </td>
                     <td style="width: 15%;" colspan="2">
                         <div>
-                            <span>주문상태</span>
-                            <button class="btn btn-outline-danger" style="margin-left: 20px; font-size: 13px;">반품</button>
+                            <span th:text="${order.payStatus}">주문상태</span>
+                            <a th:href="|/order/${order.ordersId}|" style="margin-left: 20px; font-size: 13px;" class="btn btn-outline-danger">자세히 보기</a>
                         </div>
+
                     </td>
                     <td style="width: 15%;">
                         <button class="btn btn-primary" style="font-size: 13px;">후기작성 </button>

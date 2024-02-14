@@ -13,35 +13,33 @@
                     <th style="width: 40%;">후기내용</th>
                     <th style="width: 20%;">주문일자</th>
                     <th style="width: 10%;"></th>
-
                 </tr>
                 </thead>
-
                 <tbody style="font-size: 13px; line-height: 50px;">
-                <tr style="text-align: center;">
+
+                <tr th:each="review : ${reviewList}" style="text-align: center;">
                     <td style="width: 30%;" colspan="2">
                         <div style="display: flex; justify-content: center;">
-                            <img style="width: 45px; height: 45px;" th:src="@{/images/img_basic_N19_1.png}">
+                            <img style="width: 45px; height: 45px;" th:src="${review.image}">
                             <div style="display: flex; flex-direction: column;">
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span>상품명</span>
+                                    <span th:text="${review.title}">상품명</span>
                                 </div>
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span>상품옵션</span>
+                                    <span th:text="${review.color + ' ' + #strings.toString(review.size)}">상품옵션</span>
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td style="width: 40%;">
-                        <div>주문일자</div>
+                        <div th:text="${review.content}">후기내용</div>
                     </td>
                     <td style="width: 20%;">
-                        <div>주문일자</div>
+                        <div th:text="${review.date}">주문일자</div>
                     </td>
                     <td style="width: 10%;" colspan="2">
                         <div style="display: flex; width: 100px; height: 60px; align-items: center;">
-                            <button class="btn btn-outline-dark" style="font-size: 13px;">수정</button>
-                            <button class="btn btn-dark" style="margin-left: 10px; font-size: 13px;">삭제</button>
+                            <button class="btn btn-dark" style="margin-left: 10px; font-size: 13px;" th:onclick="|deleteReview('${review.reviewId}')|">삭제</button>
                         </div>
                     </td>
                 </tr>
@@ -49,5 +47,31 @@
             </table>
         </div>
     </div>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        function deleteReview(reviewId) {
+            const token = /*[[${_csrf.token}]]*/ '';
+            if (confirm('정말로 이 후기를 삭제하시겠습니까?')) {
+                fetch('/api/reviews/' + reviewId, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                    .then(response => {
+                        console.log(response)
+                        if (!response.ok) {
+                            throw new Error('HTTP error ' + response.status);
+                        }
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.log('There has been a problem with your fetch operation: ' + error.message);
+                    });
+            }
+        }
+    </script>
 </div>
 </html>

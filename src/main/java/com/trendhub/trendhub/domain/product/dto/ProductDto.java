@@ -13,15 +13,17 @@ public class ProductDto {
     private int discount;
     private int totalLike;
     private Boolean liked;
+    private String size;
+    private String color;
 
     public ProductDto(Long productId, String image, String name, int price, int discount, int totalLike, Boolean liked) {
         this.productId = productId;
         this.image = image;
         this.name = name;
-        this.price = price;
         this.discount = discount;
+        if (discount > 0) this.price = (int) (price * ((100 - discount) * 0.01));
+        else this.price = price;
         this.totalLike = totalLike;
         this.liked = liked;
     }
-
 }

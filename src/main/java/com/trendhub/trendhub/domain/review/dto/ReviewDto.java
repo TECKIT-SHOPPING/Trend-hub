@@ -1,3 +1,6 @@
+/*
+package com.trendhub.trendhub.domain.review.dto;
+
 package com.trendhub.trendhub.domain.product.dto;
 
 import com.trendhub.trendhub.domain.product.entity.Product;
@@ -13,24 +16,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class QnaDto {
+public class ReviewDto {
     @Size(
-            min = 20, max = 200, message = "최소 20글자, 최대 200글자 입력해주세요."
+            min = 20, max = 500, message = "20자 이상 작성해주세요."
 
     )
     private String content;
-
-    @Size(
-            min = 5, max = 15, message = "최소 5글자, 최대 20글자 입력해주세요."
-
-    )
-    private String title;
-
-    private String inquireType;
-    private String name;
+    private LocalDateTime date;
+    private String color;
+    private String size;
+    private Long reviewId;
     private String image;
-    private int price;
-    private boolean secret;
+    private Integer star;
+    private Integer height;
+    private Integer weight;
+    private String gender;
 
     public QnA toEntity(Product product, User user) {
         return QnA.builder()
@@ -47,4 +47,4 @@ public class QnaDto {
                 .secret(this.secret)
                 .build();
     }
-}
+}*/
