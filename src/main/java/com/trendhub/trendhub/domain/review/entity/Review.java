@@ -5,15 +5,17 @@ import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Review extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +35,10 @@ public class Review extends BaseTimeEntity {
 
     private String content;
     private LocalDateTime date;
-    private String color;
-    private String size;
+    private String gender;
+    private int height;
+    private int weight;
+    private String image;
 
     // 별점
     private Integer star;

@@ -76,6 +76,64 @@
 <div layout:fragment="script">
     <script th:inline="javascript">
         // 필요한 스크립트가 있다면 추가하세요
+        function previewFiles() {
+            var previewContainer = document.querySelector('#preview-container');
+            var fileInput = document.querySelector('input[type=file]');
+            var files = fileInput.files; // 파일 목록을 가져옵니다.
+
+            // 여러 파일이 선택되었을 때
+            if (files.length > 1) {
+                alert('사진은 1장만 선택할 수 있습니다.');
+                fileInput.value = '';
+                return;
+            }
+
+
+            var file = fileInput.files[0];
+
+            var allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+            // 파일 크기 제한
+            var maxSize = 10 * 1024 * 1024;
+
+            previewContainer.innerHTML = '';
+
+            // 파일 확장자 가져오기
+            var fileExtension = file.name.split('.').pop().toLowerCase();
+
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert('jpg, jpeg, png 확장자만 허용됩니다.');
+                fileInput.value = '';
+                return;
+            }
+
+            if (file.size > maxSize) {
+                alert('파일 크기가 10MB 제한을 초과하는 파일이 있습니다. 더 작은 파일을 선택해주세요.');
+                fileInput.value = '';
+                return;
+            }
+
+            var reader = new FileReader();
+            var previewImg = document.createElement('img');
+            previewImg.height = 100;
+            previewImg.alt = '이미지 미리보기';
+
+            reader.onloadend = function () {
+                previewImg.src = reader.result;
+            };
+
+            reader.readAsDataURL(file);
+            previewContainer.appendChild(previewImg);
+        }
+
+        function checkFileSelected() {
+            var fileInput = document.querySelector('input[type=file]');
+            if (!fileInput.files.length) {
+                alert('사진을 선택해주세요.');
+                return false; // form 제출 중단
+            }
+            return true; // form 제출 계속
+        }
     </script>
 </div>
 

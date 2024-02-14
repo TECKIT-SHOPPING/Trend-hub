@@ -52,7 +52,7 @@
     <script>
         var errorMessage = "[[${orderErrorMessage}]]";
 
-        if(errorMessage) {
+        if (errorMessage) {
             alert(errorMessage)
         }
 
@@ -102,7 +102,8 @@
                                 <h2 class="textset-tit" th:text="${product.name}"></h2>
                             </div>
                             <p class="contents-price">
-                                <span><strong th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>
+                                <span><strong
+                                        th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>
                                 <span>원</span>
                             </p>
                         </div>
@@ -138,7 +139,8 @@
                             <div class="contents-total">
                                 <strong>총 결제금액</strong>
                                 <p class="contents-price">
-                                    <span><strong th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>
+                                    <span><strong
+                                            th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>
                                     <span>원</span>
                                 </p>
                             </div>
@@ -258,7 +260,8 @@
                             <!-- 상품문의 목록 반복 -->
                             <tr th:each="qnaList, loop : ${qnaPaging}" class="border-b">
                                 <td class="py-3 px-6 text-xl">
-                                    <a th:href="@{|/qna/detail/${qnaList.id}|}" th:if="${@qnaService.canRead(user, qnaList)}" th:text="${qnaList.title}"></a>
+                                    <a th:href="@{|/qna/detail/${qnaList.id}|}"
+                                       th:if="${@qnaService.canRead(user, qnaList)}" th:text="${qnaList.title}"></a>
                                     <span th:unless="${@qnaService.canRead(user, qnaList)}">비밀 글 입니다🔑</span>
                                     <!--<a th:href="@{|/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>-->
                                 </td>
@@ -303,6 +306,46 @@
                     <div id="section-reviews" class="section-content mt-8">
                         <h2 class="text-4xl font-bold mb-8">상품후기</h2>
                         <!-- 여기에 후기 내용 추가 -->
+                        <div class="flex mb-6">
+                            <button class="btn btn-active mr-6 px-8 py-2 text-2xl">
+                                <a th:href="@{|/review/create/${product.productId}|}">상품후기 작성하기</a></button>
+                        </div>
+                        <table class="w-full border-collapse border border-gray-300 mt-8">
+                            <thead>
+                            <tr>
+                                <th class="py-3 px-6 border-b text-xl">내용</th>
+                                <th class="py-3 px-6 border-b text-xl">작성일시</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="review, loop : ${reviewList}" class="border-b">
+                                <td class="py-3 px-6 text-xl" th:text="${review.content}"></td>
+                                <td class="py-3 px-6 text-xl" th:text="${review.createAt}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- 페이징처리 시작 -->
+                        <div th:if="${!reviewList.isEmpty()}">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:classappend="${!reviewList.hasPrevious} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{|?reviewPage=${reviewList.number-1}|}">
+                                        <span>이전</span>
+                                    </a>
+                                </li>
+                                <li th:each="page: ${#numbers.sequence(0, reviewList.totalPages-1)}"
+                                    th:classappend="${page == reviewList.number} ? 'active'"
+                                    class="page-item">
+                                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                </li>
+                                <li class="page-item" th:classappend="${!reviewList.hasNext} ? 'disabled'">
+                                    <a class="page-link" th:href="@{|?reviewPage=${reviewList.number+1}|}">
+                                        <span>다음</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- 페이징처리 끝 -->
                     </div>
                     <!-- Section: 배송/교환/반품안내 -->
                     <div id="section-shipping" class="section-content">
