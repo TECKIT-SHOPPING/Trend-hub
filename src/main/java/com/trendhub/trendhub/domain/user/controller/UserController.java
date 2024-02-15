@@ -254,6 +254,14 @@ public class UserController {
 
         List<Orders> orders = orderService.findByUser(rq.getUserInfo());
         rq.setAttribute("orders", orders);
+        for (Orders order : orders) {
+            System.out.println("order.toString() = " + order.getOrdersId());
+            System.out.println("order.toString() = " + order.getProductImage());
+            System.out.println("order.toString() = " + order.getOrderName());
+            System.out.println("order.toString() = " + order.getOrderCreateAt());
+            System.out.println("order.toString() = " + order.sumOrderPrice());
+            System.out.println("order.toString() = " + order.getPayStatus());
+        }
         return "users/myPage_1";
     }
 

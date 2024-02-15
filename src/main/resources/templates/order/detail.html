@@ -53,76 +53,137 @@
                 margin-bottom: 8px;
             }
 
-            #extraAddress {
-                border: 1px solid black;
-                border-radius: 8px;
-                padding: 8px;
-            }
+            /*#extraAddress {*/
+            /*    border: 1px solid black;*/
+            /*    border-radius: 8px;*/
+            /*    !*padding: 8px;*!*/
+            /*}*/
 
         </style>
     </th:block>
 
     <div class="container">
         <div class="order-info container">
-            <div>주문번호: [[${order.ordersId}]]</div>
-            <div>주문코드: [[${order.code}]]</div>
-            <div>주문자: [[${order.user.username}]]</div>
-            <div>주문상품: [[${order.orderName}]]</div>
-            <div>주문상품 옵션: [[${order.orderProductOption}]]</div>
-            <div>결제금액: <span th:text="${#numbers.formatDecimal(order.sumOrderPrice, 0, 'COMMA', 0, 'POINT')}"></span></div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문번호</div>
+                <div>[[${order.ordersId}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문코드</div>
+                <div>[[${order.code}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문자명</div>
+                <div>[[${order.user.username}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문상품</div>
+                <div>[[${order.orderName}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">결제금액</div>
+                <div th:text="${#numbers.formatInteger(order.sumOrderPrice, 3, 'COMMA') + '원'}"></div>
+            </div>
         </div>
-        <hr style="border-width: 5px;">
+        <hr style="border-width: 2px;">
         <th:block th:if="${order.shippingInfo}">
             <div class="order-info container">
-                <h2>배송 받을 고객 정보</h2>
+                <h2 style="text-align: center; font-weight: bold; margin-bottom: 40px; font-size: 2rem;">배송 받을 고객
+                    정보</h2>
                 <div>
-                    <strong>이름:</strong> [[${order.name}]]
+                    <strong style="margin-right: 5px;">이름 :</strong> [[${order.name}]]
                 </div>
                 <div>
-                    <strong>전화번호:</strong> [[${order.phone}]]
+                    <strong style="margin-right: 5px;">전화번호 :</strong> [[${order.phone}]]
                 </div>
                 <div>
-                    <strong>우편번호:</strong> [[${order.zipcode}]]
+                    <strong style="margin-right: 5px;">우편번호 :</strong> [[${order.zipcode}]]
                 </div>
                 <div>
-                    <strong>배송지 주소:</strong> [[${order.address1}]] [[${order.address2}]]
+                    <strong style="margin-right: 5px;">배송지 주소 :</strong> [[${order.address1}]] [[${order.address2}]]
                 </div>
             </div>
         </th:block>
 
         <th:block th:if="${order.payable}">
-            <div class="container">
-                <h1 style="font-size: 3rem; margin-top: 30px; margin-bottom: 20px;">배송 정보</h1>
+            <script>
+                function submitOrderPayInfoForm(form) {
+                    form.customerName.value = form.customerName.value.trim();
 
-                <form style="font-size: 20px">
-                    <div>
-                        <label for="customerName">배송 받을 고객 이름</label>
+                    if (form.customerName.value.length == 0) {
+                        alert('이름을 입력해주세요.');
+                        form.customerName.focus();
+                        return;
+                    }
+
+                    form.customerMobilePhoneNumber.value = form.customerMobilePhoneNumber.value.trim();
+
+                    if (form.customerMobilePhoneNumber.value.length == 0) {
+                        alert('휴대전화번호를 입력해주세요.');
+                        form.customerMobilePhoneNumber.focus();
+                        return;
+                    }
+
+                    form.address1.value = form.address1.value.trim();
+
+                    if (form.address1.value.length == 0) {
+                        alert('도로명주소를 입력해주세요.');
+                        form.address1.focus();
+                        return;
+                    }
+
+                    form.address2.value = form.address2.value.trim();
+
+                    if (form.address2.value.length == 0) {
+                        alert('상세주소를 입력해주세요.');
+                        form.address2.focus();
+                        return;
+                    }
+
+                    form.zipcode.value = form.zipcode.value.trim();
+
+                    if (form.zipcode.value.length == 0) {
+                        alert('우편번호를 입력해주세요.');
+                        form.zipcode.focus();
+                        return;
+                    }
+
+                    form.submit();
+                }
+            </script>
+            <div class="container">
+                <form style="font-size: 20px" th:action="|/order/${order.ordersId}/requestPay|" method="POST">
+                    <h1 style="font-weight: bold; text-align: center; font-size: 2rem; margin-top: 5px; margin-bottom: 40px;">
+                        배송 정보</h1>
+                    <div style="margin-bottom: 15px;">
+                        <label for="customerName" style="margin-right: 20px;">배송받을 고객 이름</label>
                         <input type="text" id="customerName" name="customerName" placeholder="ex) 홍길동"
-                               class="input input-bordered">
+                               style="border-bottom: 1px solid black;">
                     </div>
 
-                    <div>
-                        <label for="customerMobilePhoneNumber">고객 휴대전화번호</label>
+                    <div style="margin-bottom: 15px;">
+                        <label for="customerMobilePhoneNumber" style="margin-right: 20px;">고객 휴대전화 번호</label>
                         <input type="text" id="customerMobilePhoneNumber" name="customerMobilePhoneNumber"
-                               placeholder="ex) 01012341234" class="input input-bordered">
+                               placeholder="ex) 01012341234" style="border-bottom: 1px solid black;">
                     </div>
 
                     <div>
                         <label>주소 정보</label>
                         <div>
-                            <input class="input input-bordered" type="text" id="zipcode" name="zipcode"
-                                   placeholder="우편번호">
-                            <button class="btnset btnset-line" style="padding: 5px;" type="button" onclick="execDaumPostcode()">우편번호 검색</button>
-                            <br>
-                            <input class="input input-bordered" type="text" id="address1" name="address1"
-                                   placeholder="도로명주소">
+                            <input style="border: 1px solid lightgray; margin-bottom: 15px;" type="text" id="zipcode"
+                                   name="zipcode" placeholder="우편번호">
+                            <input type="button" class="btn btn-outline-dark"
+                                   style="font-size: 16px;  margin-bottom: 5px"
+                                   onclick="execDaumPostcode()"
+                                   value="우편번호 검색"><br>
+                            <input style="border: 1px solid lightgray;  margin-bottom: 15px" type="text" id="address1"
+                                   name="address1" placeholder="도로명주소">
                             <span id="guide" style="color:#999;display:none"></span>
-                            <input class="input input-bordered" type="text" id="address2" name="address2"
+                            <input style="border: 1px solid lightgray;" type="text" id="address2" name="address2"
                                    placeholder="상세주소">
-<!--                            <input type="text" id="extraAddress" placeholder="참고항목"-->
-<!--                                   style="border: 1px solid black; border-radius: 8px; padding: 8px;">-->
                         </div>
                     </div>
+
 
                     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
                     <script>
@@ -181,13 +242,9 @@
                             }).open();
                         }
                     </script>
-
-<!--                    <div style="text-align: center; margin-top: 15px;">-->
-<!--                        <button class="btnset btnset-line" type="button" onclick="submitOrderPayInfoForm(this.form)">결제 요청</button>-->
-<!--                    </div>-->
-
                 </form>
             </div>
+
 
             <!-- 결제 UI -->
             <div id="payment-method"></div>
@@ -199,7 +256,10 @@
             <form>
                 <div style="text-align: center; margin-bottom: 15px;">
                     <!--                <label>결제하기</label>-->
-                    <button type="button" onclick="submitPayForm(this.form)" id="payment-button" class="btnset btnset-line">결제하기</button>
+                    <button type="button" onclick="submitPayForm(this.form)" id="payment-button"
+                            class="btnset btnset-line">
+                        결제하기
+                    </button>
                 </div>
             </form>
 
@@ -271,16 +331,22 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '/api/order/' + ordersId ,
+                        url: '/api/order/' + ordersId,
                         headers: {
                             'X-CSRF-TOKEN': csrfToken
                         },
-                        data: JSON.stringify({customerName: customerName, customerMobilePhoneNumber: customerMobilePhoneNumber, zipcode: zipcode, address1: address1, address2: address2}),
+                        data: JSON.stringify({
+                            customerName: customerName,
+                            customerMobilePhoneNumber: customerMobilePhoneNumber,
+                            zipcode: zipcode,
+                            address1: address1,
+                            address2: address2
+                        }),
                         contentType: 'application/json',
 
-                        success: function(response) {
+                        success: function (response) {
                         },
-                        error: function(error) {
+                        error: function (error) {
                         }
                     });
 
