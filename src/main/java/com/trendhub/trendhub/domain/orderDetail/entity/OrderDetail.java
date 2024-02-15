@@ -32,4 +32,8 @@ public class OrderDetail {
     private int price;
 
     private int count;
+
+    public int discountedPrice() {
+        return (int) (product.getPrice() * (1 - product.getDiscount() * 0.01 ) * count);
+    }
 }
