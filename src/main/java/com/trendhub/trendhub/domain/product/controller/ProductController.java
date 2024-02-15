@@ -52,6 +52,7 @@ public class ProductController {
 
         List<ProductOption> productOption = this.productService.findProductOption(product);
 
+
         String logInid;
         if (principal != null) {
             logInid = principal.getName();
@@ -62,6 +63,7 @@ public class ProductController {
         model.addAttribute("user", user);
         model.addAttribute("product", product);
         model.addAttribute("qnaPaging", qnAList);
+
         model.addAttribute("productOption", productOption);
         model.addAttribute("reviewList", reviewList);
 

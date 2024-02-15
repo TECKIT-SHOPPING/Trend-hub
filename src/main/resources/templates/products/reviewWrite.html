@@ -113,31 +113,46 @@
         .selected {
             background-color: #45a049 !important;
         }
+
+        /* Style for the star rating */
+        .star-rating {
+            display: inline-block;
+            direction: rtl;
+            border: 15;
+        }
+
+        .star-rating legend {
+            text-align: right;
+        }
+
+        .star-rating input[type=radio] {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 3em;
+            color: transparent;
+            text-shadow: 0 0 0 #f0f0f0;
+        }
+
+        .star-rating label:hover {
+            text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+        }
+
+        .star-rating label:hover ~ label {
+            text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+        }
+
+        .star-rating input[type=radio]:checked ~ label {
+            text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+        }
     </style>
 </head>
 
 <body>
 <div class="container">
-    <form th:action="@{|/review/create/${productId}|}" method="post" th:object="${reviewDto}" style="display: inline-block;">
-        <!--sec:authorize="hasRole('ADMIN')"-->
-        <!--<div class="selection-buttons">
-            <button class="selection-button size" type="button" onclick="selectOption(this, 'small')">작아요</button>
-            <button class="selection-button size" type="button" onclick="selectOption(this, 'medium')">보통이에요</button>
-            <button class="selection-button size" type="button" onclick="selectOption(this, 'large')">커요</button>
-        </div>
-
-        <div class="selection-buttons">
-            <button class="selection-button brightness" type="button" onclick="selectOption(this, 'bright')">밝아요
-            </button>
-            <button class="selection-button brightness" type="button" onclick="selectOption(this, 'medium')">보통이에요
-            </button>
-            <button class="selection-button brightness" type="button" onclick="selectOption(this, 'dark')">어두워요</button>
-        </div>
-
-        <div class="selection-buttons">
-            <button class="selection-button gender" type="button" onclick="selectOption(this, 'male')">남</button>
-            <button class="selection-button gender" type="button" onclick="selectOption(this, 'female')">여</button>
-        </div>-->
+    <form th:action="@{|/review/create/${productId}|}" method="post" id="myform" th:object="${reviewDto}"
+          style="display: inline-block;">
 
         <!-- Text input fields for height and weight -->
         <label for="height">키:</label>
@@ -148,6 +163,17 @@
         <label for="weight">몸무게:</label>
         <input type="text" id="weight" name="weight" placeholder="몸무게를 입력하세요." style="margin-bottom: 10px;">
         <p th:if="${#fields.hasErrors('weight')}" th:errors="${reviewDto.weight}" class="fieldError"
+           style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
+
+        <fieldset class="star-rating" style="margin-bottom: 10px;">
+            <legend>별점을 선택해주세요</legend>
+            <input type="radio" name="star" value="5" id="rate1"><label for="rate1">★</label>
+            <input type="radio" name="star" value="4" id="rate2"><label for="rate2">★</label>
+            <input type="radio" name="star" value="3" id="rate3"><label for="rate3">★</label>
+            <input type="radio" name="star" value="2" id="rate4"><label for="rate4">★</label>
+            <input type="radio" name="star" value="1" id="rate5"><label for="rate5">★</label>
+        </fieldset>
+        <p th:if="${#fields.hasErrors('star')}" th:errors="${reviewDto.star}" class="fieldError"
            style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
 
         <textarea name="content" id="content" rows="10" cols="100" style="resize: none;"
@@ -164,14 +190,9 @@
 
 <script>
     function selectOption(button, value) {
-        // Deselect previously selected button within the same category
         const category = button.classList.contains('size') ? 'size' : (button.classList.contains('brightness') ? 'brightness' : 'gender');
         document.querySelectorAll(`.selection-button.${category}.selected`).forEach(btn => btn.classList.remove('selected'));
-
-        // Toggle 'selected' class on the clicked button
         button.classList.toggle('selected');
-
-        // Handle the selection logic, you can store the selected values in hidden fields or use JavaScript as needed.
         const selectedOptions = Array.from(document.querySelectorAll(`.selection-button.${category}.selected`)).map(btn => btn.textContent);
         console.log(category + ': ' + selectedOptions.join(', '));
     }

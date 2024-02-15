@@ -5,9 +5,8 @@ import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 import java.time.LocalDateTime;
 
@@ -36,10 +35,16 @@ public class Review extends BaseTimeEntity {
     private String content;
     private LocalDateTime date;
     private String gender;
-    private int height;
-    private int weight;
+    private Double height;
+    private Double weight;
     private String image;
 
     // 별점
+    @Column(name = "star")
     private Integer star;
+
+    @AssertTrue(message = "하나 이상의 별을 선택해주세요.")
+    public boolean isStarSelected() {
+        return star != null && star > 0;
+    }
 }
