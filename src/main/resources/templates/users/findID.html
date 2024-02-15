@@ -1,5 +1,11 @@
 <html layout:decorate="layouts/layout" xmlns="http://www.w3.org/1999/html">
+
 <div layout:fragment="content">
+    <script th:inline="javascript">
+        const token = /*[[${_csrf.token}]]*/ '';
+
+        console.log(token)
+    </script>
     <div class="personal-jglrrGe28m" data-bid="vULrrgi0d8">
         <div style="display:flex; justify-content: center; margin-bottom: 60px; margin-top: 100px;">
             <h1 style="font-weight: bold; text-decoration-line: underline; font-size: 35px; ">계정 찾기</h1>
@@ -16,7 +22,7 @@
         </div>
     </div>
 
-    <form  onsubmit="signup(this); return false;"
+    <form onsubmit="signup(this); return false;"
           style="display:flex; flex-direction: column; align-items: center; margin-top: 20px;">
 
         <div style="display:flex; flex-direction: column; margin-bottom: 15px;">
