@@ -1,15 +1,14 @@
 package com.trendhub.trendhub.domain.review.service;
 
+import com.trendhub.trendhub.domain.coordi.entity.Coordi;
 import com.trendhub.trendhub.domain.product.entity.Product;
+import com.trendhub.trendhub.domain.review.dto.CoordiReviewDto;
 import com.trendhub.trendhub.domain.review.dto.MypageReviewDto;
 import com.trendhub.trendhub.domain.review.dto.ReviewDto;
 import com.trendhub.trendhub.domain.review.entity.Review;
 import com.trendhub.trendhub.domain.review.repository.ReviewRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.global.service.S3Service;
-
-
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,8 +52,22 @@ public class ReviewService {
     }
 
     public Page<Review> getReviewList(int page, Long coordiId) {
-        Pageable pageable = PageRequest.of(page-1, 5);
+        Pageable pageable = PageRequest.of(page, 5);
         return reviewRepository.findByCoordiId(pageable, coordiId);
     }
+
+    public void createCoordiReview(User user, Coordi coordi, CoordiReviewDto coordiReviewDto) {
+        Review saveReview = coordiReviewDto.toEntity(user, coordi);
+        this.reviewRepository.save(saveReview);
+    }
+
+//    public void create(Question question, String content) {
+//        Answer answer = new Answer();
+//        answer.setContent(content);
+//        answer.setCreateDate(LocalDateTime.now());
+//        answer.setQuestion(question);
+//        this.answerRepository.save(answer);
+//    }
+
 
 }

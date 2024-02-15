@@ -96,6 +96,7 @@
                         </tbody>
                     </table>
 
+                    <div id="coordiId" style="display: none;" data-id="${coordiId}"></div>
                     <table class="w-full border-collapse border border-gray-300 mt-8" style="margin-top: 10px;">
                         <thead>
                         <tr class="bg-gray-100">
@@ -106,9 +107,9 @@
                         <tr th:if="${userId != null}" class="border-b">
                             <td class="py-3 px-6 text-xl">
                                 <div id="comment-form-container">
-                                    <form id="comment-form" onsubmit="submitComment(event)" style="display: flex; flex-direction: row; align-items: center; width: 100%; justify-content: space-around;">
-                                        <textarea id="comment-input" cols="100" rows="4" required maxlength="20" placeholder="댓글을 입력하세요" style="width: 70%;"></textarea>
-                                        <button type="submit" id="submit-comment-btn" style="width: 10%; padding: 20px;">댓글 등록</button>
+                                    <form th:action="@{|/coordi/${coordiDetailDto.coordiId}|}" method="post" id="comment-form" style="display: flex; flex-direction: row; align-items: center; width: 100%; justify-content: space-around;">
+                                        <textarea id="comment-input" name="content" cols="100" rows="4" required maxlength="20" placeholder="댓글을 입력하세요" style="width: 70%; resize: none;"></textarea>
+                                        <input type="submit" id="submit-comment-btn" style="width: 10%; padding: 20px;" value="댓글 등록"></input>
                                     </form>
                                 </div>
                             </td>
@@ -256,51 +257,53 @@
             }
         }
 
-        function submitComment(event) {
-            event.preventDefault();
-
-            const reviewContent = document.getElementById('comment-input').value; // 입력된 댓글 내용
-
-            const formData = {
-                content: reviewContent
-            };
-
-            fetch('/api/reviews', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('HTTP error ' + response.status);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('댓글이 성공적으로 등록되었습니다.');
-                    // 새로운 댓글을 화면에 추가하는 등의 동작 수행
-                    const tableBody = document.querySelector('table tbody');
-                    const newRow = document.createElement('tr');
-                    newRow.innerHTML = `
-        <td class="py-3 px-6 text-xl">
-          <img src="${data.user.profile}" alt="Profile Image" style="border-radius: 50%; width: 30px; height: 30px;">
-        </td>
-        <td class="py-3 px-6 text-xl text-center">${data.user.nickname}</td>
-        <td class="py-3 px-6 text-xl text-center wider-column">${data.content}</td>
-        <td class="py-3 px-6 text-xl text-center">${data.createAt}</td>
-        <td>
-          <button class="btn btn-dark" onclick="deleteReview('${data.reviewId}')" style="margin-left: 10px; font-size: 13px;">삭제</button>
-        </td>
-      `;
-                    tableBody.appendChild(newRow); // 새로운 행을 테이블에 추가
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
+    //     function submitComment(event) {
+    //         event.preventDefault();
+    //
+    //         const coordiId = document.getElementById('coordiId').dataset.id;
+    //         const reviewContent = document.getElementById('comment-input').value;
+    //
+    //         const formData = {
+    //             content: reviewContent,
+    //             reviewId: coordiId,
+    //             date: new Date().toISOString()
+    //         };
+    //
+    //         fetch(`/coordi/${coordiId}`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(formData),
+    //             credentials: 'include',
+    //         })
+    //             .then(response => {
+    //                 if (!response.ok) {
+    //                     throw new Error('HTTP error ' + response.status);
+    //                 }
+    //                 return response.json();
+    //             })
+    //             .then(data => {
+    //                 console.log('댓글이 성공적으로 등록되었습니다.');
+    //
+    //                 const tableBody = document.querySelector('table tbody');
+    //                 const newRow = document.createElement('tr');
+    //                 newRow.innerHTML = `
+    // <td class="py-3 px-6 text-xl">
+    //   <img src="${data.user.profile}" alt="Profile Image" style="border-radius: 50%; width: 30px; height: 30px;">
+    // </td>
+    // <td class="py-3 px-6 text-xl text-center">${data.user.nickname}</td>
+    // <td class="py-3 px-6 text-xl text-center wider-column">${data.content}</td>
+    // <td class="py-3 px-6 text-xl text-center">${data.createAt}</td>
+    // <td>
+    //   <button class="btn btn-dark" onclick="deleteReview('${data.reviewId}')" style="margin-left: 10px; font-size: 13px;">삭제</button>
+    // </td>`;
+    //                 tableBody.appendChild(newRow);
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error:', error);
+    //             });
+    //     }
     </script>
 </div>
 </html>

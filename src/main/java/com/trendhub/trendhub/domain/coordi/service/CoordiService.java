@@ -7,6 +7,7 @@ import com.trendhub.trendhub.domain.coordi.entity.Coordi;
 import com.trendhub.trendhub.domain.coordi.repository.CoordiRepository;
 import com.trendhub.trendhub.domain.likes.entity.Likes;
 import com.trendhub.trendhub.domain.likes.service.LikesService;
+import com.trendhub.trendhub.domain.product.service.DataNotFoundException;
 import com.trendhub.trendhub.domain.user.entity.User;
 import com.trendhub.trendhub.domain.user.repository.UserRepository;
 import com.trendhub.trendhub.global.service.S3Service;
@@ -15,8 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -156,5 +155,14 @@ public class CoordiService {
         coordiRepository.delete(findCoordi);
 
         return 100;
+    }
+
+    public Coordi getCoordi(Long id) {
+        Optional<Coordi> coordi = this.coordiRepository.findById(id);
+        if (coordi.isPresent()) {
+            return coordi.get();
+        } else {
+            throw new DataNotFoundException("post not found");
+        }
     }
 }
