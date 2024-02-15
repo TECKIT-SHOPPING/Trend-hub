@@ -43,6 +43,7 @@ public class ReviewService {
     public void createReview(User user, Product product, ReviewDto reviewDto/*, MultipartFile file*/) {
 
         Review saveReview = reviewDto.toEntity(user, product);
+        user.setPoint(user.getPoint() + 500);
         this.reviewRepository.save(saveReview);
     }
 }

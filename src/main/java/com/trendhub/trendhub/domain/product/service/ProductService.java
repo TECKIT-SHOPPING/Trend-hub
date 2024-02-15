@@ -6,7 +6,6 @@ import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
 import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.Product;
-import com.trendhub.trendhub.domain.product.entity.Season;
 import com.trendhub.trendhub.domain.product.entity.QnA;
 import com.trendhub.trendhub.domain.product.repository.ProductRepository;
 import com.trendhub.trendhub.domain.product.repository.QnaRepository;
@@ -204,6 +203,23 @@ public class ProductService {
         }
         List<ProductDto> result = productRepository.findByFWsale(user);
         return result;
+    }
+
+
+    public ProductDto findByCheckLike(Long productId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() != "anonymousUser") {
+            User user = null;
+            String loginId = authentication.getName();
+            //세션을 통한 유저 조회
+            user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
+            ProductDto result = productRepository.findByUserCheckLike(user, productId);
+            return result;
+        } else {
+            //비로그인상태
+            ProductDto result = productRepository.findByUserCheckLikeAnonymousUser(productId);
+            return result;
+        }
     }
 
 

@@ -47,4 +47,6 @@ public class Review extends BaseTimeEntity {
     public boolean isStarSelected() {
         return star != null && star > 0;
     }
+
+
 }
