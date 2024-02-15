@@ -210,6 +210,23 @@ public class ProductService {
     }
 
 
+    public ProductDto findByCheckLike(Long productId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() != "anonymousUser") {
+            User user = null;
+            String loginId = authentication.getName();
+            //세션을 통한 유저 조회
+            user = userRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 유저입니다."));
+            ProductDto result = productRepository.findByUserCheckLike(user, productId);
+            return result;
+        } else {
+            //비로그인상태
+            ProductDto result = productRepository.findByUserCheckLikeAnonymousUser(productId);
+            return result;
+        }
+    }
+
+
     public List<ProductOption> findProductOption(Product product) {
         return productOptionRepository.findByProduct(product);
     }

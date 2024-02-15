@@ -58,7 +58,6 @@
         if (errorMessage) {
             alert(errorMessage)
         }
-
     </script>
 
     <!-- [E]basic-N3 -->
@@ -69,20 +68,11 @@
                 <div class="contents-container container-md">
                     <div class="contents-left">
                         <div class="contents-thumbnail">
-                            <img class="contents-thumbimg" src="/images/img_basic_N51_1.png" alt="썸네일이미지">
+                            <img class="contents-thumbimg" th:src="${product.image}" alt="썸네일이미지">
                         </div>
                         <ul class="contents-thumblist">
                             <li class="contents-thumbitem">
-                                <img class="contents-thumbimg" src="/images/img_basic_N51_1.png" alt="썸네일이미지">
-                            </li>
-                            <li class="contents-thumbitem">
-                                <img class="contents-thumbimg" src="/images/img_basic_N51_2.png" alt="썸네일이미지">
-                            </li>
-                            <li class="contents-thumbitem">
-                                <img class="contents-thumbimg" src="/images/img_basic_N51_3.png" alt="썸네일이미지">
-                            </li>
-                            <li class="contents-thumbitem">
-                                <img class="contents-thumbimg" src="/images/img_basic_N51_4.png" alt="썸네일이미지">
+                                <img class="contents-thumbimg" th:src="${product.image}" alt="썸네일이미지">
                             </li>
                         </ul>
                     </div>
@@ -91,12 +81,18 @@
                             <div class="contents-brand">
                                 <a style="text-decoration: none;" href="javascript:void(0);">템하피부</a>
                                 <div class="contents-brand-group">
-                                    <button class="contents-btn btn-like-line">
-                                        <img src="/icons/ico_like_black_line.svg" alt="하트 라인 아이콘">
-                                    </button>
-                                    <button class="contents-btn btn-like-fill" style="color: red;">
-                                        <img src="/icons/ico_like_black_fill.svg" alt="하트 채워진 아이콘">
-                                    </button>
+                                    <div style="display: flex; flex-direction: column">
+                                        <div class="cardset-actions"
+                                             th:attr="data-heart=${productDto.productId}"
+                                             onclick="toggleLike(this)">
+                                            <img th:if="${productDto.liked}" src="../../images/like.png"
+                                                 width="34" height="34"/>
+                                            <img th:unless="${productDto.liked}" src="../../images/unlike.png"
+                                                 width="34" height="34"/>
+                                        </div>
+                                        <span th:text="${productDto.totalLike}"
+                                              style="margin: 0 auto;"></span>
+                                    </div>
                                     <button class="contents-btn">
                                     </button>
                                 </div>
@@ -145,6 +141,33 @@
                                     <span><strong
                                             th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>
                                     <span>원</span>
+
+                                    <!-- Check if discount is not zero -->
+                                <h2 class="cardset-tit" th:if="${product.discount == 0}">
+                                    <span th:text="${'-'}"></span>
+                                    <!-- Strikethrough original price -->
+                                </h2>
+                                <h2 class="cardset-tit" th:if="${product.discount != 0}">
+                                    <del th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
+                                    <!-- Strikethrough original price -->
+                                    <span th:text="${'  - ' + product.discount + '%'}"></span>
+                                    <!-- Display discount percentage -->
+                                </h2>
+                                <!-- Check if discount is not zero and calculate discounted price -->
+                                <p class="cardset-desc" th:if="${product.discount != 0}"
+                                   th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                <!-- If discount is zero, display the original price in the <p> tag -->
+                                <p class="cardset-desc" th:if="${product.discount == 0}"
+                                   th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+
+
+
+
+
+
+
+
+
                                 </p>
                             </div>
                         </div>
@@ -227,17 +250,8 @@
                         <!-- 여기에 상세정보 내용 추가 -->
                         <h2 class="text-4xl font-bold mb-8">상세정보</h2>
                         <div class="contents-container container-md">
-                            <div class="imageset">
-                                <img class="imageset-img" src="/images/img_basic_N52_1.png" alt="이미지">
-                            </div>
-                            <div class="imageset">
-                                <img class="imageset-img" src="/images/img_basic_N52_1.png" alt="이미지">
-                            </div>
-                            <div class="imageset">
-                                <img class="imageset-img" src="/images/img_basic_N52_1.png" alt="이미지">
-                            </div>
-                            <div class="imageset">
-                                <img class="imageset-img" src="/images/img_basic_N52_1.png" alt="이미지">
+                            <div class="imageset" style="max-width: 100%; height: 100%;">
+                                <img class="imageset-img" th:src="${product.detailImage}" alt="이미지" style="width: 100%; height: auto;">
                             </div>
                         </div>
                     </div>
@@ -316,10 +330,9 @@
                             <h2 class="text-4xl font-bold">상품후기</h2>
                         </div>
                         <!-- 여기에 후기 내용 추가 -->
-                        <div style="display: flex; justify-content: end;" class="flex mb-6">
-                            <button class="btn btn-active mr-6 px-8 py-2 text-2xl">
-                                <a th:href="@{|/review/create/${product.productId}|}">상품후기 작성하기</a>
-                            </button>
+                        <div class="flex mb-6">
+                            <button th:if="${checkPayable}" class="btn btn-active mr-6 px-8 py-2 text-2xl">
+                                <a th:href="@{|/review/create/${product.productId}|}">상품후기 작성하기</a></button>
                         </div>
                         <table class="w-full border-collapse border border-gray-300 mt-8">
                             <thead>
@@ -343,22 +356,25 @@
                             </tbody>
                         </table>
                         <!-- 페이징처리 시작 -->
-                        <div th:if="${!reviewList.isEmpty()}" class="mt-8" style="margin-bottom: 50px;">
-                            <ul class="pagination justify-content-center">
+                        <div th:if="${!reviewList.isEmpty()}" class="mt-8">
+                            <ul class="pagination flex justify-center">
                                 <li class="page-item" th:classappend="${!reviewList.hasPrevious} ? 'disabled'">
                                     <a class="page-link"
-                                       th:href="@{|?reviewPage=${reviewList.number-1}|}">
-                                        <span>이전</span>
+                                       th:href="@{|/products/${product.productId}?reviewPage=${reviewList.number-1}#section-inquiry|}">
+                                        <span class="text-xl">이전</span>
                                     </a>
                                 </li>
                                 <li th:each="page: ${#numbers.sequence(0, reviewList.totalPages-1)}"
+                                    th:if="${page >= reviewList.number-5 and page <= reviewList.number+5}"
                                     th:classappend="${page == reviewList.number} ? 'active'"
-                                    class="page-item">
-                                    <a th:text="${page + 1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                    class="page-item mx-2">
+                                    <a th:text="${page + 1}" class="page-link"
+                                       th:href="@{|/products/${product.productId}?reviewPage=${page}#section-inquiry|}"></a>
                                 </li>
                                 <li class="page-item" th:classappend="${!reviewList.hasNext} ? 'disabled'">
-                                    <a class="page-link" th:href="@{|?reviewPage=${reviewList.number+1}|}">
-                                        <span>다음</span>
+                                    <a class="page-link"
+                                       th:href="@{|/products/${product.productId}?qnaPage=${reviewList.number+1}#section-inquiry|}">
+                                        <span class="text-xl">다음</span>
                                     </a>
                                 </li>
                             </ul>
@@ -402,6 +418,50 @@
             productList.push(productUrl[1]);
             localStorage.setItem('productList', JSON.stringify(productList));
         });
+
+        function toggleLike(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var productId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/products/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    productId: parseInt(productId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
 
         function submitOrderInfo(form) {
             var amountElement = document.querySelector('.contents-amount-num');

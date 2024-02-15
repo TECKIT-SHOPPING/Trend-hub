@@ -47,6 +47,7 @@ public class ReviewService {
             imageUrl = s3Service.createVideo(file);
         }*/
         Review saveReview = reviewDto.toEntity(user, product);
+        user.setPoint(user.getPoint() + 500);
         this.reviewRepository.save(saveReview);
     }
 }

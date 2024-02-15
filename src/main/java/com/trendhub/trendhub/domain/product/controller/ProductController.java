@@ -1,5 +1,6 @@
 package com.trendhub.trendhub.domain.product.controller;
 
+import com.trendhub.trendhub.domain.orderDetail.service.OrderDetailService;
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.*;
@@ -39,6 +40,7 @@ public class ProductController {
     private final SubCategoryService subCategoryService;
     private final QnaService qnaService;
     private final ReviewService reviewService;
+    private final OrderDetailService orderDetailService;
 
     @GetMapping("/{id}")
     public String detail(Model model, @PathVariable("id") Long id,
@@ -47,8 +49,10 @@ public class ProductController {
                          Principal principal) {
         Product product = this.productService.getProduct(id);
         Long productId = product.getProductId();
+        ProductDto productDto = productService.findByCheckLike(productId);
         Page<QnA> qnAList = this.qnaService.getQnAList(qnaPage, productId);
         Page<Review> reviewList = this.reviewService.getReviewList(reviewPage, productId);
+        boolean checkPayable = orderDetailService.checkBuyProduct(productId);
 
         List<ProductOption> productOption = this.productService.findProductOption(product);
 
@@ -66,6 +70,8 @@ public class ProductController {
 
         model.addAttribute("productOption", productOption);
         model.addAttribute("reviewList", reviewList);
+        model.addAttribute("checkPayable", checkPayable);
+        model.addAttribute("productDto", productDto);
 
         return "products/productDetail";
     }
