@@ -1,7 +1,11 @@
 <html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
-    <title>상세 페이지 생성중</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-huxdJbRgeHzLsH4tVv1tJXX0Tsh3MtLcxg46EjLH5YYZE09km2EEyPqFq1uBRfLdH+gDzlNRDnx7Qluq1+9VQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-size: 16px;
@@ -375,10 +379,8 @@
                                     th:text="${review.content}"></td>
                                 <td class="py-3 px-6 text-xl" th:text="${review.createAt}"></td>
                                 <td class="py-3 px-6 text-xl" th:text="${review.user.loginId}"></td>
-                                <td class="py-3 px-6 text-xl">
-                                        <span th:each="i : ${#numbers.sequence(1, review.star)}">
-                                            <i class="fas fa-star"></i>
-                                        </span>
+                                <td class="py-3 px-10 text-xl" style="display: flex; align-items: center;">
+                                <span th:each="i : ${#numbers.sequence(1, review.star)}"> <i class="fas fa-star"></i></span>
                                 </td>
                             </tr>
                             </tbody>
