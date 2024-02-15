@@ -21,8 +21,8 @@ public class ProductDto {
         this.image = image;
         this.name = name;
         this.discount = discount;
-        if (discount > 0) this.price = (int) (price * ((100 - discount) * 0.01));
-        else this.price = price;
+//        if (discount > 0) this.price = (int) (price * ((100 - discount) * 0.01));
+        this.price = price;
         this.totalLike = totalLike;
         this.liked = liked;
     }

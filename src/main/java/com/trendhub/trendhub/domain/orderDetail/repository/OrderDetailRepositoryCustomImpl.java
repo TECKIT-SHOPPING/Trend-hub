@@ -25,7 +25,7 @@ public class OrderDetailRepositoryCustomImpl implements OrderDetailRepositoryCus
                 .from(QOrderDetail.orderDetail)
                 .join(QOrderDetail.orderDetail.order, QOrders.orders)
                 .join(QOrderDetail.orderDetail.product, QProduct.product)
-                .where(QProduct.product.productId.eq(productId).and(QOrders.orders.date.isNotNull()))
+                .where(QProduct.product.productId.eq(productId).and(QOrders.orders.date.isNotNull()).and(QOrders.orders.user.eq(user)))
                 .fetch();
 
         return result;
