@@ -102,9 +102,21 @@ public class Orders extends BaseTimeEntity {
 
     public String getPayStatus() {
         if (date != null)
-            return "결제완료 (" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")";
+            return "결제완료";
+//            return "결제완료 (" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")";
+
 
         return "결제대기";
+    }
+
+    public String getOrderCreateAt() {
+        return getCreateAt().toString();
+    }
+
+    public String getProductImage() {
+        String image = orderDetails.get(0).getProduct().getImage();
+        System.out.println(image);
+        return image;
     }
 
 }

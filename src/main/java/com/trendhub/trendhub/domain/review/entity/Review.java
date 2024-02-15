@@ -35,8 +35,8 @@ public class Review extends BaseTimeEntity {
     private String content;
     private LocalDateTime date;
     private String gender;
-    private int height;
-    private int weight;
+    private Double height;
+    private Double weight;
     private String image;
 
     // 별점

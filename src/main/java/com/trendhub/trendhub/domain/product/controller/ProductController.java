@@ -52,6 +52,7 @@ public class ProductController {
         Long productId = product.getProductId();
         Page<QnA> qnAList = this.qnaService.getQnAList(qnaPage, productId);
         Page<Review> reviewList = this.reviewService.getReviewList(reviewPage, productId);
+
         String logInid;
         if (principal != null) {
             logInid = principal.getName();
@@ -63,6 +64,7 @@ public class ProductController {
         model.addAttribute("product", product);
         model.addAttribute("qnaPaging", qnAList);
         model.addAttribute("reviewList", reviewList);
+
         return "products/productDetail";
     }
 
