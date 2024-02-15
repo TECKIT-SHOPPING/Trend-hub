@@ -99,26 +99,29 @@
                             <div class="textset">
                                 <h2 class="textset-tit" th:text="${product.name}"></h2>
                             </div>
-<!--                            <p class="contents-price">-->
-<!--                                <span><strong-->
-<!--                                        th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>-->
-<!--                                <span>원</span>-->
-<!--                            </p>-->
+                            <!--                            <p class="contents-price">-->
+                            <!--                                <span><strong-->
+                            <!--                                        th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>-->
+                            <!--                                <span>원</span>-->
+                            <!--                            </p>-->
                             <div style="display: flex; flex-direction: column;">
                                 <!-- Check if discount is not zero -->
                                 <h2 class="cardset-tit contents-price" th:if="${product.discount == 0}">
                                     <span th:text="${'-'}"></span>
                                     <!-- Strikethrough original price -->
                                 </h2>
-                                <h2 class="cardset-tit contents-price" th:if="${product.discount != 0}" style="display: flex; flex-direction: column;">
+                                <h2 class="cardset-tit contents-price" th:if="${product.discount != 0}"
+                                    style="display: flex; flex-direction: column;">
                                     <div style="display: flex; flex-direction: row; justify-content: space-between">
                                         <p class="cardset-desc contents-price" style="font-weight: normal">원가</p>
-                                        <del style="font-weight: normal" th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
+                                        <del style="font-weight: normal"
+                                             th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
                                     </div>
                                     <!-- Strikethrough original price -->
                                     <div style="display: flex; flex-direction: row; justify-content: space-between;">
                                         <p class="cardset-desc contents-price" style="color: darkgray;">할인율</p>
-                                        <p class="cardset-desc contents-price" style="color: red;" th:text="${'  -' + product.discount + '%'}"></p>
+                                        <p class="cardset-desc contents-price" style="color: red;"
+                                           th:text="${'  -' + product.discount + '%'}"></p>
                                     </div>
 
                                     <!-- Display discount percentage -->
@@ -150,7 +153,8 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="custom-container" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <div class="custom-container"
+                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                             <span class="label">색상 / 사이즈</span>
                             <form>
                                 <select name="size" class="custom-select" id="productOption2">
@@ -158,27 +162,28 @@
                                     <option class="productOption" th:each="option : ${productOption}"
                                             th:value="${option.productOptionId}"
                                             th:utext="${option.color + '/' + option.size}"></option>
-<!--                                    <option value="90">90</option>-->
-<!--                                    <option value="95">95</option>-->
-<!--                                    <option value="100">100</option>-->
-<!--                                    <option value="105">105</option>-->
+                                    <!--                                    <option value="90">90</option>-->
+                                    <!--                                    <option value="95">95</option>-->
+                                    <!--                                    <option value="100">100</option>-->
+                                    <!--                                    <option value="105">105</option>-->
                                 </select>
                             </form>
-<!--                            <span class="label">색상</span>-->
-<!--                            <form>-->
-<!--                                <select name="color" class="custom-select">-->
-<!--                                    <option value="none">=== 선택 ===</option>-->
-<!--                                    <option th:each="option : ${productOption}"-->
-<!--                                            th:value="${option.color}"-->
-<!--                                            th:utext="${option.color}"></option>-->
-<!--&lt;!&ndash;                                    <option value="white">white</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    <option value="black">black</option>&ndash;&gt;-->
-<!--                                </select>-->
-<!--                            </form>-->
+                            <!--                            <span class="label">색상</span>-->
+                            <!--                            <form>-->
+                            <!--                                <select name="color" class="custom-select">-->
+                            <!--                                    <option value="none">=== 선택 ===</option>-->
+                            <!--                                    <option th:each="option : ${productOption}"-->
+                            <!--                                            th:value="${option.color}"-->
+                            <!--                                            th:utext="${option.color}"></option>-->
+                            <!--&lt;!&ndash;                                    <option value="white">white</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;                                    <option value="black">black</option>&ndash;&gt;-->
+                            <!--                                </select>-->
+                            <!--                            </form>-->
                         </div>
                         <div class="contents-right-group">
                             <div class="contents-right-list">
-                                <div class="custom-container" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="custom-container"
+                                     style="display: flex; justify-content: space-between; align-items: center;">
                                     <span class="label">수량</span>
                                     <div class="contents-amount">
                                         <button class="contents-btn btn-minus" type="button">
@@ -193,7 +198,8 @@
                             </div>
                         </div>
                         <div>
-                            <div class="contents-total" style="display: flex; justify-content:space-between; align-items: center;">
+                            <div class="contents-total"
+                                 style="display: flex; justify-content:space-between; align-items: center;">
                                 <strong>총 결제금액</strong>
                                 <p class="contents-price">
                                 </p>
@@ -213,12 +219,14 @@
                             </div>
                         </div>
                         <div class="contents-btn-group">
-                            <form class="btnset btnset-line" th:action="|/cart/${product.productId}|" onclick="submitOrderInfo(this)" method="POST">
+                            <form class="btnset btnset-line" th:action="|/cart/${product.productId}|"
+                                  onclick="submitOrderInfo(this)" method="POST">
                                 <input type="hidden" name="amount" value="1">
                                 <input type="hidden" name="productOptionId" value="1">
                                 <button type="submit" style="width: 100%; height: 100%;">장바구니</button>
                             </form>
-                            <form class="btnset btnset-line" th:action="|/order/${product.productId}|" onclick="submitOrderInfo(this)" method="POST">
+                            <form class="btnset btnset-line" th:action="|/order/${product.productId}|"
+                                  onclick="submitOrderInfo(this)" method="POST">
                                 <input type="hidden" name="amount" value="1">
                                 <input type="hidden" name="productOptionId" value="1">
                                 <button type="submit" style="width: 100%; height: 100%;">구매하기</button>
@@ -266,7 +274,8 @@
                         <h2 class="text-4xl font-bold mb-8">상세정보</h2>
                         <div class="contents-container container-md">
                             <div class="imageset" style="max-width: 100%; height: 100%;">
-                                <img class="imageset-img" th:src="${product.detailImage}" alt="이미지" style="width: 100%; height: auto;">
+                                <img class="imageset-img" th:src="${product.detailImage}" alt="이미지"
+                                     style="width: 100%; height: auto;">
                             </div>
                         </div>
                     </div>
@@ -341,7 +350,8 @@
                     <!-- Section: 후기 -->
                     <div id="section-reviews" class="section-content">
                         <div style="display: flex; align-items: center;">
-                            <img style="width: 30px; height: 30px; margin-right: 5px;" th:src="@{/images/review_write.png}">
+                            <img style="width: 30px; height: 30px; margin-right: 5px;"
+                                 th:src="@{/images/review_write.png}">
                             <h2 class="text-4xl font-bold">상품후기</h2>
                         </div>
                         <!-- 여기에 후기 내용 추가 -->
@@ -364,8 +374,8 @@
                                 <td class="py-3 px-6 text-xl" th:text="${review.content}"></td>
                                 <td class="py-3 px-6 text-xl" th:text="${review.createAt}"></td>
                                 <td class="py-3 px-6 text-xl" th:text="${review.user.loginId}"></td>
-                                <td class="py-3 px-6 text-xl"> <span th:each="i : ${#numbers.sequence(1, review.star)}">
-                                    <i class="fas fa-star"></i> </span>
+                                <td class="py-3 px-10 text-xl" style="display: flex; align-items: center;">
+                                <span th:each="i : ${#numbers.sequence(1, review.star)}"> <i class="fas fa-star"></i></span>
                                 </td>
                             </tr>
                             </tbody>
