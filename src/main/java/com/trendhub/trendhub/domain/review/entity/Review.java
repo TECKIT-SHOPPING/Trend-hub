@@ -10,6 +10,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -47,6 +49,4 @@ public class Review extends BaseTimeEntity {
     public boolean isStarSelected() {
         return star != null && star > 0;
     }
-
-
 }

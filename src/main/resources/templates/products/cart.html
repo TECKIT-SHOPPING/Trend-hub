@@ -48,38 +48,29 @@
 
     <div style="display:flex; flex-direction: column; align-items:center; margin-top: 50px;">
         <div style="margin-top: 20px;">
-            <div style="display: flex; align-items:center; font-size: 15px; margin-bottom: 5px;">
-                <img style="width: 20px; height: 15px; margin-right: 3px;" th:src="@{/images/cart.png}"> 장바구니
+            <div style="display: flex; align-items:center; font-size: 30px; margin-bottom: 5px;">
+                <img style="width: 40px; height: 30px; margin-right: 3px;" th:src="@{/images/cart.png}" > 장바구니
             </div>
-            <table class="table" style="width: 900px; margin-bottom: 10px;">
-                <thead style="border-top: 1px solid black; border-bottom: 1px solid black; font-size: 16px;">
+            <table class="table" style="width: 1400px; margin-bottom: 10px;">
+                <thead style="border-top: 1px solid black; border-bottom: 1px solid black; font-size: 20px;">
                 <tr style="text-align: center;">
                     <th style="width: 10%;">NO</th>
-<!--                    <th style="width: 10%;">-->
-<!--                        <input id="check-all" class="input-fill" type="checkbox" onclick="toggleAllAgreements()">-->
-<!--                    </th>-->
-                    <th style="width: 30%;">상품명(옵션)</th>
-                    <th style="width: 15%;">판매가</th>
-                    <th style="width: 15%;">수량</th>
-                    <th style="width: 20%;" colspan="2">주문관리</th>
+                    <th style="width: 40%;">상품명(옵션)</th>
+                    <th style="width: 25%;">판매가</th>
+                    <th style="width: 25%;" colspan="2">주문관리</th>
                 </tr>
                 </thead>
 
-                <tbody style="font-size: 13px; line-height: 50px;" class="select-all">
+                <tbody style="font-size: 18px; line-height: 50px;" class="select-all">
                 <tr th:each="cart, iterStat : ${cartList}" style="text-align: center;">
                     <th:block th:with="product = ${cart.product}">
                         <td style="width: 10%;">
-                            <div th:text="${iterStat.count}">1</div>
+                            <div th:text="${iterStat.count}"></div>
                         </td>
-<!--                        <td style="width: 10%;">-->
-<!--                            <div>-->
-<!--                                <input id="check-all" class="inpu-fill" type="checkbox">-->
-<!--                            </div>-->
-<!--                        </td>-->
-                        <td style="width: 30%;">
+                        <td style="width: 40%;">
                             <div style="display: flex; justify-content: center;">
-                                <img style="width: 45px; height: 45px;" th:src="${product.image}">
-                                <div style="display: flex; flex-direction: column;">
+                                <img style="width: 60px; height: 60px;" th:src="${product.image}">
+                                <div style="flex-grow:1; display: flex;  flex-direction: column;">
                                     <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
                                         <span th:text="${product.name.length() > 21 ? product.name.substring(0, 21) + '...' : product.name}">상품명</span>
                                     </div>
@@ -89,60 +80,14 @@
                                 </div>
                             </div>
                         </td>
-                        <td style="width: 15%;">
+                        <td style="width: 25%;">
                             <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>
-<!--                            <div>(금액*수량)</div>-->
                         </td>
-
-                            <td style="width: 15%;">
-                                <span th:text="${cart.count} + '개'"></span>
-                            </td>
-
-<!--                        <td style="width: 15%;">-->
-<!--                            <div style="display:flex; justify-content: center; " class="updown">-->
-<!--                                <input type='button' onclick='count("minus", 1)' value='-'/> &lt;!&ndash; 각 상품에 대한 고유한 ID를 전달 &ndash;&gt;-->
-<!--                                <div style="width: fit-content; margin: 0 7px 0 7px;" id='result_1' class='result'>0</div>-->
-<!--                                &lt;!&ndash; 각 상품에 대한 고유한 ID를 부여 &ndash;&gt;-->
-<!--                                <input type='button' onclick='count("plus", 1)' value='+'/> &lt;!&ndash; 각 상품에 대한 고유한 ID를 전달 &ndash;&gt;-->
-<!--                            </div>-->
-<!--                        </td>-->
-                        <td style="width: 20%;" colspan="2">
-                            <!-- Button trigger modal -->
-<!--                            <button type="button" class="btn btn-outline-dark" style="font-size: 13px;" data-bs-toggle="modal"-->
-<!--                                    data-bs-target="#1" onclick="option(1)">옵션-->
-<!--                            </button>-->
-                            <!-- Modal -->
-<!--                            <div class="modal fade" id="1" data-bs-backdrop="static" data-bs-keyboard="false"-->
-<!--                                 tabindex="-1" aria-labelledby="1" aria-hidden="true">-->
-<!--                                <div class="modal-dialog">-->
-<!--                                    <div class="modal-content">-->
-<!--                                        <div class="modal-header">-->
-<!--                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">옵션</h1>-->
-<!--                                        </div>-->
-<!--                                        <div class="modal-body">-->
-<!--                                            <select class="form-select form-select-lg mb-3" aria-label="Large select example">-->
-<!--                                                <option selected>옵션 선택</option>-->
-<!--                                                <option value="1">One</option>-->
-<!--                                                <option value="2">Two</option>-->
-<!--                                                <option value="3">Three</option>-->
-<!--                                            </select>-->
-<!--                                        </div>-->
-<!--                                        <div class="modal-footer">-->
-<!--                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기-->
-<!--                                            </button>-->
-<!--                                            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">변경</button>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-
+                        <td style="width: 25%;">
                             <form th:action="|/cart/${product.productId}|" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-outline-danger" style="margin-left: 5px; font-size: 13px;">삭제</button>
                             </form>
-
-<!--                            <button class="btn btn-outline-danger" style="margin-left: 5px; font-size: 13px;">삭제</button>-->
-
                         </td>
                     </th:block>
 
@@ -161,10 +106,6 @@
                 <form class="btn btn-dark" th:action="@{/order/orderProductFromCart}" method="POST">
                     <button type="submit" class="btn btn-dark" style="width:180px; height:50px; border-radius:10px; font-size: 25px;">주 문 하 기</button>
                 </form>
-
-<!--                <button class="btn btn-dark" style="width:180px; height:50px; border-radius:10px; font-size: 25px;">주 문-->
-<!--                    하 기-->
-<!--                </button>-->
             </div>
         </div>
     </div>
@@ -203,27 +144,11 @@
         }
 
     </script>
-
-    <!--    <script>-->
-    <!--        // 첫 번째 상품 모달을 위한 스크립트-->
-    <!--        const modal1 = new bootstrap.Modal(document.getElementById('staticBackdrop1'));-->
-
-    <!--        document.getElementById('optionButton1').addEventListener('click', () => {-->
-    <!--            modal1.show();-->
-    <!--        });-->
-
-    <!--        // 두 번째 상품 모달을 위한 스크립트-->
-    <!--        const modal2 = new bootstrap.Modal(document.getElementById('staticBackdrop2'));-->
-
-    <!--        document.getElementById('optionButton2').addEventListener('click', () => {-->
-    <!--            modal2.show();-->
-    <!--        });-->
-    <!--    </script>-->
     <script>
         function option(productId){
         const myModal = new bootstrap.Modal(document.getElementById(`${productId}`), options)
         }
     </script>
-    <div style="height: 500px;"></div>
+    <div style="height: 200px;"></div>
 </div>
 </html>

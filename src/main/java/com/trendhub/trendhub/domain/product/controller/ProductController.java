@@ -132,6 +132,7 @@ public class ProductController {
         return "products/completeQnA";
     }
 
+
     @GetMapping("/search")
     public String searchProduct(
             @RequestParam("q") String q,
