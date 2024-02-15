@@ -31,8 +31,8 @@
                             </div>
                         </div>
                     </td>
-                    <td style="width: 40%;">
-                        <div th:text="${review.content}">후기내용</div>
+                    <td style="width: 40%; overflow: hidden; text-align: start; ">
+                        <div th:text="${review.content}" style="line-height: 1.5;">후기내용</div>
                     </td>
                     <td style="width: 20%;">
                         <div th:text="${review.date}">주문일자</div>
