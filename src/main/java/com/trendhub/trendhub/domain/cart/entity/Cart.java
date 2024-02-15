@@ -7,8 +7,6 @@ import com.trendhub.trendhub.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -28,7 +26,7 @@ public class Cart extends BaseTimeEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_option_id")
     private ProductOption productOption;
 

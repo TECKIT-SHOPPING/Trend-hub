@@ -83,4 +83,10 @@ public class CartService {
         cartRepository.delete(cart);
     }
 
+    public double getCartProductTotalPrice(List<Cart> cartList) {
+        return cartList
+                .stream()
+                .mapToDouble(cart -> cart.getProduct().getPrice() * (1- cart.getProduct().getDiscount() * 0.01 ) * cart.getCount())
+                .sum();
+    }
 }

@@ -27,17 +27,7 @@ public class CartController {
     @GetMapping("")
     public String showCartList(){
         List<Cart> cartList = cartService.getCartList(rq.getUserInfo());
-
-        long cartProductTotalPrice = cartList
-                .stream()
-                .mapToLong(cart -> (long) cart.getProduct().getPrice() * cart.getCount())
-                .sum();
-
-//        long cartProductTotalPrice = cartList
-//                .stream()
-//                .map(Cart::getProduct)
-//                .mapToLong(Product::getPrice)
-//                .sum();
+        double cartProductTotalPrice = cartService.getCartProductTotalPrice(cartList);
 
         rq.setAttribute("cartList", cartList);
         rq.setAttribute("cartProductTotalPrice", cartProductTotalPrice);

@@ -119,7 +119,8 @@
                                     <!-- Strikethrough original price -->
                                     <div style="display: flex; flex-direction: row; justify-content: space-between;">
                                         <p class="cardset-desc contents-price" style="color: darkgray;">할인율</p>
-                                        <p class="cardset-desc contents-price" style="color: darkgray;" th:text="${'  -' + product.discount + '%'}"></p>
+                                        <p class="cardset-desc contents-price" style="color: red;" th:text="${'  -' + product.discount + '%'}"></p>
+
                                     </div>
 
                                     <!-- Display discount percentage -->
@@ -151,45 +152,11 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="contents-right-group">
-                            <ul class="contents-right-list">
-                                <li class="contents-right-item">
-                                    <strong>수량</strong>
-                                    <div class="contents-amount">
-                                        <button class="contents-btn btn-minus" type="button">
-                                            <img src="/icons/ico_minus_black.svg" alt="마이너스 아이콘">
-                                        </button>
-                                        <p class="contents-amount-num">1</p>
-                                        <button class="contents-btn btn-plus" type="button">
-                                            <img src="/icons/ico_plus_black.svg" alt="플러스 아이콘">
-                                        </button>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="contents-total">
-                                <strong>총 결제금액</strong>
-                                <p class="contents-price">
-                                </p>
-
-<!--                                <div style="display: flex; flex-direction: column;">-->
-
-<!--                                        &lt;!&ndash; Check if discount is not zero &ndash;&gt;-->
-<!--                                    +-->
-                                    <!-- Check if discount is not zero and calculate discounted price -->
-                                    <p class="contents-price" th:if="${product.discount != 0}"
-                                       th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
-                                    <!-- If discount is zero, display the original price in the <p> tag -->
-                                    <p class="contents-price" th:if="${product.discount == 0}"
-                                       th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
-<!--                                </div>-->
-
-                            </div>
-                        </div>
-                        <div class="custom-container">
+                        <div class="custom-container" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                             <span class="label">색상 / 사이즈</span>
                             <form>
                                 <select name="size" class="custom-select" id="productOption2">
-                                    <option value="0">=== 선택 ===</option>
+                                    <option value="0">==선택==</option>
                                     <option class="productOption" th:each="option : ${productOption}"
                                             th:value="${option.productOptionId}"
                                             th:utext="${option.color + '/' + option.size}"></option>
@@ -210,6 +177,42 @@
 <!--&lt;!&ndash;                                    <option value="black">black</option>&ndash;&gt;-->
 <!--                                </select>-->
 <!--                            </form>-->
+                        </div>
+                        <div class="contents-right-group">
+                            <div class="contents-right-list">
+                                <div class="custom-container" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="label">수량</span>
+                                    <div class="contents-amount">
+                                        <button class="contents-btn btn-minus" type="button">
+                                            <img src="/icons/ico_minus_black.svg" alt="마이너스 아이콘">
+                                        </button>
+                                        <p class="contents-amount-num">1</p>
+                                        <button class="contents-btn btn-plus" type="button">
+                                            <img src="/icons/ico_plus_black.svg" alt="플러스 아이콘">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="contents-total" style="display: flex; justify-content:space-between; align-items: center;">
+                                <strong>총 결제금액</strong>
+                                <p class="contents-price">
+                                </p>
+
+                                <!--                                <div style="display: flex; flex-direction: column;">-->
+
+                                <!--                                        &lt;!&ndash; Check if discount is not zero &ndash;&gt;-->
+                                <!--                                    +-->
+                                <!-- Check if discount is not zero and calculate discounted price -->
+                                <p class="contents-price" th:if="${product.discount != 0}"
+                                   th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                <!-- If discount is zero, display the original price in the <p> tag -->
+                                <p class="contents-price" th:if="${product.discount == 0}"
+                                   th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+                                <!--                                </div>-->
+
+                            </div>
                         </div>
                         <div class="contents-btn-group">
                             <form class="btnset btnset-line" th:action="|/cart/${product.productId}|" onclick="submitOrderInfo(this)" method="POST">
