@@ -100,11 +100,42 @@
                             <div class="textset">
                                 <h2 class="textset-tit" th:text="${product.name}"></h2>
                             </div>
-                            <p class="contents-price">
-                                <span><strong
-                                        th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>
-                                <span>원</span>
-                            </p>
+<!--                            <p class="contents-price">-->
+<!--                                <span><strong-->
+<!--                                        th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>-->
+<!--                                <span>원</span>-->
+<!--                            </p>-->
+                            <div style="display: flex; flex-direction: column;">
+                                <!-- Check if discount is not zero -->
+                                <h2 class="cardset-tit contents-price" th:if="${product.discount == 0}">
+                                    <span th:text="${'-'}"></span>
+                                    <!-- Strikethrough original price -->
+                                </h2>
+                                <h2 class="cardset-tit contents-price" th:if="${product.discount != 0}" style="display: flex; flex-direction: column;">
+                                    <div style="display: flex; flex-direction: row; justify-content: space-between">
+                                        <p class="cardset-desc contents-price" style="font-weight: normal">원가</p>
+                                        <del style="font-weight: normal" th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
+                                    </div>
+                                    <!-- Strikethrough original price -->
+                                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                                        <p class="cardset-desc contents-price" style="color: darkgray;">할인율</p>
+                                        <p class="cardset-desc contents-price" style="color: darkgray;" th:text="${'  -' + product.discount + '%'}"></p>
+                                    </div>
+
+                                    <!-- Display discount percentage -->
+                                </h2>
+                                <!-- Check if discount is not zero and calculate discounted price -->
+                                <div style="display: flex; flex-direction: row; justify-content: space-between">
+                                    <p class="cardset-desc contents-price" th:if="${product.discount != 0}">할인금액</p>
+                                    <p class="cardset-desc contents-price" th:if="${product.discount != 0}"
+                                       th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                    <!-- If discount is zero, display the original price in the <p> tag -->
+
+                                    <p class="cardset-desc contents-price" th:if="${product.discount == 0}">할인미적용금액</p>
+                                    <p class="cardset-desc contents-price" th:if="${product.discount == 0}"
+                                       th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+                                </div>
+                            </div>
                         </div>
                         <div class="contents-right-group">
                             <ul class="contents-right-list">
@@ -138,37 +169,20 @@
                             <div class="contents-total">
                                 <strong>총 결제금액</strong>
                                 <p class="contents-price">
-                                    <span><strong
-                                            th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>
-                                    <span>원</span>
-
-                                    <!-- Check if discount is not zero -->
-                                <h2 class="cardset-tit" th:if="${product.discount == 0}">
-                                    <span th:text="${'-'}"></span>
-                                    <!-- Strikethrough original price -->
-                                </h2>
-                                <h2 class="cardset-tit" th:if="${product.discount != 0}">
-                                    <del th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
-                                    <!-- Strikethrough original price -->
-                                    <span th:text="${'  - ' + product.discount + '%'}"></span>
-                                    <!-- Display discount percentage -->
-                                </h2>
-                                <!-- Check if discount is not zero and calculate discounted price -->
-                                <p class="cardset-desc" th:if="${product.discount != 0}"
-                                   th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
-                                <!-- If discount is zero, display the original price in the <p> tag -->
-                                <p class="cardset-desc" th:if="${product.discount == 0}"
-                                   th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
-
-
-
-
-
-
-
-
-
                                 </p>
+
+<!--                                <div style="display: flex; flex-direction: column;">-->
+
+<!--                                        &lt;!&ndash; Check if discount is not zero &ndash;&gt;-->
+<!--                                    +-->
+                                    <!-- Check if discount is not zero and calculate discounted price -->
+                                    <p class="contents-price" th:if="${product.discount != 0}"
+                                       th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                    <!-- If discount is zero, display the original price in the <p> tag -->
+                                    <p class="contents-price" th:if="${product.discount == 0}"
+                                       th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+<!--                                </div>-->
+
                             </div>
                         </div>
                         <div class="custom-container">

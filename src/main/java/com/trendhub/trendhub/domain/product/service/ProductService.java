@@ -7,7 +7,6 @@ import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
 import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.product.entity.ProductOption;
-import com.trendhub.trendhub.domain.product.entity.Season;
 import com.trendhub.trendhub.domain.product.entity.QnA;
 import com.trendhub.trendhub.domain.product.repository.ProductOptionRepository;
 import com.trendhub.trendhub.domain.product.repository.ProductRepository;
