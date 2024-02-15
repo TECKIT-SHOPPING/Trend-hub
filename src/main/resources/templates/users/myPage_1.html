@@ -15,23 +15,17 @@
                     <th style="width: 10%;">주문번호</th>
                     <th style="width: 15%;">주문금액</th>
                     <th style="width: 15%;" colspan="2">주문상태</th>
-                    <th style="width: 15%;">후기작성</th>
+
                 </tr>
                 </thead>
 
                 <tbody style="font-size: 16px; line-height: 50px;">
                 <tr th:each="order : ${orders}" style="text-align: center;">
                     <td style="width: 25%;" colspan="2">
-                        <div style="display: flex; justify-content: center;">
+                        <div style="display: flex; justify-content: center; align-items: center;">
                             <img style="width: 60px; height: 60px;" th:src="${order.productImage}">
-                            <div style="flex-grow:1; display: flex; flex-direction: column;">
-                                <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-<!--                                    <span th:text="${order.orderName}">상품명</span>-->
-                                    <span th:text="${order.orderName.length() > 21 ? order.orderName.substring(0, 21) + '...' : order.orderName}">상품명</span>
-                                </div>
-                                <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span th:text="${order.orderProductOption}">상품옵션</span>
-                                </div>
+                            <div style="flex-grow:1; ">
+                                <span th:text="${order.orderName}"></span>
                             </div>
                         </div>
                     </td>
@@ -43,17 +37,15 @@
                     </td>
                     <td style="width: 15%;">
                         <div th:text="${#numbers.formatDecimal(order.sumOrderPrice, 0, 'COMMA', 0, 'POINT')}">주문금액</div>
-<!--                        <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>-->
+                        <!--                        <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>-->
                     </td>
                     <td style="width: 15%;" colspan="2">
                         <div>
                             <span th:text="${order.payStatus}">주문상태</span>
-                            <a th:href="|/order/${order.ordersId}|" style="margin-left: 20px; font-size: 13px;" class="btn btn-outline-danger">자세히 보기</a>
+                            <a th:href="|/order/${order.ordersId}|" style="margin-left: 20px; font-size: 13px;"
+                               class="btn btn-outline-danger">자세히 보기</a>
                         </div>
 
-                    </td>
-                    <td style="width: 15%;">
-                        <button class="btn btn-primary" style="font-size: 13px;">후기작성 </button>
                     </td>
                 </tr>
                 </tbody>
@@ -66,7 +58,7 @@
         var dateField = document.getElementById('dateField');
         var date = new Date(dateField.textContent);
         dateField.textContent = date.getFullYear() + '-' +
-            ('0' + (date.getMonth()+1)).slice(-2) + '-' +
+            ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
             ('0' + date.getDate()).slice(-2) + ' ' +
             ('0' + date.getHours()).slice(-2) + ':' +
             ('0' + date.getMinutes()).slice(-2) + ':' +
