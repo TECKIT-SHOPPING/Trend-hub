@@ -66,8 +66,8 @@ public class ReviewService {
 
 
     public void createCoordiReview(User user, Coordi coordi, CoordiReviewDto coordiReviewDto) {
-        Review saveReview = coordiReviewDto.toEntity(user, coordi);
-        this.reviewRepository.save(saveReview);
+        Review saveReview = CoordiReviewDto.toEntity(user, coordi, coordiReviewDto.getContent());
+        reviewRepository.save(saveReview);
     }
 
 //    public void create(Question question, String content) {

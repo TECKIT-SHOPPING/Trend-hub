@@ -45,8 +45,4 @@ public class Review extends BaseTimeEntity {
     @Column(name = "star")
     private Integer star;
 
-    @AssertTrue(message = "하나 이상의 별을 선택해주세요.")
-    public boolean isStarSelected() {
-        return star != null && star > 0;
-    }
 }
