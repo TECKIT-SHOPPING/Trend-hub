@@ -3,7 +3,9 @@ package com.trendhub.trendhub.domain.review.dto;
 import com.trendhub.trendhub.domain.product.entity.Product;
 import com.trendhub.trendhub.domain.review.entity.Review;
 import com.trendhub.trendhub.domain.user.entity.User;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -29,6 +31,8 @@ public class ReviewDto {
     private String size;
     private Long reviewId;
     private String image;
+    @Column(name = "star")
+    @NotBlank(message = "별점을 등록해주세요.")
     private Integer star;
     private String gender;
 

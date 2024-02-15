@@ -39,12 +39,9 @@ public class ReviewService {
         return this.reviewRepository.findByProduct_ProductId(pageable, productId);
     }
 
+    @Transactional
     public void createReview(User user, Product product, ReviewDto reviewDto/*, MultipartFile file*/) {
-        /*String imageUrl;
-        if (file.isEmpty()) imageUrl = null;
-        else {
-            imageUrl = s3Service.createVideo(file);
-        }*/
+
         Review saveReview = reviewDto.toEntity(user, product);
         this.reviewRepository.save(saveReview);
     }
