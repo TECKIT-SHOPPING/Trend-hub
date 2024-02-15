@@ -116,7 +116,8 @@
                                     <!-- Strikethrough original price -->
                                     <div style="display: flex; flex-direction: row; justify-content: space-between;">
                                         <p class="cardset-desc contents-price" style="color: darkgray;">할인율</p>
-                                        <p class="cardset-desc contents-price" style="color: red;" th:text="${'  -' + product.discount + '%'}"></p>
+                                        <p class="cardset-desc contents-price" style="color: red;"
+                                           th:text="${'  -' + product.discount + '%'}"></p>
 
                                     </div>
 
@@ -352,11 +353,11 @@
                         </div>
                         <!-- 여기에 후기 내용 추가 -->
                         <div style="display: flex; justify-content: end;" class="flex mb-6">
-                                <a th:href="@{|/review/create/${product.productId}|}">
-                                    <button th:if="${checkPayable}" class="btn btn-secondary py-2 text-2xl">
+                            <a th:href="@{|/review/create/${product.productId}|}">
+                                <button th:if="${checkPayable}" class="btn btn-secondary py-2 text-2xl">
                                     상품후기 작성하기
-                                    </button>
-                                </a>
+                                </button>
+                            </a>
                         </div>
 
                         <table class="w-full border-collapse border border-gray-300 mt-8">
@@ -370,11 +371,14 @@
                             </thead>
                             <tbody>
                             <tr th:each="review, loop : ${reviewList}" class="border-b">
-                                <td style="max-width: 600px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" class="py-3 px-6 text-xl" th:text="${review.content}"></td>
+                                <td style="max-width: 600px; overflow: hidden;" class="py-3 px-6 text-xl"
+                                    th:text="${review.content}"></td>
                                 <td class="py-3 px-6 text-xl" th:text="${review.createAt}"></td>
                                 <td class="py-3 px-6 text-xl" th:text="${review.user.loginId}"></td>
-                                <td class="py-3 px-10 text-xl" style="display: flex; align-items: center;">
-                                <span th:each="i : ${#numbers.sequence(1, review.star)}"> <i class="fas fa-star"></i></span>
+                                <td class="py-3 px-6 text-xl">
+                                        <span th:each="i : ${#numbers.sequence(1, review.star)}">
+                                            <i class="fas fa-star"></i>
+                                        </span>
                                 </td>
                             </tr>
                             </tbody>
@@ -397,7 +401,7 @@
                                 </li>
                                 <li class="page-item" th:classappend="${!reviewList.hasNext} ? 'disabled'">
                                     <a class="page-link"
-                                       th:href="@{|/products/${product.productId}?qnaPage=${reviewList.number+1}#section-inquiry|}">
+                                       th:href="@{|/products/${product.productId}?reviewPage=${reviewList.number+1}#section-inquiry|}">
                                         <span class="text-xl">다음</span>
                                     </a>
                                 </li>
