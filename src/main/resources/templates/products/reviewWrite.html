@@ -178,7 +178,7 @@
 
         <textarea name="content" id="content" rows="10" cols="100" style="resize: none;"
                   placeholder="20글자 이상 입력해주세요."></textarea>
-        <p th:if="${#fields.hasErrors('content')}" th:errors="${reviewDto   .content}" class="fieldError"
+        <p th:if="${#fields.hasErrors('content')}" th:errors="${reviewDto.content}" class="fieldError"
            style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
         <input type="submit" value="후기 등록" style="margin-right: 5px;">
     </form>
