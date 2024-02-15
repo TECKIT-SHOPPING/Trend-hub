@@ -94,8 +94,8 @@ public class CoordiController {
     @PostMapping("/{coordiId}")
     public String coordiReviewWrite(Model model, @PathVariable("coordiId") Long id,
                                     @RequestParam(value = "page", defaultValue = "1") int page,
-                                    @RequestParam(value = "content") String content, Principal principal,
-                                    @Valid @ModelAttribute("coordiReviewDto") CoordiReviewDto coordiReviewDto, BindingResult bindingResult)
+                                    @RequestParam(value = "content", required = false) String content, Principal principal,
+                                    @ModelAttribute("coordiReviewDto") CoordiReviewDto coordiReviewDto, BindingResult bindingResult)
     {
         Coordi coordi = coordiService.getCoordi(id);
         if (bindingResult.hasErrors()) {

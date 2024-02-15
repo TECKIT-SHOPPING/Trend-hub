@@ -9,16 +9,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 public class CoordiReviewDto {
     private String content;
-    private long reviewId;
-    private LocalDateTime date;
 
-    public Review toEntity(User user, Coordi coordi) {
+    public static Review toEntity(User user, Coordi coordi, String content) {
         return Review.builder()
-                .reviewId(this.reviewId)
-                .content(this.content)
+                .content(content)
                 .date(LocalDateTime.now())
                 .user(user)
                 .coordi(coordi)

@@ -2,7 +2,7 @@ package com.trendhub.trendhub.domain.orders.service;
 
 import com.trendhub.trendhub.domain.cart.entity.Cart;
 import com.trendhub.trendhub.domain.cart.service.CartService;
-import com.trendhub.trendhub.domain.orders.Repository.OrderRepository;
+import com.trendhub.trendhub.domain.orders.repository.OrderRepository;
 import com.trendhub.trendhub.domain.orders.dto.OrderPayInfo;
 import com.trendhub.trendhub.domain.orders.dto.OrderProductInfo;
 import com.trendhub.trendhub.domain.orders.entity.Orders;
