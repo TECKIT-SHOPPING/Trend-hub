@@ -92,7 +92,7 @@ public class Orders extends BaseTimeEntity {
 
     public long sumOrderPrice() {
         return orderDetails.stream()
-                .mapToLong(orderDetail -> orderDetail.getPrice() * orderDetail.getCount())
+                .mapToLong(orderDetail -> orderDetail.discountedPrice())
                 .sum();
     }
 
