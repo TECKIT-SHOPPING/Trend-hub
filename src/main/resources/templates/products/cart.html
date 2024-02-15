@@ -85,7 +85,7 @@
                             <span th:text="${cart.count} + '개'"></span>
                         </td>
                         <td style="width: 20%;">
-                            <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                            <span th:text=${#numbers.formatDecimal(product.price * (1 - product.discount * 0.01) , 0, 'COMMA', 0, 'POINT')}"></span>
                         </td>
                         <td style="width: 20%;">
                             <form th:action="|/cart/${product.productId}|" method="POST">
