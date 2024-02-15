@@ -67,12 +67,26 @@
         <h1 style="font-size: 3rem; margin-top: 30px; padding-left: 20px; margin-bottom: 20px;">결제정보</h1>
 
         <div class="order-info container">
-            <div>주문번호: [[${order.ordersId}]]</div>
-            <div>주문코드: [[${order.code}]]</div>
-            <div>주문자: [[${order.user.username}]]</div>
-            <div>주문상품: [[${order.orderName}]]</div>
-            <div>주문상품 옵션: [[${order.orderProductOption}]]</div>
-            <div>결제금액: <span th:text="${#numbers.formatDecimal(order.sumOrderPrice, 0, 'COMMA', 0, 'POINT')}"></span></div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문번호</div>
+                <div>[[${order.ordersId}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문코드</div>
+                <div>[[${order.code}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문자명</div>
+                <div>[[${order.user.username}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문상품</div>
+                <div>[[${order.orderName}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">결제금액</div>
+                <div th:text="${#numbers.formatInteger(order.sumOrderPrice, 3, 'COMMA') + '원'}"></div>
+            </div>
         </div>
     </div>
 
