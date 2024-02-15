@@ -398,7 +398,7 @@
                                 </li>
                                 <li class="page-item" th:classappend="${!reviewList.hasNext} ? 'disabled'">
                                     <a class="page-link"
-                                       th:href="@{|/products/${product.productId}?qnaPage=${reviewList.number+1}#section-inquiry|}">
+                                       th:href="@{|/products/${product.productId}?reviewPage=${reviewList.number+1}#section-inquiry|}">
                                         <span class="text-xl">다음</span>
                                     </a>
                                 </li>
