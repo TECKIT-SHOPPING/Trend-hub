@@ -55,14 +55,14 @@
 </div>
 <div layout:fragment="script">
     <script th:inline="javascript">
-        var dateField = document.getElementById('dateField');
-        var date = new Date(dateField.textContent);
-        dateField.textContent = date.getFullYear() + '-' +
-            ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
-            ('0' + date.getDate()).slice(-2) + ' ' +
-            ('0' + date.getHours()).slice(-2) + ':' +
-            ('0' + date.getMinutes()).slice(-2) + ':' +
-            ('0' + date.getSeconds()).slice(-2);
+        // var dateField = document.getElementById('dateField');
+        // var date = new Date(dateField.textContent);
+        // dateField.textContent = date.getFullYear() + '-' +
+        //     ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+        //     ('0' + date.getDate()).slice(-2) + ' ' +
+        //     ('0' + date.getHours()).slice(-2) + ':' +
+        //     ('0' + date.getMinutes()).slice(-2) + ':' +
+        //     ('0' + date.getSeconds()).slice(-2);
     </script>
     <div style="height: 200px;"></div>
 </div>
