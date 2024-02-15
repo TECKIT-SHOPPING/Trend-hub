@@ -43,11 +43,11 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                                 productOption.size
                         )
                 )
-                .from(review)
-                .innerJoin(product).on(review.product.productId.eq(product.productId))
-                .innerJoin(orderDetail).on(orderDetail.product.productId.eq(product.productId))
+                .from(orderDetail)
+                .innerJoin(orders).on(orderDetail.order.ordersId.eq(orders.ordersId).and(orders.user.eq(user)))
                 .innerJoin(productOption).on(orderDetail.productOption.productOptionId.eq(productOption.productOptionId))
-                .innerJoin(orders).on(orderDetail.order.ordersId.eq(orders.ordersId))
+                .innerJoin(product).on(orderDetail.product.productId.eq(product.productId))
+                .innerJoin(review).on(product.productId.eq(review.product.productId))
                 .where(review.user.eq(user))
                 .orderBy(review.reviewId.desc())
                 .fetch();

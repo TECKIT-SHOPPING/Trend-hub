@@ -11,7 +11,8 @@
                 <a style="width: 175px; text-align: center;" th:href="@{/members/findLoginId}">아이디 찾기 </a>
             </div>
             <div style="background-color: black; height: 40px; display:flex; align-items: center;">
-                <a style="width: 175px; text-align: center; color: white; " th:href="@{/members/findLoginPw}">비밀번호 찾기</a>
+                <a style="width: 175px; text-align: center; color: white; " th:href="@{/members/findLoginPw}">비밀번호
+                    찾기</a>
             </div>
         </div>
     </div>
@@ -34,9 +35,10 @@
 
         <p th:if="${findPwErrorMessage}" class="error" th:text="${findPwErrorMessage}"
            style="color: red; margin-bottom: 10px;"></p>
+
         <button type="submit"
-                style="width: 180px; height:45px; border: 2px solid black; border-radius: 20px; font-size: 15px; margin-top: 20px;"
-                id="submit"> 임시 비밀번호 발급
+                style="width: 200px; height:45px; border-radius: 20px; background-color: white; color: black; font-size: 15px; margin-top: 20px;"
+                id="submit">임시 비밀번호 발급
         </button>
     </form>
 </div>

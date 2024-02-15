@@ -81,6 +81,7 @@ public class CoordiController {
         CoordiDetailDto coordiDetailDto = coordiService.findById(id);
 
         Page<Review> reviewPage = reviewService.getCoordiReviewList(page-1, id);
+     
 
         model.addAttribute("coordiDetailDto", coordiDetailDto);
         model.addAttribute("paging", reviewPage);

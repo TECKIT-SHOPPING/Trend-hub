@@ -403,4 +403,45 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         }
         return result;
     }
+
+    @Override
+    public ProductDto findByUserCheckLike(User user, Long productId) {
+        ProductDto result = jpaQueryFactory
+                .select(Projections.constructor(ProductDto.class,
+                        product.productId,
+                        product.image,
+                        product.name,
+                        product.price,
+                        product.discount,
+                        product.totalLike,
+                        new CaseBuilder()
+                                .when(likes.likesId.isNotNull()).then(true)
+                                .otherwise(false).as("liked")
+                ))
+                .from(product)
+                .leftJoin(likes)
+                .on(likes.product.eq(product).and(likes.user.eq(user)))
+                .where(product.productId.eq(productId))
+                .fetchOne();
+        return result;
+    }
+
+
+    @Override
+    public ProductDto findByUserCheckLikeAnonymousUser(Long productId) {
+        ProductDto result = jpaQueryFactory
+                .select(Projections.constructor(ProductDto.class,
+                        product.productId,
+                        product.image,
+                        product.name,
+                        product.price,
+                        product.discount,
+                        product.totalLike,
+                        Expressions.asBoolean(false).as("liked")
+                ))
+                .from(product)
+                .where(product.productId.eq(productId))
+                .fetchOne();
+        return result;
+    }
 }

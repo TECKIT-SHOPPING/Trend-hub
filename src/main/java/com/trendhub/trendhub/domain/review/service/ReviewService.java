@@ -37,6 +37,7 @@ public class ReviewService {
     }
 
 
+    @Transactional
     public void createReview(User user, Product product, ReviewDto reviewDto/*, MultipartFile file*/) {
         /*String imageUrl;
         if (file.isEmpty()) imageUrl = null;
@@ -44,6 +45,7 @@ public class ReviewService {
             imageUrl = s3Service.createVideo(file);
         }*/
         Review saveReview = reviewDto.toEntity(user, product);
+        user.setPoint(user.getPoint() + 500);
         this.reviewRepository.save(saveReview);
     }
 
@@ -56,10 +58,12 @@ public class ReviewService {
         return reviewRepository.findByCoordiId(pageable, coordiId);
     }
 
+
     public Page<Review> getReviewList(int page, Long productId) {
         Pageable pageable = PageRequest.of(page, 10);
         return this.reviewRepository.findByProduct_ProductId(pageable, productId);
     }
+
 
     public void createCoordiReview(User user, Coordi coordi, CoordiReviewDto coordiReviewDto) {
         Review saveReview = coordiReviewDto.toEntity(user, coordi);

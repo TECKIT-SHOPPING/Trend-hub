@@ -31,7 +31,7 @@ public class ReviewController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create/{id}")
     public String getReviewWrite(Model model, @PathVariable("id") Long productId, Principal principal,
-                                 @Valid @ModelAttribute("reviewDto") ReviewDto reviewDto) {
+                                 @ModelAttribute("reviewDto") ReviewDto reviewDto) {
         if (principal.getName().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "로그인 먼저 진행해주세요.");
         }
