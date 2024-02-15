@@ -58,7 +58,8 @@
             <div>주문코드: [[${order.code}]]</div>
             <div>주문자: [[${order.user.username}]]</div>
             <div>주문상품: [[${order.orderName}]]</div>
-            <div>결제금액: [[${order.sumOrderPrice}]]</div>
+            <div>주문상품 옵션: [[${order.orderProductOption}]]</div>
+            <div>결제금액: <span th:text="${#numbers.formatDecimal(order.sumOrderPrice, 0, 'COMMA', 0, 'POINT')}"></span></div>
         </div>
         <hr style="border-width: 5px;">
         <th:block th:if="${order.shippingInfo}">

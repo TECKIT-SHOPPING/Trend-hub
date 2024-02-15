@@ -6,8 +6,9 @@ import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.ProductLikeDto;
 import com.trendhub.trendhub.domain.product.dto.QnaDto;
 import com.trendhub.trendhub.domain.product.entity.Product;
-import com.trendhub.trendhub.domain.product.entity.Season;
+import com.trendhub.trendhub.domain.product.entity.ProductOption;
 import com.trendhub.trendhub.domain.product.entity.QnA;
+import com.trendhub.trendhub.domain.product.repository.ProductOptionRepository;
 import com.trendhub.trendhub.domain.product.repository.ProductRepository;
 import com.trendhub.trendhub.domain.product.repository.QnaRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
@@ -35,6 +36,7 @@ public class ProductService {
     private final LikesService likesService;
     private final UserRepository userRepository;
     private final QnaRepository qnaRepository;
+    private final ProductOptionRepository productOptionRepository;
 
 
     public List<ProductDto> findTop10ViewCountDesc() {
@@ -207,4 +209,7 @@ public class ProductService {
     }
 
 
+    public List<ProductOption> findProductOption(Product product) {
+        return productOptionRepository.findByProduct(product);
+    }
 }

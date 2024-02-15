@@ -4,11 +4,11 @@
         <th:block th:replace="~{fragments/myPage :: myPageFragment}"></th:block>
 
         <div style="margin-top: 60px;">
-            <div style="display: flex; align-items:center; font-size: 15px; margin-bottom: 5px;">
-                <img style="width: 20px; height: 15px; margin-right: 3px;" th:src="@{/images/exp.png}"> 배송목록
+            <div style="display: flex; align-items:center; font-size: 30px; margin-bottom: 5px;">
+                <img style="width: 40px; height: 30px; margin-right: 3px;" th:src="@{/images/exp.png}"> 배송목록
             </div>
-            <table class="table" style="width: 1200px; margin-bottom: 50px;">
-                <thead style="border-top: 1px solid black; border-bottom: 1px solid black; font-size: 16px;">
+            <table class="table" style="width: 1500px; margin-bottom: 50px;">
+                <thead style="border-top: 1px solid black; border-bottom: 1px solid black; font-size: 20px;">
                 <tr style="text-align: center;">
                     <th style="width: 25%;" colspan="2">상품정보</th>
                     <th style="width: 15%;">주문일자</th>
@@ -19,17 +19,18 @@
                 </tr>
                 </thead>
 
-                <tbody style="font-size: 13px; line-height: 50px;">
+                <tbody style="font-size: 16px; line-height: 50px;">
                 <tr th:each="order : ${orders}" style="text-align: center;">
                     <td style="width: 25%;" colspan="2">
                         <div style="display: flex; justify-content: center;">
-                            <img style="width: 45px; height: 45px;" th:src="${order.productImage}">
-                            <div style="display: flex; flex-direction: column;">
+                            <img style="width: 60px; height: 60px;" th:src="${order.productImage}">
+                            <div style="flex-grow:1; display: flex; flex-direction: column;">
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span th:text="${order.orderName}">상품명</span>
+<!--                                    <span th:text="${order.orderName}">상품명</span>-->
+                                    <span th:text="${order.orderName.length() > 21 ? order.orderName.substring(0, 21) + '...' : order.orderName}">상품명</span>
                                 </div>
                                 <div style="margin-left: 10px; height: 25px; display: flex; flex-direction:column; justify-content: center;">
-                                    <span>상품옵션</span>
+                                    <span th:text="${order.orderProductOption}">상품옵션</span>
                                 </div>
                             </div>
                         </div>
@@ -59,6 +60,6 @@
             </table>
         </div>
     </div>
-    <div style="height: 500px;"></div>
+    <div style="height: 350px;"></div>
 </div>
 </html>

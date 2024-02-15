@@ -1,6 +1,7 @@
 package com.trendhub.trendhub.domain.orders.controller;
 
 import com.trendhub.trendhub.domain.orders.dto.OrderPayInfo;
+import com.trendhub.trendhub.domain.orders.dto.OrderProductInfo;
 import com.trendhub.trendhub.domain.orders.entity.Orders;
 import com.trendhub.trendhub.domain.orders.service.OrderService;
 import com.trendhub.trendhub.domain.product.entity.Product;
@@ -90,13 +91,19 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{productId}")
     public String orderProduct(
-            @PathVariable("productId") long productId
+            @PathVariable("productId") long productId,
+            RedirectAttributes redirectAttributes,
+            OrderProductInfo orderProductInfo
     ) {
-        Product product = productService.getProduct(productId);
+        try {
+            Product product = productService.getProduct(productId);
+            Orders order = orderService.orderProduct(rq.getUserInfo(), product, orderProductInfo);
+            return "redirect:/order/" + order.getOrdersId();
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("orderErrorMessage", e.getMessage());
+            return "redirect:/products/" + productId;
+        }
 
-        Orders order = orderService.orderProduct(rq.getUserInfo(),  product);
-
-        return "redirect:/order/" + order.getOrdersId();
     }
 
     @PreAuthorize("isAuthenticated()")

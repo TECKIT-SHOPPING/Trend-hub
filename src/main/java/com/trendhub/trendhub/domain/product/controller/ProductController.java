@@ -2,10 +2,7 @@ package com.trendhub.trendhub.domain.product.controller;
 
 import com.trendhub.trendhub.domain.product.dto.ProductDto;
 import com.trendhub.trendhub.domain.product.dto.QnaDto;
-import com.trendhub.trendhub.domain.product.entity.MainCategory;
-import com.trendhub.trendhub.domain.product.entity.Product;
-import com.trendhub.trendhub.domain.product.entity.QnA;
-import com.trendhub.trendhub.domain.product.entity.SubCategory;
+import com.trendhub.trendhub.domain.product.entity.*;
 import com.trendhub.trendhub.domain.product.service.MainCategoryService;
 import com.trendhub.trendhub.domain.product.service.ProductService;
 import com.trendhub.trendhub.domain.product.service.QnaService;
@@ -27,7 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-
+import java.util.List;
 
 
 @Slf4j
@@ -53,6 +50,9 @@ public class ProductController {
         Page<QnA> qnAList = this.qnaService.getQnAList(qnaPage, productId);
         Page<Review> reviewList = this.reviewService.getReviewList(reviewPage, productId);
 
+        List<ProductOption> productOption = this.productService.findProductOption(product);
+
+
         String logInid;
         if (principal != null) {
             logInid = principal.getName();
@@ -63,6 +63,8 @@ public class ProductController {
         model.addAttribute("user", user);
         model.addAttribute("product", product);
         model.addAttribute("qnaPaging", qnAList);
+
+        model.addAttribute("productOption", productOption);
         model.addAttribute("reviewList", reviewList);
 
         return "products/productDetail";

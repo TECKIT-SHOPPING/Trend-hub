@@ -4,8 +4,11 @@ import com.trendhub.trendhub.domain.cart.entity.Cart;
 import com.trendhub.trendhub.domain.cart.service.CartService;
 import com.trendhub.trendhub.domain.orders.Repository.OrderRepository;
 import com.trendhub.trendhub.domain.orders.dto.OrderPayInfo;
+import com.trendhub.trendhub.domain.orders.dto.OrderProductInfo;
 import com.trendhub.trendhub.domain.orders.entity.Orders;
 import com.trendhub.trendhub.domain.product.entity.Product;
+import com.trendhub.trendhub.domain.product.entity.ProductOption;
+import com.trendhub.trendhub.domain.product.repository.ProductOptionRepository;
 import com.trendhub.trendhub.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final ProductOptionRepository productOptionRepository;
     private final CartService cartService;
 
     @Transactional
@@ -28,6 +32,36 @@ public class OrderService {
                 .build();
 
         order.addProduct(product);
+
+        orderRepository.save(order);
+
+        return order;
+    }
+
+    @Transactional
+    public Orders orderProduct(User userInfo, Product product, OrderProductInfo orderProductInfo) {
+        long productOptionId = orderProductInfo.getProductOptionId();
+        int amount = orderProductInfo.getAmount();
+
+        Optional<ProductOption> productOption = productOptionRepository.findById(productOptionId);
+
+        if (!productOption.isPresent()) {
+           throw new IllegalArgumentException("존재하지 않는 상품 옵션입니다.");
+        }
+
+//        productOptionRepository.findById(productOptionId)
+//                .ifPresent(productOption -> {
+//                    if (productOption.getStock() < amount) {
+//                        throw new IllegalArgumentException("재고가 부족합니다.");
+//                    }
+//                }
+
+        Orders order = Orders.builder()
+                .user(userInfo)
+                .build();
+
+
+        order.addProduct(product, amount, productOption.get());
 
         orderRepository.save(order);
 
@@ -116,6 +150,5 @@ public class OrderService {
     public List<Orders> findByUser(User user) {
         return orderRepository.findByUser(user);
     }
-
 
 }
