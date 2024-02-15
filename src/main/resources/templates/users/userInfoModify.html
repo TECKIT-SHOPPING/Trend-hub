@@ -1,0 +1,319 @@
+<html layout:decorate="layouts/layout">
+<div layout:fragment="content">
+    <div style="display:flex; flex-direction: column; align-items:center; margin-top: 50px; font-size: ">
+        <script>
+            function submitChangePasswordForm(form) {
+                form.originPassword.value = form.originPassword.value.trim();
+
+                if (form.originPassword.value.length == 0) {
+                    alert('기존 비밀번호를 입력해주세요.');
+                    form.originPassword.focus();
+                    return;
+                }
+
+                form.newPassword.value = form.newPassword.value.trim();
+
+                if (form.newPassword.value.length == 0) {
+                    alert('새 비밀번호를 입력해주세요.');
+                    form.newPassword.focus();
+                    return;
+                }
+
+                form.checkNewPassword.value = form.checkNewPassword.value.trim();
+
+                if (form.checkNewPassword.value.length == 0) {
+                    alert('새 비밉런호 확인을 입력해주세요.');
+                    form.checkNewPassword.focus();
+                    return;
+                }
+
+                if (form.newPassword.value != form.checkNewPassword.value) {
+                    alert('새 비밀번호가 일치하지 않습니다.');
+                    form.checkNewPassword.focus();
+                    return;
+                }
+                form.submit();
+            }
+        </script>
+
+        <th:block th:replace="~{fragments/myPage :: myPageFragment}"></th:block>
+        <div style="display: flex; flex-direction: column; align-items: center; font-size: 24px; margin-top: 40px; margin-bottom: 150px;">
+            <div style="display:flex; flex-direction: column; align-items: center; width: 550px; height: auto; border: 2px solid lightgray; border-radius: 20px; padding-top: 20px; padding-bottom: 20px; margin-bottom: 20px;">
+                <div id="preview-container" style="width: 200px; height: 200px;"><img th:src="${@rq.userInfo.profile}"></div>
+                <form style="display: flex; justify-content: center; width: 550px; margin-top: 20px;"
+                      th:action="@{/members/change-profile}" method="POST"
+                      enctype="multipart/form-data">
+                    <input  type="hidden" name="_method" value="PUT">
+                    <div style="width: 300px; display: flex; justify-content: start;">
+                        <input id="file-upload" type="file" name="profile" accept="image/*" onchange="previewFiles()">
+                    </div>
+                    <button type="submit" class="btn btn-outline-secondary" style="font-size: 16px; margin-left:10px;">
+                        프로필 사진 저장
+                    </button>
+                </form>
+            </div>
+
+            <span style="display: flex; width: 545px; margin-bottom: 30px;">
+             <div style="width: 230px; font-weight: bold;">아이디</div>
+             <div th:text="${@rq.userInfo.userId}"></div>
+            </span>
+            <form th:action="@{/members/change-password}" method="POST"
+                  onsubmit="submitChangePasswordForm(this); return false;">
+
+                <input type="hidden" name="_method" value="PUT">
+                <div style="display: flex; width: auto; margin-bottom: 30px;">
+                    <label style="width: 230px; font-weight: bold;">기존 비밀번호</label>
+                    <input style="width: 240px;" type="password" name="originPassword" placeholder="비밀번호를 입력하세요">
+                </div>
+                <div th:if="${originPasswordErrorMessage}"
+                     style="margin-bottom:5px; text-align: start; font-size: 17px; color: red; font-weight: bold;"
+                     class="fieldError">
+                    <p th:text="${originPasswordErrorMessage}"></p>
+                </div>
+
+                <div style="display: flex; width: auto; margin-bottom: 30px;">
+                    <label style="width: 230px; font-weight: bold;">새 비밀번호</label>
+                    <input style=" width: 240px;" type="password" name="newPassword" placeholder="비밀번호를 입력하세요">
+                </div>
+                <div th:if="${newPasswordErrorMessage}"
+                     style="margin-bottom:5px; text-align: start; font-size: 17px; color: red; font-weight: bold;"
+                     class="fieldError">
+                    <p th:text="${newPasswordErrorMessage}"></p>
+                </div>
+
+                <div style="display: flex; width: auto; margin-bottom: 30px;">
+                    <label style="width: 230px; font-weight: bold;">새 비밀번호 확인</label>
+                    <input style="flex-grow: 1;" type="password" name="checkNewPassword" placeholder="비밀번호를 입력하세요">
+                    <button type="submit" class="btn btn-outline-primary" style="font-size: 16px; margin-left: 5px;">
+                        변경하기
+                    </button>
+                </div>
+                <div th:if="${checkNewPasswordErrorMessage}"
+                     style="margin-bottom:5px; text-align: start; font-size: 17px; color: red; font-weight: bold;"
+                     class="fieldError">
+                    <p th:text="${checkNewPasswordErrorMessage}"></p>
+                </div>
+            </form>
+            <div th:if="${passwordErrorMessage}"
+                 style="margin-bottom:5px; text-align: start; font-size: 17px; color: red; font-weight: bold;"
+                 class="fieldError">
+                <p th:text="${passwordErrorMessage}"></p>
+            </div>
+
+            <form th:action="@{/members/change-nickname}" method="POST">
+                <div style="display: flex; width: auto; margin-bottom: 30px;">
+                    <label style="width: 230px; font-weight: bold;">닉네임</label>
+                    <div>
+                        <input type="text" id="nicknameInput" name="nickname" placeholder="닉네임">
+                        <button id="checkNicknameBtn" type="button" onclick="checkNickname()"
+                                class="btn btn-outline-danger" style="font-size: 16px; ">
+                            중복확인
+                        </button>
+                    </div>
+                    <div id="changeNicknameForm" style="display: none">
+                        <input type="hidden" name="_method" value="PUT">
+                        <button type="submit" class="btn btn-outline-primary" style="margin-left:5px; font-size: 16px;">변경하기</button>
+                    </div>
+                </div>
+            </form>
+
+            <div id="errorNicknameDiv"
+                 style="text-align: center; font-size: 17px; color: red; font-weight: bold; display: none"
+                 class="fieldError">
+                <p id="errorNickname"></p>
+            </div>
+
+            <div id="successNicknameDiv"
+                 style="text-align: center; font-size: 17px; color: blue; font-weight: bold; display: none"
+                 class="fieldError">
+                <p id="successNickname"></p>
+            </div>
+
+
+            <div style="width: 550px;">
+                <div style="font-weight: bold; margin-bottom: 5px">주소 정보</div>
+                <form th:action="@{/members/address}" method="POST" style="width: 600px;">
+                    <input style="border: 1px solid lightgray; margin-bottom: 15px;" type="text" id="zipcode"
+                           name="zipcode" placeholder="우편번호">
+                    <input type="button" class="btn btn-outline-dark" style="font-size: 16px;  margin-bottom: 5px"
+                           onclick="execDaumPostcode()"
+                           value="우편번호 검색"><br>
+                    <input style="border: 1px solid lightgray;  margin-bottom: 15px" type="text" id="address1"
+                           name="address1" placeholder="도로명주소">
+                    <span id="guide" style="color:#999;display:none"></span>
+                    <input style="border: 1px solid lightgray;" type="text" id="address2" name="address2"
+                           placeholder="상세주소">
+                    <button type="submit" class="btn btn-outline-primary" style="font-size: 16px; margin-bottom: 5px;">저장하기</button>
+                </form>
+            </div>
+        </div>
+
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <script>
+            //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+            function execDaumPostcode() {
+                new daum.Postcode({
+                    oncomplete: function (data) {
+                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                        // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                        var roadAddr = data.roadAddress; // 도로명 주소 변수
+                        var extraRoadAddr = ''; // 참고 항목 변수
+
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                            extraRoadAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
+                            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if (extraRoadAddr !== '') {
+                            extraRoadAddr = ' (' + extraRoadAddr + ')';
+                        }
+
+                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                        document.getElementById('zipcode').value = data.zonecode;
+                        document.getElementById("address1").value = roadAddr;
+
+                        // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+                        // if (roadAddr !== '') {
+                        //     document.getElementById("extraAddress").value = extraRoadAddr;
+                        // } else {
+                        //     document.getElementById("extraAddress").value = '';
+                        // }
+
+                        var guideTextBox = document.getElementById("guide");
+                        // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                        if (data.autoRoadAddress) {
+                            var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                            guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                            guideTextBox.style.display = 'block';
+
+                        } else if (data.autoJibunAddress) {
+                            var expJibunAddr = data.autoJibunAddress;
+                            guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                            guideTextBox.style.display = 'block';
+                        } else {
+                            guideTextBox.innerHTML = '';
+                            guideTextBox.style.display = 'none';
+                        }
+                    }
+                }).open();
+            }
+        </script>
+    </div>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        function checkNickname() {
+            var csrfToken = [[${_csrf.token}]];
+            var nicknameInput = document.getElementById('nicknameInput');
+            var nickname = nicknameInput.value.trim();
+
+            if (nickname.length === 0) {
+                document.getElementById('errorNicknameDiv').style.display = 'block';
+                document.getElementById('errorNickname').innerText = '닉네임을 입력해주세요.';
+                nicknameInput.focus();
+                return;
+            }
+
+            const params = {
+                nickname: nickname
+            }
+
+            const queryString = new URLSearchParams(params).toString();
+
+            fetch('/api/members/check-nickname?' + queryString, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            })
+                .then(response => {
+                    console.log(response)
+
+                    if (!response.ok) {
+                        // 실패시 동작할것들
+                        document.getElementById('errorNicknameDiv').style.display = 'block';
+                        document.getElementById('errorNickname').innerText = '이미 사용 중인 닉네임입니다.';
+                        return
+                    }
+
+                    if (response.ok) {
+                        // Show the "변경하기" button
+                        document.getElementById('errorNicknameDiv').style.display = 'none';
+                        document.getElementById('changeNicknameForm').style.display = 'block';
+                        document.getElementById('checkNicknameBtn').style.display = 'none';
+
+                        document.getElementById('successNicknameDiv').style.display = 'block';
+                        document.getElementById('successNickname').innerText = '사용 가능한 닉네임입니다.';
+
+                        // alert('사용 가능한 닉네임입니다.');
+                    } else {
+                        document.getElementById('errorNicknameDiv').style.display = 'block';
+                        document.getElementById('errorNickname').innerText = '이미 사용 중인 닉네임입니다.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function previewFiles() {
+            var previewContainer = document.querySelector('#preview-container');
+            var fileInput = document.querySelector('input[type=file]');
+            var files = fileInput.files; // 파일 목록을 가져옵니다.
+
+            // 여러 파일이 선택되었을 때
+            if (files.length > 1) {
+                alert('사진은 1장만 선택할 수 있습니다.');
+                fileInput.value = '';
+                return;
+            }
+
+
+            var file = fileInput.files[0];
+
+            var allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+            // 파일 크기 제한
+            var maxSize = 10 * 1024 * 1024;
+
+            previewContainer.innerHTML = '';
+
+            // 파일 확장자 가져오기
+            var fileExtension = file.name.split('.').pop().toLowerCase();
+
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert('jpg, jpeg, png 확장자만 허용됩니다.');
+                fileInput.value = '';
+                return;
+            }
+
+            if (file.size > maxSize) {
+                alert('파일 크기가 10MB 제한을 초과하는 파일이 있습니다. 더 작은 파일을 선택해주세요.');
+                fileInput.value = '';
+                return;
+            }
+
+            var reader = new FileReader();
+            var previewImg = document.createElement('img');
+            previewImg.height = 100;
+            previewImg.alt = '이미지 미리보기';
+
+            reader.onloadend = function () {
+                previewImg.src = reader.result;
+            };
+
+            reader.readAsDataURL(file);
+            previewContainer.appendChild(previewImg);
+        }
+
+    </script>
+</div>
+</html>

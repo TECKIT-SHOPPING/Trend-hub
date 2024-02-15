@@ -1,0 +1,367 @@
+<html layout:decorate="layouts/layout">
+
+<head>
+    <title>주문 [[${order.ordersId}]]번</title>
+
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+
+    <script th:inline="javascript">
+        const orderCode = /*[[ ${order.code} ]]*/ null;
+        const buyerUsername = /*[[ ${order.user.nickname} ]]*/ null;
+        const orderName = /*[[ ${order.orderName} ]]*/ null;
+        const orderPayPrice = /*[[ ${order.sumOrderPrice} ]]*/ null;
+        const toss_clientKey = /*[[ ${@environment.getProperty('custom.tossPayments.clientKey')} ]]*/ null;
+    </script>
+</head>
+
+<div layout:fragment="content">
+
+    <th:block th:fragment="custom-css">
+        <style>
+            .container {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 0 20px rgba(3, 3, 3, 0.1);
+                padding: 20px;
+                width: 80%;
+                max-width: 900px;
+                height: 80%;
+                box-sizing: border-box;
+            }
+
+            .btn-primary {
+                padding: 8px;
+                background-color: #fff;
+                border: 1px solid black;
+                color: #000;
+            }
+
+            .btn-primary:hover {
+                background-color: #000;
+                color: #fff;
+            }
+
+            .order-info {
+                font-size: 20px;
+                line-height: 1.5; /* 글자 간격 조절 */
+                margin-bottom: 15px; /* 하단 여백 조절 */
+            }
+
+            .order-info div {
+                margin-bottom: 8px;
+            }
+
+            /*#extraAddress {*/
+            /*    border: 1px solid black;*/
+            /*    border-radius: 8px;*/
+            /*    !*padding: 8px;*!*/
+            /*}*/
+
+        </style>
+    </th:block>
+
+    <div class="container">
+        <div class="order-info container">
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문번호</div>
+                <div>[[${order.ordersId}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문코드</div>
+                <div>[[${order.code}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문자명</div>
+                <div>[[${order.user.username}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">주문상품</div>
+                <div>[[${order.orderName}]]</div>
+            </div>
+            <div style="display: flex;">
+                <div style="color: #0d6efd; margin-right: 20px;">결제금액</div>
+                <div th:text="${#numbers.formatInteger(order.sumOrderPrice, 3, 'COMMA') + '원'}"></div>
+            </div>
+        </div>
+        <hr style="border-width: 2px;">
+        <th:block th:if="${order.shippingInfo}">
+            <div class="order-info container">
+                <h2 style="text-align: center; font-weight: bold; margin-bottom: 40px; font-size: 2rem;">배송 받을 고객
+                    정보</h2>
+                <div>
+                    <strong style="margin-right: 5px;">이름 :</strong> [[${order.name}]]
+                </div>
+                <div>
+                    <strong style="margin-right: 5px;">전화번호 :</strong> [[${order.phone}]]
+                </div>
+                <div>
+                    <strong style="margin-right: 5px;">우편번호 :</strong> [[${order.zipcode}]]
+                </div>
+                <div>
+                    <strong style="margin-right: 5px;">배송지 주소 :</strong> [[${order.address1}]] [[${order.address2}]]
+                </div>
+            </div>
+        </th:block>
+
+        <th:block th:if="${order.payable}">
+            <script>
+                function submitOrderPayInfoForm(form) {
+                    form.customerName.value = form.customerName.value.trim();
+
+                    if (form.customerName.value.length == 0) {
+                        alert('이름을 입력해주세요.');
+                        form.customerName.focus();
+                        return;
+                    }
+
+                    form.customerMobilePhoneNumber.value = form.customerMobilePhoneNumber.value.trim();
+
+                    if (form.customerMobilePhoneNumber.value.length == 0) {
+                        alert('휴대전화번호를 입력해주세요.');
+                        form.customerMobilePhoneNumber.focus();
+                        return;
+                    }
+
+                    form.address1.value = form.address1.value.trim();
+
+                    if (form.address1.value.length == 0) {
+                        alert('도로명주소를 입력해주세요.');
+                        form.address1.focus();
+                        return;
+                    }
+
+                    form.address2.value = form.address2.value.trim();
+
+                    if (form.address2.value.length == 0) {
+                        alert('상세주소를 입력해주세요.');
+                        form.address2.focus();
+                        return;
+                    }
+
+                    form.zipcode.value = form.zipcode.value.trim();
+
+                    if (form.zipcode.value.length == 0) {
+                        alert('우편번호를 입력해주세요.');
+                        form.zipcode.focus();
+                        return;
+                    }
+
+                    form.submit();
+                }
+            </script>
+            <div class="container">
+                <form style="font-size: 20px" th:action="|/order/${order.ordersId}/requestPay|" method="POST">
+                    <h1 style="font-weight: bold; text-align: center; font-size: 2rem; margin-top: 5px; margin-bottom: 40px;">
+                        배송 정보</h1>
+                    <div style="margin-bottom: 15px;">
+                        <label for="customerName" style="margin-right: 20px;">배송받을 고객 이름</label>
+                        <input type="text" id="customerName" name="customerName" placeholder="ex) 홍길동"
+                               style="border-bottom: 1px solid black;">
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="customerMobilePhoneNumber" style="margin-right: 20px;">고객 휴대전화 번호</label>
+                        <input type="text" id="customerMobilePhoneNumber" name="customerMobilePhoneNumber"
+                               placeholder="ex) 01012341234" style="border-bottom: 1px solid black;">
+                    </div>
+
+                    <div>
+                        <label>주소 정보</label>
+                        <div>
+                            <input style="border: 1px solid lightgray; margin-bottom: 15px;" type="text" id="zipcode"
+                                   name="zipcode" placeholder="우편번호">
+                            <input type="button" class="btn btn-outline-dark"
+                                   style="font-size: 16px;  margin-bottom: 5px"
+                                   onclick="execDaumPostcode()"
+                                   value="우편번호 검색"><br>
+                            <input style="border: 1px solid lightgray;  margin-bottom: 15px" type="text" id="address1"
+                                   name="address1" placeholder="도로명주소">
+                            <span id="guide" style="color:#999;display:none"></span>
+                            <input style="border: 1px solid lightgray;" type="text" id="address2" name="address2"
+                                   placeholder="상세주소">
+                        </div>
+                    </div>
+
+
+                    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+                    <script>
+                        //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+                        function execDaumPostcode() {
+                            new daum.Postcode({
+                                oncomplete: function (data) {
+                                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                                    // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                                    var roadAddr = data.roadAddress; // 도로명 주소 변수
+                                    var extraRoadAddr = ''; // 참고 항목 변수
+
+                                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                                        extraRoadAddr += data.bname;
+                                    }
+                                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                                        extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                                    }
+                                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                                    if (extraRoadAddr !== '') {
+                                        extraRoadAddr = ' (' + extraRoadAddr + ')';
+                                    }
+
+                                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                                    document.getElementById('zipcode').value = data.zonecode;
+                                    document.getElementById("address1").value = roadAddr;
+
+                                    // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+                                    // if (roadAddr !== '') {
+                                    //     document.getElementById("extraAddress").value = extraRoadAddr;
+                                    // } else {
+                                    //     document.getElementById("extraAddress").value = '';
+                                    // }
+
+                                    var guideTextBox = document.getElementById("guide");
+                                    // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                                    if (data.autoRoadAddress) {
+                                        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                                        guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                                        guideTextBox.style.display = 'block';
+
+                                    } else if (data.autoJibunAddress) {
+                                        var expJibunAddr = data.autoJibunAddress;
+                                        guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                                        guideTextBox.style.display = 'block';
+                                    } else {
+                                        guideTextBox.innerHTML = '';
+                                        guideTextBox.style.display = 'none';
+                                    }
+                                }
+                            }).open();
+                        }
+                    </script>
+                </form>
+            </div>
+
+
+            <!-- 결제 UI -->
+            <div id="payment-method"></div>
+
+            <!-- 이용약관 UI -->
+            <div id="agreement"></div>
+
+            <!-- 결제하기 버튼 -->
+            <form>
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <!--                <label>결제하기</label>-->
+                    <button type="button" onclick="submitPayForm(this.form)" id="payment-button"
+                            class="btnset btnset-line">
+                        결제하기
+                    </button>
+                </div>
+            </form>
+
+            <script th:inline="javascript">
+                const button = document.getElementById("payment-button");
+                var amount = orderPayPrice;
+
+                const clientKey = toss_clientKey;
+                const customerKey = buyerUsername;
+                const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
+                // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS); // 비회원 결제
+
+                // ------  결제 UI 렌더링 ------
+                // @docs https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
+                paymentMethodWidget = paymentWidget.renderPaymentMethods(
+                    "#payment-method",
+                    {value: amount},
+                    // 렌더링하고 싶은 결제 UI의 variantKey
+                    // 결제 수단 및 스타일이 다른 멀티 UI를 직접 만들고 싶다면 계약이 필요해요.
+                    // @docs https://docs.tosspayments.com/guides/payment-widget/admin#멀티-결제-ui
+                    {variantKey: "DEFAULT"}
+                );
+                // ------  이용약관 UI 렌더링 ------
+                // @docs https://docs.tosspayments.com/reference/widget-sdk#renderagreement선택자-옵션
+                paymentWidget.renderAgreement("#agreement", {variantKey: "AGREEMENT"});
+
+                function submitPayForm(form) {
+                    var customerName = document.getElementById('customerName').value.trim();
+
+                    if (customerName.length == 0) {
+                        alert('이름을 입력해주세요.');
+                        document.getElementById('customerName').focus();
+                        return;
+                    }
+
+                    var customerMobilePhoneNumber = document.getElementById('customerMobilePhoneNumber').value.trim();
+
+                    if (customerMobilePhoneNumber.length == 0) {
+                        alert('휴대전화번호를 입력해주세요.');
+                        document.getElementById('customerMobilePhoneNumber').focus();
+                        return;
+                    }
+
+                    var address1 = document.getElementById("address1").value.trim();
+
+                    if (address1.length == 0) {
+                        alert('도로명주소를 입력해주세요.');
+                        document.getElementById("address1").focus();
+                        return;
+                    }
+
+                    var address2 = document.getElementById("address2").value.trim();
+                    if (address2.length == 0) {
+                        alert('상세주소를 입력해주세요.');
+                        document.getElementById("address2").focus();
+                        return;
+                    }
+
+                    var zipcode = document.getElementById("zipcode").value.trim();
+
+                    if (zipcode.length == 0) {
+                        alert('우편번호를 입력해주세요.');
+                        document.getElementById("zipcode").zipcode.focus();
+                        return;
+                    }
+
+                    var csrfToken = [[${_csrf.token}]];
+                    var ordersId = [[${order.ordersId}]];
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/order/' + ordersId,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        data: JSON.stringify({
+                            customerName: customerName,
+                            customerMobilePhoneNumber: customerMobilePhoneNumber,
+                            zipcode: zipcode,
+                            address1: address1,
+                            address2: address2
+                        }),
+                        contentType: 'application/json',
+
+                        success: function (response) {
+                        },
+                        error: function (error) {
+                        }
+                    });
+
+                    paymentWidget.requestPayment({
+                        orderId: orderCode,
+                        orderName: orderName,
+                        successUrl: window.location.origin + "/order/success",
+                        failUrl: window.location.origin + "/order/fail",
+                    });
+
+                }
+            </script>
+        </th:block>
+    </div>
+
+
+</div>
+</html>

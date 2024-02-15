@@ -1,0 +1,510 @@
+<html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-huxdJbRgeHzLsH4tVv1tJXX0Tsh3MtLcxg46EjLH5YYZE09km2EEyPqFq1uBRfLdH+gDzlNRDnx7Qluq1+9VQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-size: 16px;
+        }
+
+        .custom-container {
+            font-size: 18px;
+        }
+
+        .custom-select {
+            width: 100%;
+            height: 150%;
+            font-size: 16px;
+        }
+
+        .label {
+            font-size: 18px;
+        }
+
+        .contents-container {
+            font-size: 18px;
+        }
+
+        .textset-tit {
+            font-size: 20px;
+        }
+
+        .contents-price strong {
+            font-size: 18px;
+        }
+
+        .contents-total strong {
+            font-size: 18px;
+        }
+
+        .basic-N52 h2 {
+            font-size: 20px;
+        }
+
+        .pagination a {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<div layout:fragment="content">
+    <script>
+        var errorMessage = "[[${orderErrorMessage}]]";
+
+        if (errorMessage) {
+            alert(errorMessage)
+        }
+    </script>
+
+    <!-- [E]basic-N3 -->
+    <main class="th-layout-main ">
+        <!-- [S]basic-N51 -->
+        <div class="basic-N51" data-bid="BJlRpvYY5G" id="">
+            <div class="contents-inner">
+                <div class="contents-container container-md">
+                    <div class="contents-left">
+                        <div class="contents-thumbnail">
+                            <img class="contents-thumbimg" th:src="${product.image}" alt="썸네일이미지">
+                        </div>
+                        <ul class="contents-thumblist">
+                            <li class="contents-thumbitem">
+                                <img class="contents-thumbimg" th:src="${product.image}" alt="썸네일이미지">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="contents-right">
+                        <div class="contents-right-group">
+                            <div class="contents-brand">
+                                <a style="text-decoration: none;" href="javascript:void(0);">템하피부</a>
+                                <div class="contents-brand-group">
+                                    <div style="display: flex; flex-direction: column">
+                                        <div class="cardset-actions"
+                                             th:attr="data-heart=${productDto.productId}"
+                                             onclick="toggleLike(this)">
+                                            <img th:if="${productDto.liked}" src="../../images/like.png"
+                                                 width="34" height="34"/>
+                                            <img th:unless="${productDto.liked}" src="../../images/unlike.png"
+                                                 width="34" height="34"/>
+                                        </div>
+                                        <span th:text="${productDto.totalLike}"
+                                              style="margin: 0 auto;"></span>
+                                    </div>
+                                    <button class="contents-btn">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="textset">
+                                <h2 class="textset-tit" th:text="${product.name}"></h2>
+                            </div>
+                            <!--                            <p class="contents-price">-->
+                            <!--                                <span><strong-->
+                            <!--                                        th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></strong></span>-->
+                            <!--                                <span>원</span>-->
+                            <!--                            </p>-->
+                            <div style="display: flex; flex-direction: column;">
+                                <!-- Check if discount is not zero -->
+                                <h2 class="cardset-tit contents-price" th:if="${product.discount == 0}">
+                                    <span th:text="${'-'}"></span>
+                                    <!-- Strikethrough original price -->
+                                </h2>
+                                <h2 class="cardset-tit contents-price" th:if="${product.discount != 0}"
+                                    style="display: flex; flex-direction: column;">
+                                    <div style="display: flex; flex-direction: row; justify-content: space-between">
+                                        <p class="cardset-desc contents-price" style="font-weight: normal">원가</p>
+                                        <del style="font-weight: normal"
+                                             th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
+                                    </div>
+                                    <!-- Strikethrough original price -->
+                                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                                        <p class="cardset-desc contents-price" style="color: darkgray;">할인율</p>
+                                        <p class="cardset-desc contents-price" style="color: red;"
+                                           th:text="${'  -' + product.discount + '%'}"></p>
+
+                                    </div>
+
+                                    <!-- Display discount percentage -->
+                                </h2>
+                                <!-- Check if discount is not zero and calculate discounted price -->
+                                <div style="display: flex; flex-direction: row; justify-content: space-between">
+                                    <p class="cardset-desc contents-price" th:if="${product.discount != 0}">할인금액</p>
+                                    <p class="cardset-desc contents-price" th:if="${product.discount != 0}"
+                                       th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                    <!-- If discount is zero, display the original price in the <p> tag -->
+
+                                    <p class="cardset-desc contents-price" th:if="${product.discount == 0}">할인미적용금액</p>
+                                    <p class="cardset-desc contents-price" th:if="${product.discount == 0}"
+                                       th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contents-right-group">
+                            <ul class="contents-right-list">
+                                <li class="contents-right-item">
+                                </li>
+                                <li class="contents-right-item">
+                                    <strong>배송정보</strong>
+                                    <span>무료배송</span>
+                                </li>
+                                <li class="contents-right-item">
+                                    <strong>판매자정보</strong>
+                                    <span>템하피부몰</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="custom-container"
+                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                            <span class="label">색상 / 사이즈</span>
+                            <form>
+                                <select name="size" class="custom-select" id="productOption2">
+                                    <option value="0">==선택==</option>
+                                    <option class="productOption" th:each="option : ${productOption}"
+                                            th:value="${option.productOptionId}"
+                                            th:utext="${option.color + '/' + option.size}"></option>
+                                    <!--                                    <option value="90">90</option>-->
+                                    <!--                                    <option value="95">95</option>-->
+                                    <!--                                    <option value="100">100</option>-->
+                                    <!--                                    <option value="105">105</option>-->
+                                </select>
+                            </form>
+                            <!--                            <span class="label">색상</span>-->
+                            <!--                            <form>-->
+                            <!--                                <select name="color" class="custom-select">-->
+                            <!--                                    <option value="none">=== 선택 ===</option>-->
+                            <!--                                    <option th:each="option : ${productOption}"-->
+                            <!--                                            th:value="${option.color}"-->
+                            <!--                                            th:utext="${option.color}"></option>-->
+                            <!--&lt;!&ndash;                                    <option value="white">white</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;                                    <option value="black">black</option>&ndash;&gt;-->
+                            <!--                                </select>-->
+                            <!--                            </form>-->
+                        </div>
+                        <div class="contents-right-group">
+                            <div class="contents-right-list">
+                                <div class="custom-container"
+                                     style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="label">수량</span>
+                                    <div class="contents-amount">
+                                        <button class="contents-btn btn-minus" type="button">
+                                            <img src="/icons/ico_minus_black.svg" alt="마이너스 아이콘">
+                                        </button>
+                                        <p class="contents-amount-num">1</p>
+                                        <button class="contents-btn btn-plus" type="button">
+                                            <img src="/icons/ico_plus_black.svg" alt="플러스 아이콘">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="contents-total"
+                                 style="display: flex; justify-content:space-between; align-items: center;">
+                                <strong>총 결제금액</strong>
+                                <p class="contents-price">
+                                </p>
+
+                                <!--                                <div style="display: flex; flex-direction: column;">-->
+
+                                <!--                                        &lt;!&ndash; Check if discount is not zero &ndash;&gt;-->
+                                <!--                                    +-->
+                                <!-- Check if discount is not zero and calculate discounted price -->
+                                <p class="contents-price" th:if="${product.discount != 0}"
+                                   th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                <!-- If discount is zero, display the original price in the <p> tag -->
+                                <p class="contents-price" th:if="${product.discount == 0}"
+                                   th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+                                <!--                                </div>-->
+
+                            </div>
+                        </div>
+                        <div class="contents-btn-group">
+                            <form class="btnset btnset-line" th:action="|/cart/${product.productId}|"
+                                  onclick="submitOrderInfo(this)" method="POST">
+                                <input type="hidden" name="amount" value="1">
+                                <input type="hidden" name="productOptionId" value="1">
+                                <button type="submit" style="width: 100%; height: 100%;">장바구니</button>
+                            </form>
+                            <form class="btnset btnset-line" th:action="|/order/${product.productId}|"
+                                  onclick="submitOrderInfo(this)" method="POST">
+                                <input type="hidden" name="amount" value="1">
+                                <input type="hidden" name="productOptionId" value="1">
+                                <button type="submit" style="width: 100%; height: 100%;">구매하기</button>
+                            </form>
+                            <!--                            <button class="btnset btnset-line" type="button" onClick="location.href='/cart'">장바구니-->
+                            <!--                            </button>-->
+                            <!--                            <button class="btnset btnset-line" type="button">구매하기</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [E]basic-N51 -->
+        <!-- [S]basic-N52 -->
+        <div class="basic-N52">
+            <div class="contents-inner">
+                <div class="tabset tabset-fluid">
+                    <ul class="tabset-list container-md">
+                        <li class="tabset-item">
+                            <a class="tabset-link active" href="#section-details">
+                                <h2 style="font-size: 20px;">상세정보</h2>
+                            </a>
+                        </li>
+                        <li class="tabset-item">
+                            <a class="tabset-link" href="#section-inquiry">
+                                <h2 style="font-size: 20px;">상품문의</h2>
+                            </a>
+                        </li>
+                        <li class="tabset-item">
+                            <a class="tabset-link" href="#section-reviews">
+                                <h2 style="font-size: 20px;">상품후기</h2>
+                            </a>
+                        </li>
+                        <li class="tabset-item">
+                            <a class="tabset-link" href="#section-shipping">
+                                <h2 style="font-size: 20px;">배송/교환/반품안내</h2>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="contents-container container-md">
+                    <!-- Section: 상세정보 -->
+                    <div id="section-details" class="section-content">
+                        <!-- 여기에 상세정보 내용 추가 -->
+                        <h2 class="text-4xl font-bold mb-8">상세정보</h2>
+                        <div class="contents-container container-md">
+                            <div class="imageset" style="max-width: 100%; height: 100%;">
+                                <img class="imageset-img" th:src="${product.detailImage}" alt="이미지"
+                                     style="width: 100%; height: auto;">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Section: 상품문의 -->
+                    <div id="section-inquiry" class="section-content mt-10" style="margin-bottom: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <img style="width: 30px; height: 30px; margin-right: 5px;" th:src="@{/images/qna.png}">
+                            <h2 class="text-4xl font-bold">상품문의</h2>
+                        </div>
+                        <div style="display: flex; justify-content: end;" class="flex mb-6">
+                            <!-- Thymeleaf 문법을 사용하여 productId를 JavaScript 함수로 전달합니다 -->
+                            <button class="btn btn-secondary py-2 text-2xl"
+                                    th:onclick="openInquirePopup([[${product.productId}]])">상품문의 작성하기
+                            </button>
+                        </div>
+
+                        <table class="w-full border-collapse border border-gray-300 mt-8">
+                            <thead>
+                            <tr class="bg-gray-100">
+                                <th class="py-3 px-6 border-b text-xl">제목</th>
+                                <th class="py-3 px-6 border-b text-xl">작성일시</th>
+                                <th class="py-3 px-6 border-b text-xl">사용자ID</th>
+                                <th class="py-3 px-6 border-b text-xl text-right">답변상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- 상품문의 목록 반복 -->
+                            <tr th:each="qnaList, loop : ${qnaPaging}" class="border-b">
+                                <td class="py-3 px-6 text-xl">
+                                    <a th:href="@{|/qna/detail/${qnaList.id}|}"
+                                       th:if="${@qnaService.canRead(user, qnaList)}" th:text="${qnaList.title}"></a>
+                                    <span th:unless="${@qnaService.canRead(user, qnaList)}">비밀 글 입니다🔑</span>
+                                    <!--<a th:href="@{|/qna/detail/${qnaList.id}|}" th:text="${qnaList.title}"></a>-->
+                                </td>
+                                <td class="py-3 px-6 text-xl" th:text="${qnaList.createDate}"></td>
+                                <td class="py-3 px-6 text-xl" th:text="${qnaList.loginId}"></td>
+                                <!-- 답변상태 표시 -->
+                                <td class="py-3 px-6 text-xl text-right"> <!-- 여기에 text-right 추가 -->
+                                    <span th:if="${qnaList.answered}" style="color: orange;">답변완료</span>
+                                    <span th:unless="${qnaList.answered}">미답변</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 페이징처리 시작 -->
+                        <div th:if="${!qnaPaging.isEmpty()}" class="mt-8" style="margin-bottom: 50px;">
+                            <ul class="pagination flex justify-center">
+                                <li class="page-item" th:classappend="${!qnaPaging.hasPrevious} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{|/products/${product.productId}?qnaPage=${qnaPaging.number-1}#section-inquiry|}">
+                                        <span class="text-xl">이전</span>
+                                    </a>
+                                </li>
+                                <li th:each="page: ${#numbers.sequence(0, qnaPaging.totalPages-1)}"
+                                    th:if="${page >= qnaPaging.number-5 and page <= qnaPaging.number+5}"
+                                    th:classappend="${page == qnaPaging.number} ? 'active'"
+                                    class="page-item mx-2">
+                                    <a th:text="${page + 1}" class="page-link"
+                                       th:href="@{|/products/${product.productId}?qnaPage=${page}#section-inquiry|}"></a>
+                                </li>
+                                <li class="page-item" th:classappend="${!qnaPaging.hasNext} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{|/products/${product.productId}?qnaPage=${qnaPaging.number+1}#section-inquiry|}">
+                                        <span class="text-xl">다음</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- 페이징처리 끝 -->
+                    </div>
+                    <!-- Section: 후기 -->
+                    <div id="section-reviews" class="section-content" style="margin-bottom: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <img style="width: 30px; height: 30px; margin-right: 5px;"
+                                 th:src="@{/images/review_write.png}">
+                            <h2 class="text-4xl font-bold">상품후기</h2>
+                        </div>
+                        <!-- 여기에 후기 내용 추가 -->
+                        <div style="display: flex; justify-content: end;" class="flex mb-6">
+                            <a th:href="@{|/review/create/${product.productId}|}">
+                                <button th:if="${checkPayable}" class="btn btn-secondary py-2 text-2xl">
+                                    상품후기 작성하기
+                                </button>
+                            </a>
+                        </div>
+
+                        <table class="w-full border-collapse border border-gray-300 mt-8">
+                            <thead>
+                            <tr>
+                                <th class="py-3 px-6 border-b text-xl">내용</th>
+                                <th class="py-3 px-6 border-b text-xl">작성일시</th>
+                                <th class="py-3 px-6 border-b text-xl">사용자ID</th>
+                                <th class="py-3 px-6 border-b text-xl">별점</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="review, loop : ${reviewList}" class="border-b">
+                                <td style="max-width: 600px; overflow: hidden;" class="py-3 px-6 text-xl"
+                                    th:text="${review.content}"></td>
+                                <td class="py-3 px-6 text-xl" th:text="${review.createAt}"></td>
+                                <td class="py-3 px-6 text-xl" th:text="${review.user.loginId}"></td>
+                                <td class="py-3 px-10 text-xl" style="display: flex; align-items: center;">
+                                <span th:each="i : ${#numbers.sequence(1, review.star)}"> <i class="fas fa-star"></i></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- 페이징처리 시작 -->
+                        <div th:if="${!reviewList.isEmpty()}" class="mt-8">
+                            <ul class="pagination flex justify-center">
+                                <li class="page-item" th:classappend="${!reviewList.hasPrevious} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{|/products/${product.productId}?reviewPage=${reviewList.number-1}#section-inquiry|}">
+                                        <span class="text-xl">이전</span>
+                                    </a>
+                                </li>
+                                <li th:each="page: ${#numbers.sequence(0, reviewList.totalPages-1)}"
+                                    th:if="${page >= reviewList.number-5 and page <= reviewList.number+5}"
+                                    th:classappend="${page == reviewList.number} ? 'active'"
+                                    class="page-item mx-2">
+                                    <a th:text="${page + 1}" class="page-link"
+                                       th:href="@{|/products/${product.productId}?reviewPage=${page}#section-inquiry|}"></a>
+                                </li>
+                                <li class="page-item" th:classappend="${!reviewList.hasNext} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{|/products/${product.productId}?reviewPage=${reviewList.number+1}#section-inquiry|}">
+                                        <span class="text-xl">다음</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- 페이징처리 끝 -->
+                    </div>
+                    <!-- Section: 배송/교환/반품안내 -->
+                    <div id="section-shipping" class="section-content" style="margin-bottom: 50px;">
+                        <div style="display: flex; align-items: center;">
+                            <img style="width: 30px; height: 30px; margin-right: 5px;" th:src="@{/images/box.png}">
+                            <h2 class="text-4xl font-bold">배송/교환/반품안내</h2>
+                        </div>
+                        <div class="imageset" style="max-width: 100%; height: 100%;">
+                            <img class="imageset-img" src="/images/EBB0B0EC86A1.jpg" alt="배송/교환/반품안내 이미지"
+                                 style="width: 100%; height: auto;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [E]basic-N52 -->
+    </main>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        function openInquirePopup(productId) {
+            // productId를 사용하여 팝업을 열거나 로그인 팝업을 표시하는 로직을 구현
+            const principalName = [[${#authentication.principal}]]
+
+            if (principalName === 'anonymousUser' || principalName === undefined) {
+                alert('로그인이 필요합니다.');
+            } else {
+                window.open(`/qna/${productId}`, 'inquire', 'width=500,height=600');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var url = window.location.href;
+            var productUrl = url.match(/\/products\/(\d+)/);
+            var productList = JSON.parse(localStorage.getItem('productList')) || [];
+            productList.push(productUrl[1]);
+            localStorage.setItem('productList', JSON.stringify(productList));
+        });
+
+        function toggleLike(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var productId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/products/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    productId: parseInt(productId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function submitOrderInfo(form) {
+            var amountElement = document.querySelector('.contents-amount-num');
+            var productOptionElement = document.getElementById('productOption2');
+
+            var amount = amountElement.textContent;
+            var productOptionId = productOptionElement.options[productOptionElement.selectedIndex].value;
+
+            form.amount.value = amount;
+            form.productOptionId.value = productOptionId;
+
+            form.submit();
+        }
+    </script>
+</div>
+</html>

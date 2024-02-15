@@ -1,0 +1,61 @@
+<html layout:decorate="layouts/layout" xmlns="http://www.w3.org/1999/html">
+<div layout:fragment="content">
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 100px;">
+        <div style="font-weight: bold; text-decoration-line: underline; font-size: 35px;">로그인</div>
+    </div>
+    <div style="display:flex; flex-direction: column; align-items: center; margin-top: 50px;">
+        <form class="personal-mALrqlJVbp" data-bid="wSLRR2ef0l" role="form" method="post" th:action="@{/members/login}">
+            <div>
+                <div type="text" th:for="loginId" style="font-size: 20px;">아이디</div>
+                <input name="loginId" class="input"
+                       style="width: 350px; height: 40px; font-size: 13px;  border-bottom: 2px solid black;">
+            </div>
+            <div>
+                <div th:for="password" style="font-size: 20px;">비밀번호</div>
+                <input type="password" name="password" class="input"
+                       style="width: 350px; height: 40px; font-size: 13px; border-bottom: 2px solid black;">
+            </div>
+            <div style="text-align: center; color: red;">
+                <p th:if="${loginErrorMessage}" class="error" th:text="${loginErrorMessage}"></p>
+                <button type="submit"
+                        style="display:flex; align-items:center; justify-content: center; width: 350px; height:50px; border: 1px solid black; background-color: black; color: white; margin-top: 10px; margin-bottom: 5px;">
+                    <div style="font-size: 22px;">로그인</div>
+                </button>
+            </div>
+        </form>
+        <a class="p-2"
+           href="https://kauth.kakao.com/oauth/authorize?client_id=bcda04f3dbb1052307427b9508ca0914&redirect_uri=http://localhost:8080/kakao/callback&response_type=code">
+            <div style="display:flex; align-items:center; justify-content: center; width: 350px; height:50px; border: 1px solid black; margin-bottom: 10px;">
+                <img style="width: 40px; height: 40px; margin-right: 5px;" th:src="@{/images/kakao.png}">
+                <div style="font-size: 22px;">카카오 로그인</div>
+            </div>
+        </a>
+
+        <div style="width:350px; font-size: 14px;  display: flex; justify-content: space-around; margin-top: 10px; margin-bottom: 10px;">
+            <button onClick="location.href='/members/findLoginId'">
+                <a>아이디찾기</a>
+            </button>
+            <button onClick="location.href='/members/findLoginPw'">
+                <a>비밀번호찾기 </a>
+            </button>
+        </div>
+        <div style="font-size: 16px; margin: 20px 0px 10px 0px;">회원가입 후 <span
+                style="color: #FF8200; font-weight:bold; text-decoration: underline;">할인혜택</span>을 누리세요
+        </div>
+        <a th:href="@{/members/join}">
+            <button style="width: 200px; height:45px; border: 1px solid black; border-radius: 20px; background-color: white; color: black; font-size: 18px;">
+                회원가입
+            </button>
+        </a>
+    </div>
+    <div style="height: 300px;"></div>
+</div>
+</html>
+
+
+<!--
+세션 문제 :
+1. 세션 생성하고 있는 로그인 창 폼 부분 위의 http코드가 너무 많음
+2. http는 한번에 연결하는 것이 아닌 나눠서 호출한다.
+3. 이미 헤드에서 세션을 요청했는데 밑에서도 요청하는 경우
+4. 자바 코드(UserController에서 login 참조)에서 Session을 따로 따오거나 html(body 태그 내 단순 form 참조) 내에 form을 만들면 해결.-->

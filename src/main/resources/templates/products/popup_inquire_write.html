@@ -1,0 +1,140 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <!-- 여기에 필요한 스타일이나 스크립트를 추가하세요 -->
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <div class="product-info">
+        <div class="avatar">
+            <div class="rounded overflow-hidden">
+                <img th:src="${product.image}" class="w-80 h-96 object-cover" />
+            </div>
+        </div>
+        <div class="product-details">
+            <h2>제품명:
+                <span style="font-weight: bold; font-size: 12pt" th:text="${product.name}" ></span></h2>
+            <p>가격: <span style="font-weight: bold; font-size: 12pt" th:text="${product.price}"></span> 원</p>
+        </div>
+    </div>
+
+    <form th:action="@{|/qna/${productId}|}" th:object="${qnaDto}" method="post">
+        <h3>제목
+            <span style="margin-left: 0.4rem; font-size: var(--fs-p1); color: var(--danger);">*</span>
+        </h3>
+        <input name="inquireContent" type="text" id="title" th:field="${qnaDto.title}"
+               style="width: 350px; height: 30px; font-size: 13px; border:1px solid gray;" placeholder="15자 이내 입력" />
+        <p th:if="${#fields.hasErrors('title')}" th:errors="${qnaDto.title}" class="fieldError"
+           style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
+
+        <h3>문의 유형
+            <span style="margin-left: 0.4rem; font-size: var(--fs-p1); color: var(--danger);">*</span>
+        </h3>
+        <!-- 문의 유형 라디오 버튼 추가 -->
+        <label for="radio-1">
+            <input type="radio" id="radio-1" name="inquireType" class="radio" value="size" checked/>
+            <span style="font-weight : bold ; font-size: 10pt">사이즈</span>
+        </label>
+        <label for="radio-2">
+            <input type="radio" id="radio-2" name="inquireType" class="radio" value="deliver" checked/>
+            <span style="font-weight : bold ; font-size: 10pt">배송</span>
+        </label>
+        <label for="radio-3">
+            <input type="radio" id="radio-3" name="inquireType" class="radio" value="restock" checked/>
+            <span style="font-weight : bold ; font-size: 10pt">재입고</span>
+        </label>
+        <label for="radio-4">
+            <input type="radio" id="radio-4" name="inquireType" class="radio" value="detailed-inquiry" checked/>
+            <span style="font-weight : bold ; font-size: 10pt">상품상세문의</span>
+        </label>
+        <!-- 다른 문의 유형 라디오 버튼들도 추가 -->
+
+        <h3>문의 내용
+            <span style="margin-left: 0.4rem; font-size: var(--fs-p1); color: var(--danger);">*</span>
+        </h3>
+        <div>
+            <input name="inquireContent" type="text" id="content" th:field="${qnaDto.content}"
+                   style="width: 350px; height: 30px; font-size: 13px; border:1px solid gray;" placeholder="문의 내용을 입력해주세요." />
+            <input type="submit" value="Submit">
+            <p th:if="${#fields.hasErrors('content')}" th:errors="${qnaDto.content}" class="fieldError"
+               style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
+        </div>
+        <div class="form-control">
+            <label class="label cursor-pointer">
+                <h4 class="label-text">
+                    <span>비밀 글🔑</span>
+                    <input type="checkbox" th:field="${qnaDto.secret}" th:checked="${qnaDto.secret}" class="checkbox" />
+                </h4>
+            </label>
+        </div>
+    </form>
+</div>
+</body>
+
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        // 필요한 스크립트가 있다면 추가하세요
+        function previewFiles() {
+            var previewContainer = document.querySelector('#preview-container');
+            var fileInput = document.querySelector('input[type=file]');
+            var files = fileInput.files; // 파일 목록을 가져옵니다.
+
+            // 여러 파일이 선택되었을 때
+            if (files.length > 1) {
+                alert('사진은 1장만 선택할 수 있습니다.');
+                fileInput.value = '';
+                return;
+            }
+
+
+            var file = fileInput.files[0];
+
+            var allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+            // 파일 크기 제한
+            var maxSize = 10 * 1024 * 1024;
+
+            previewContainer.innerHTML = '';
+
+            // 파일 확장자 가져오기
+            var fileExtension = file.name.split('.').pop().toLowerCase();
+
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert('jpg, jpeg, png 확장자만 허용됩니다.');
+                fileInput.value = '';
+                return;
+            }
+
+            if (file.size > maxSize) {
+                alert('파일 크기가 10MB 제한을 초과하는 파일이 있습니다. 더 작은 파일을 선택해주세요.');
+                fileInput.value = '';
+                return;
+            }
+
+            var reader = new FileReader();
+            var previewImg = document.createElement('img');
+            previewImg.height = 100;
+            previewImg.alt = '이미지 미리보기';
+
+            reader.onloadend = function () {
+                previewImg.src = reader.result;
+            };
+
+            reader.readAsDataURL(file);
+            previewContainer.appendChild(previewImg);
+        }
+
+        function checkFileSelected() {
+            var fileInput = document.querySelector('input[type=file]');
+            if (!fileInput.files.length) {
+                alert('사진을 선택해주세요.');
+                return false; // form 제출 중단
+            }
+            return true; // form 제출 계속
+        }
+    </script>
+</div>
+
+</html>

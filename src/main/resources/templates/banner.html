@@ -1,0 +1,373 @@
+<html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<div layout:fragment="content">
+    <th:block th:fragment="custom-css">
+        <style>
+            .personal-TPlRRchzc3 .contents-inner {
+                padding: 8rem 0.6rem;
+            }
+
+            .personal-TPlRRchzc3 .contents-container {
+                position: relative;
+                width: 1230px;
+            }
+
+            .personal-TPlRRchzc3 .textset {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .personal-TPlRRchzc3 .contents-btn {
+                width: 2.4rem;
+                height: 2.4rem;
+                background-color: transparent;
+                border: 0;
+            }
+
+            .personal-TPlRRchzc3 .contents-btn img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                vertical-align: top;
+            }
+
+            .personal-TPlRRchzc3 .btn-filter {
+                display: none;
+            }
+
+            .personal-TPlRRchzc3 .contents-body {
+                display: flex;
+                justify-content: space-between;
+                gap: 4rem;
+            }
+
+            .personal-TPlRRchzc3 .contents-left {
+                width: 0rem;
+                background-color: var(--white);
+            }
+
+            .personal-TPlRRchzc3 .contents-right {
+                width: 100%;
+                max-width: 1000rem;
+                overflow: hidden;
+            }
+
+            .personal-TPlRRchzc3 .contents-sort {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 2rem;
+                padding: 2rem 0;
+                border-top: 1px solid var(--line-color3);
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .personal-TPlRRchzc3 .contents-sort-total {
+                font-size: var(--fs-p3);
+                line-height: var(--lh-p3);
+                color: var(--text-color3);
+            }
+
+            .personal-TPlRRchzc3 .contents-sort-total span {
+                font-weight: 600;
+                color: var(--text-color1);
+            }
+
+            .personal-TPlRRchzc3 .contents-sort-sel {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .personal-TPlRRchzc3 .contents-sort .tabset .tabset-list {
+                justify-content: flex-start;
+            }
+
+            .personal-TPlRRchzc3 .contents-sort .selectset {
+                width: auto;
+                min-width: 14rem;
+                max-width: 14rem;
+            }
+
+            .personal-TPlRRchzc3 .product-list {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .personal-TPlRRchzc3 .product-list .cardset {
+                width: calc(100% / 4);
+                padding: 2rem;
+            }
+
+            .personal-TPlRRchzc3 .product-list .cardset-figure {
+                height: 30rem;
+            }
+
+            .personal-TPlRRchzc3 .contents-dim {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 200;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(17, 17, 17, 0.7);
+            }
+
+
+            .personal-TPlRRchzc3.filter-active .contents-dim {
+                display: block;
+            }
+
+            .personal-TPlRRchzc3 .contents-inner {
+                padding: 5rem 1.6rem;
+            }
+
+            .personal-TPlRRchzc3 .textset-tit {
+                max-width: calc(100% - 2.4rem);
+            }
+
+            .personal-TPlRRchzc3 .contents-filter-body {
+                overflow-y: auto;
+                height: 100%;
+                padding-bottom: 22rem;
+            }
+
+            .personal-TPlRRchzc3 .contents-filter-body .accordset {
+                border-top: 0;
+            }
+
+            .personal-TPlRRchzc3 .btn-filter {
+                display: block;
+            }
+
+            .personal-TPlRRchzc3 .contents-left {
+                position: fixed;
+                right: -100%;
+                opacity: 0;
+                visibility: visible;
+                width: 0;
+                height: 100%;
+                transition: 0.4s;
+                z-index: 300;
+            }
+
+            .personal-TPlRRchzc3 .contents-sort-sel {
+                flex-wrap: wrap;
+                width: 100%;
+            }
+
+            .personal-TPlRRchzc3 .contents-sort .selectset {
+                width: 150%;
+                max-width: 150%;
+            }
+
+            .personal-TPlRRchzc3 .product-list {
+                margin: 2rem -1rem 2rem -1rem;
+            }
+
+            .personal-TPlRRchzc3 .product-list .cardset {
+                width: calc(100% / 2);
+                padding: 2rem 1rem;
+            }
+
+            .personal-TPlRRchzc3 .product-list .cardset + .cardset {
+                margin-top: 0;
+            }
+
+            .personal-TPlRRchzc3 .product-list .cardset-figure {
+                height: 25rem;
+            }
+
+            .personal-TPlRRchzc3 .product-list {
+                flex-grow: 1;
+            }
+
+            .pagiset-link.current-page {
+                color: red;
+            }
+
+            .non-clicked {
+                pointer-events: none;
+            }
+        </style>
+    </th:block>
+    <div style="display: flex; flex-direction:column; justify-content: center; align-items:center;">
+        <div style="width: 1300px; height: 700px;">
+            <figure style="width: 1300px; height: 700px;">
+                <img th:src="${banner.image}" style="object-fit: cover;">
+            </figure>
+        </div>
+        <div style="display: flex; justify-content:center; width: 800px;">
+            <div style="margin-top: 100px;">
+                <th:block th:replace="~{fragments/category :: cateGoryFragment}"></th:block>
+            </div>
+            <div style="flex-grow: 1; ">
+                <div class="personal-TPlRRchzc3" data-bid="Lgls03hvIE" style=" width: 100%;">
+                    <div class="contents-inner">
+                        <div class="contents-container container">
+                            <div class="contents-right">
+                                <div class="product-list" style="flex-grow: 1;">
+                                    <div th:each="product : ${product}" class="product-item"
+                                         style="width: 20%; margin-bottom: 15px;">
+                                        <a
+                                                class="cardset cardset-shopping" style="cursor: pointer; width: 100%;"
+                                        >
+                                            <figure class="cardset-figure"
+                                                    th:onclick="|redirectToProduct('${product.productId}')|">
+                                                <img class="cardset-img" th:src="${product.image}"
+                                                     th:href="@{'/products/' + ${product.productId}}"
+                                                     alt="스와이퍼 이미지">
+                                            </figure>
+                                            <div class="cardset-body"
+                                                 style="display: flex; justify-content: space-between; align-items: center;">
+                                                <!-- 수정된 부분 -->
+                                                <div th:onclick="|redirectToProduct('${product.productId}')|">
+                                                    <span class="cardset-name" th:text="${product.name}"></span>
+                                                    <!-- Check if discount is not zero -->
+                                                    <h2 class="cardset-tit" th:if="${product.discount == 0}">
+                                                        <span th:text="${'-'}"></span>
+                                                        <!-- Strikethrough original price -->
+                                                    </h2>
+                                                    <h2 class="cardset-tit" th:if="${product.discount != 0}">
+                                                        <del th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></del>
+                                                        <!-- Strikethrough original price -->
+                                                        <span th:text="${'  - ' + product.discount + '%'}"></span>
+                                                        <!-- Display discount percentage -->
+                                                    </h2>
+                                                    <!-- Check if discount is not zero and calculate discounted price -->
+                                                    <p class="cardset-desc" th:if="${product.discount != 0}"
+                                                       th:text="${#numbers.formatInteger(product.price - (product.price * product.discount / 100), 3, 'COMMA') + '원'}"></p>
+                                                    <!-- If discount is zero, display the original price in the <p> tag -->
+                                                    <p class="cardset-desc" th:if="${product.discount == 0}"
+                                                       th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}"></p>
+                                                </div>
+                                                <div style="display: flex; flex-direction: column">
+                                                    <div class="cardset-actions"
+                                                         th:attr="data-heart=${product.productId}"
+                                                         onclick="toggleLike(this)">
+                                                        <img th:if="${product.liked}" src="../../images/like.png"
+                                                             width="34" height="34"/>
+                                                        <img th:unless="${product.liked}" src="../../images/unlike.png"
+                                                             width="34" height="34"/>
+                                                    </div>
+                                                    <span th:text="${product.totalLike}"
+                                                          style="margin: 0 auto;"></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        function redirectToFilter(mainCategory, subCategory, page, sort) {
+            var productUrl = '/products/' + mainCategory + "/" + subCategory + "?page=" + page + "&sort=" + sort;
+            window.location.href = productUrl;
+        }
+
+        function redirectToProduct(productId) {
+            var productUrl = '/products/' + productId;
+            window.location.href = productUrl;
+        }
+
+
+        function toggleLike(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var productId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/products/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    productId: parseInt(productId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function toggleLike(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var productId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/products/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    productId: parseInt(productId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</div>
+</html>
+</html>
