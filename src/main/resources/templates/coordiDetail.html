@@ -1,0 +1,309 @@
+<html layout:decorate="layouts/layout" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<div layout:fragment="content">
+
+    <th:block th:fragment="custom-css">
+        <style>
+            .wider-column {
+                width: 300px;
+            }
+
+            #comment-form-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 20px;
+            }
+
+            #comment-input {
+                width: 100%;
+                margin-bottom: 10px;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            #submit-comment-btn {
+                background-color: #000000;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            #submit-comment-btn:hover {
+                background-color: #ffffff;
+                color: #000000;
+            }
+        </style>
+    </th:block>
+
+    <div style="display: flex; flex-direction: column; justify-content: center; width: 80%; margin: 0 auto;">
+        <div style="width: 100%;">
+            <div class="textset">
+                <h2 class="textset-tit" style="text-align: left; margin-left: 130px; font-size: 3rem; font-weight: bold;">My Style</h2>
+                <div class="hr-container" style="display: flex; justify-content: center;">
+                    <hr class="hr-style first-hr" style="border: solid 1px black; width: 88%;">
+                </div>
+            </div>
+        </div>
+        <div class="basic-N45" data-bid="aGLrPw1vOT">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 88%; margin: 0 auto;" class="contents-container1 container-md2">
+                <button th:if="${userId == coordiDetailDto.userId}" class="btn btn-dark" th:onclick="|deleteCoordi('${coordiDetailDto.coordiId}')|" style="font-size: 13px; margin-left: auto; padding: 20px; border-radius: 30px;">코디 삭제 버튼</button>
+
+                <div style="position: relative;">
+                    <img class="object-cover" style = "width: 500px; height: 500px;" th:src="${coordiDetailDto.image}" alt="베스트코디 이미지">
+                    <div style="display: flex; flex-direction: row;">
+                        <div class="cardset-actions"
+                             th:attr="data-heart=${coordiDetailDto.coordiId}"
+                             onclick="toggleLikeCoordi(this)" style = "margin-top: 6px;">
+                            <img th:if="${coordiDetailDto.liked}" src="../images/like.png"
+                                 width="34" height="34" />
+                            <img th:unless="${coordiDetailDto.liked}" src="../images/unlike.png"
+                                 width="34" height="34"/>
+                        </div>
+                        <span th:text="${coordiDetailDto.totalLike}" style="margin-left: 5px; margin-top: 5px; font-size: 2rem;"></span>
+                    </div>
+                </div>
+                <hr class="hr-style second-hr" style="border: solid 1px black; width: 100%; margin-top: 80px; margin-bottom: 10px;">
+                <div id="section-inquiry" class="section-content mt-10" style="overflow-y: visible; max-height: 500px; width: 100%;">
+                    <h2 class="text-4xl font-bold mb-8" style="text-align: left; font-size: 2.5rem;">댓글</h2>
+
+                    <table class="w-full border-collapse border border-gray-300 mt-8">
+                        <thead>
+                        <tr class="bg-gray-100">
+                            <th class="py-3 px-6 border-b text-xl text-center">프로필</th>
+                            <th class="py-3 px-6 border-b text-xl text-center">닉네임</th>
+                            <th class="py-3 px-6 border-b text-xl text-center">내용</th>
+                            <th class="py-3 px-6 border-b text-xl text-center">작성일시</th>
+                            <th class="py-3 px-6 border-b text-xl text-center">비고</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- 상품문의 목록 반복 -->
+                        <tr th:each="review : ${paging.content}" class="border-b">
+                            <td class="py-3 px-6 text-xl">
+                                <img th:src="${review.user.profile}" alt="Profile Image" style="border-radius: 50%; width: 30px; height: 30px;">
+                            </td>
+                            <td class="py-3 px-6 text-xl text-center" th:text="${review.user.nickname}"></td>
+                            <td class="py-3 px-6 text-xl text-center wider-column" th:text="${review.content}"></td>
+                            <td class="py-3 px-6 text-xl text-center" th:text="${review.createAt}"></td>
+                            <td>
+                                <button th:if="${userId == review.user.userId}" class="btn btn-dark" th:onclick="|deleteReview('${review.reviewId}')|" style="margin-left: 10px; font-size: 13px;">삭제</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div id="coordiId" style="display: none;" data-id="${coordiId}"></div>
+                    <table class="w-full border-collapse border border-gray-300 mt-8" style="margin-top: 10px;">
+                        <thead>
+                        <tr class="bg-gray-100">
+                            <th class="py-3 px-6 border-b text-xl text-center">댓글</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${userId != null}" class="border-b">
+                            <td class="py-3 px-6 text-xl">
+                                <div id="comment-form-container">
+                                    <form th:action="@{|/coordi/${coordiDetailDto.coordiId}|}" method="post" id="comment-form" style="display: flex; flex-direction: row; align-items: center; width: 100%; justify-content: space-around;">
+                                        <textarea id="comment-input" name="content" cols="100" rows="4" required maxlength="20" placeholder="댓글을 입력하세요" style="width: 70%; resize: none;"></textarea>
+                                        <input type="submit" id="submit-comment-btn" style="width: 10%; padding: 20px;" value="댓글 등록"></input>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div th:if="${!paging.isEmpty()}" class="mt-8">
+                        <ul class="pagination flex justify-center" style="margin-bottom: 15px;" >
+                            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                                <a class="page-link" th:href="@{|/coordi/${coordiDetailDto.coordiId}?page=${paging.number}}">
+                                    <span class="text-xl">이전</span>
+                                </a>
+                            </li>
+                            <li th:each="page: ${#numbers.sequence(1, paging.totalPages)}"
+                                th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                                th:classappend="${page == paging.number + 1} ? 'active'"
+                                class="page-item mx-2">
+                                <a th:text="${page}" class="page-link" th:href="@{|/coordi/${coordiDetailDto.coordiId}?page=${page}|}"></a>
+                            </li>
+                            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                                <a class="page-link" th:href="@{|/coordi/${coordiDetailDto.coordiId}?page=${paging.number+2}|}">
+                                    <span class="text-xl">다음</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="hr-container" style="display: flex; justify-content: center;">
+                    <hr class="hr-style first-hr" style="border: solid 1px black; width: 100%; margin-top: 200px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        function toggleLikeCoordi(element) {
+            var csrfToken = [[${_csrf.token}]];
+            var heartContainer = element;
+            var coordiId = heartContainer.getAttribute('data-heart');
+            var currentState = heartContainer.getAttribute('data-liked');
+            var newState = currentState === 'true' ? 'false' : 'true';
+            // UI 갱신
+
+            // 변경된 상태를 서버로 전송
+            fetch('/api/coordi/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    coordiId: parseInt(coordiId),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data === true) {
+                        heartContainer.innerHTML = '<img src="../images/like.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount + 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else if (data === false) {
+                        heartContainer.innerHTML = '<img src="../images/unlike.png" width="34" height="34"/>';
+                        var likeCount = parseInt(heartContainer.nextElementSibling.innerText);
+                        heartContainer.nextElementSibling.innerText = likeCount - 1;
+                        heartContainer.setAttribute('data-liked', !newState);
+                    } else {
+                        if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                            window.location.href = '/members/login';
+                        }
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // window.onload = function() {
+        //     var firstHr = document.querySelector('.first-hr');
+        //     var secondHr = document.querySelector('.second-hr');
+        //     var containerWidth = document.querySelector('.hr-container').offsetWidth;
+        //
+        //     firstHr.style.width = containerWidth * 0.88 + 'px';
+        //     secondHr.style.width = containerWidth * 0.88 + 'px';
+        // };
+
+        function deleteReview(reviewId) {
+            const token = /*[[${_csrf.token}]]*/ '';
+            if (confirm('정말로 이 후기를 삭제하시겠습니까?')) {
+                fetch('/api/reviews/' + reviewId, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                    .then(response => {
+                        console.log(response)
+                        if (!response.ok) {
+                            throw new Error('HTTP error ' + response.status);
+                        }
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.log('There has been a problem with your fetch operation: ' + error.message);
+                    });
+            }
+        }
+
+        function deleteCoordi(coordiId) {
+            const token = /*[[${_csrf.token}]]*/ '';
+            if (confirm('정말로 코디를 삭제하시겠습니까?')) {
+                fetch('/api/coordi/' + coordiId, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data === 100) {
+                            window.location.href='/coordi';
+                            return;
+                        }else if (data === 101) {
+                            if (confirm('로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?')) {
+                                window.location.href = '/members/login';
+                            }
+                        }else if (data === 102) {
+                            alert("코디가 존재하지 않습니다.");
+                            return;
+                        }else if (data === 103) {
+                            alert("일치하지 않는 유저입니다.");
+                            return;
+                        }
+                    })
+                    .catch(error => {
+                        console.log('There has been a problem with your fetch operation: ' + error.message);
+                    });
+            }
+        }
+
+    //     function submitComment(event) {
+    //         event.preventDefault();
+    //
+    //         const coordiId = document.getElementById('coordiId').dataset.id;
+    //         const reviewContent = document.getElementById('comment-input').value;
+    //
+    //         const formData = {
+    //             content: reviewContent,
+    //             reviewId: coordiId,
+    //             date: new Date().toISOString()
+    //         };
+    //
+    //         fetch(`/coordi/${coordiId}`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(formData),
+    //             credentials: 'include',
+    //         })
+    //             .then(response => {
+    //                 if (!response.ok) {
+    //                     throw new Error('HTTP error ' + response.status);
+    //                 }
+    //                 return response.json();
+    //             })
+    //             .then(data => {
+    //                 console.log('댓글이 성공적으로 등록되었습니다.');
+    //
+    //                 const tableBody = document.querySelector('table tbody');
+    //                 const newRow = document.createElement('tr');
+    //                 newRow.innerHTML = `
+    // <td class="py-3 px-6 text-xl">
+    //   <img src="${data.user.profile}" alt="Profile Image" style="border-radius: 50%; width: 30px; height: 30px;">
+    // </td>
+    // <td class="py-3 px-6 text-xl text-center">${data.user.nickname}</td>
+    // <td class="py-3 px-6 text-xl text-center wider-column">${data.content}</td>
+    // <td class="py-3 px-6 text-xl text-center">${data.createAt}</td>
+    // <td>
+    //   <button class="btn btn-dark" onclick="deleteReview('${data.reviewId}')" style="margin-left: 10px; font-size: 13px;">삭제</button>
+    // </td>`;
+    //                 tableBody.appendChild(newRow);
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error:', error);
+    //             });
+    //     }
+    </script>
+</div>
+</html>
