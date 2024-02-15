@@ -1,4 +1,4 @@
-package com.trendhub.trendhub.domain.orders.Repository;
+package com.trendhub.trendhub.domain.orders.repository;
 
 import com.trendhub.trendhub.domain.orders.entity.Orders;
 import com.trendhub.trendhub.domain.user.entity.User;
