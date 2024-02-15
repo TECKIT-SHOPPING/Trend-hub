@@ -3,13 +3,13 @@
 <div layout:fragment="content">
     <div style="display:flex; flex-direction: column; align-items:center; margin-top: 50px;">
         <th:block th:replace="~{fragments/myPage :: myPageFragment}"></th:block>
-        <div style="margin-top: 60px; width: 1000px;">
-            <div style="display: flex; align-items:center; font-size: 15px;">
-                <img style="width: 20px; height: 20px; margin-right: 3px;" th:src="@{/images/recently.png}"> 최근 본 상품
+        <div style="margin-top: 60px; width: 1100px;">
+            <div style="display: flex; align-items:center; font-size: 30px;">
+                <img style="width: 40px; height: 40px; margin-right: 10px;" th:src="@{/images/recently.png}"> 최근 본 상품
             </div>
             <div class="row row-cols-1 row-cols-md-5" style="margin-bottom: 50px; margin-top: 5px;">
                 <div class="swiper contents-swiper" style="flex-grow: 1;">
-                    <div id="products-container" style="display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 15px;"></div>
+                    <div id="products-container" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 15px;"></div>
                 </div>
             </div>
         </div>
@@ -41,10 +41,10 @@
                     products.forEach(function (product) {
                         var productCard = document.createElement('div');
                         productCard.className = 'swiper-slide';
-                        productCard.style = 'width: 30%; margin-bottom: 15px;';
+                        productCard.style = 'width: 240px; margin-bottom: 15px;';
                         productCard.innerHTML = `
-                    <a class="cardset cardset-shopping" style="cursor: pointer; width: 100%;">
-                        <figure class="cardset-figure"  onclick="redirectToProduct('${product.productId}')">
+                    <a class="cardset cardset-shopping" style="cursor: pointer; width: 240px;">
+                        <figure class="cardset-figure" style="width: 100%;" onclick="redirectToProduct('${product.productId}')">
                             <img class="cardset-img" src="${product.image}" alt="스와이퍼 이미지">
                         </figure>
                         <div class="cardset-body" style="display: flex; justify-content: space-between; align-items: center;">
@@ -123,6 +123,6 @@
             window.location.href = productUrl;
         }
     </script>
-    <div style="height: 300px;"></div>
+    <div style="height: 250px;"></div>
 </div>
 </html>
