@@ -1,0 +1,222 @@
+<html layout:decorate="layouts/layout">
+<head>
+    <title th:if="${product.name}" th:text="${product.name + ' - 후기 작성'}">후기 작성하기</title>
+</head>
+
+<div layout:fragment="content">
+    <th:block th:fragment="custom-css">
+        <!-- 여기에 필요한 스타일이나 스크립트를 추가하세요 -->
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                display: flex;
+            }
+
+            h1 {
+                color: #333;
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            h5 {
+                color: #555;
+                font-size: 16px;
+                margin-top: 20px;
+            }
+
+            div {
+                color: #333;
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+            li {
+                background-color: #fff;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            textarea {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+
+            input[type="submit"] {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+            button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+
+            .selection-buttons {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+
+            /* Style for individual selection button */
+            .selection-button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                flex: 1;
+                margin-right: 5px;
+            }
+
+            .selection-button:hover {
+                background-color: #45a049;
+            }
+
+            /* Style for the selected button */
+            .selected {
+                background-color: #45a049 !important;
+            }
+
+            /* Style for the star rating */
+            .star-rating {
+                display: inline-block;
+                unicode-bidi: bidi-override;
+                direction: rtl;
+                /*display: flex;*/
+                justify-content: center;
+                align-items: center;
+                width: 150px;
+                height: 30px;
+                background-color: #D8D8D8;
+                border-radius: 10px;
+            }
+
+
+            /*.rating {*/
+            /*    display: inline-block;*/
+            /*    unicode-bidi: bidi-override;*/
+            /*    direction: ltr;*/
+            /*    display: flex;*/
+            /*    justify-content: center;*/
+            /*    align-items: center;*/
+            /*    width: 150px;*/
+            /*    height: 30px;*/
+            /*    background-color: #D8D8D8;*/
+            /*    border-radius: 10px;*/
+            /*}*/
+
+            .star-rating legend {
+                text-align: right;
+                cursor: pointer;
+            }
+
+            .star-rating input[type=radio] {
+                display: none;
+            }
+
+            .star-rating label {
+                font-size: 3em;
+                color: transparent;
+                text-shadow: 0 0 0 #f0f0f0;
+            }
+
+            .star-rating label:hover {
+                text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+            }
+
+            .star-rating label:hover ~ label {
+                text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+            }
+
+            .star-rating input[type=radio]:checked ~ label {
+                text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+            }
+        </style>
+    </th:block>
+
+    <div class="container">
+        <form th:action="@{|/review/create/${productId}|}" method="post" id="myform" th:object="${reviewDto}"
+              style="display: inline-block;">
+
+            <!-- Text input fields for height and weight -->
+            <label for="height">키:</label>
+            <input type="text" id="height" name="height" placeholder="키를 입력하세요." style="margin-bottom: 10px;">
+            <p th:if="${#fields.hasErrors('height')}" th:errors="${reviewDto.height}" class="fieldError"
+               style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
+
+            <label for="weight">몸무게:</label>
+            <input type="text" id="weight" name="weight" placeholder="몸무게를 입력하세요." style="margin-bottom: 10px;">
+            <p th:if="${#fields.hasErrors('weight')}" th:errors="${reviewDto.weight}" class="fieldError"
+               style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
+
+            <fieldset class="star-rating" style="margin-bottom: 10px;">
+                <legend>별점을 선택해주세요</legend>
+                <input type="radio" name="star" value="5" id="rate1"><label for="rate1">★</label>
+                <input type="radio" name="star" value="4" id="rate2"><label for="rate2">★</label>
+                <input type="radio" name="star" value="3" id="rate3"><label for="rate3">★</label>
+                <input type="radio" name="star" value="2" id="rate4"><label for="rate4">★</label>
+                <input type="radio" name="star" value="1" id="rate5"><label for="rate5">★</label>
+            </fieldset>
+            <p th:if="${#fields.hasErrors('star')}" th:errors="${reviewDto.star}" class="fieldError"
+               style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
+
+            <textarea name="content" id="content" rows="10" cols="100" style="resize: none;"
+                      placeholder="20글자 이상 입력해주세요."></textarea>
+            <p th:if="${#fields.hasErrors('content')}" th:errors="${reviewDto   .content}" class="fieldError"
+               style="font-size: 17px; color: red; font-weight: bold;">Incorrect data</p>
+            <input type="submit" value="후기 등록" style="margin-right: 5px;">
+        </form>
+        <a th:href="@{'/products/' + ${productId}}" style="display: inline-block;">
+            <button>뒤로가기</button>
+        </a>
+    </div>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        function selectOption(button, value) {
+            const category = button.classList.contains('size') ? 'size' : (button.classList.contains('brightness') ? 'brightness' : 'gender');
+            document.querySelectorAll(`.selection-button.${category}.selected`).forEach(btn => btn.classList.remove('selected'));
+            button.classList.toggle('selected');
+            const selectedOptions = Array.from(document.querySelectorAll(`.selection-button.${category}.selected`)).map(btn => btn.textContent);
+            console.log(category + ': ' + selectedOptions.join(', '));
+        }
+    </script>
+</div>
+</html>
