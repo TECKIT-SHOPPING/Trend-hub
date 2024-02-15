@@ -53,9 +53,15 @@ public class ReviewService {
         return reviewRepository.findByCoordiIdList(id);
     }
 
-    public Page<Review> getReviewList(int page, Long coordiId) {
+    public Page<Review> getCoordiReviewList(int page, Long coordiId) {
         Pageable pageable = PageRequest.of(page, 5);
         return reviewRepository.findByCoordiId(pageable, coordiId);
+    }
+
+
+    public Page<Review> getReviewList(int page, Long productId) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.reviewRepository.findByProduct_ProductId(pageable, productId);
     }
 
 
