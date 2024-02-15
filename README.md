@@ -1,21 +1,20 @@
-![스크린샷 2024-02-15 21 50 13](https://github.com/TECKIT-SHOPPING/Trend-hub/assets/84388081/de5d44bc-7a57-4109-aedd-23d822c1d81f)
-
 ## 📆 프로젝트 기간
-**2024.01.15 ~ 2024.02.16 / 서비스 런칭 : 2024.01.30**
+**2024.01.15 ~ 2024.02.15 / 서비스 런칭 : 2024.01.30**
 
 <br/>
 
 ### 👉🏻 [옷사러 가시죠 !](https://techit.kro.kr/)
+### 🎬 [시연 보실분 !](https://youtu.be/lVXoZkI9BdE)
 
 <br/>
 
 ## 📒 기술스택
 
 #### FRONT-END
-<img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"/> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black"/> 
+ <img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"/> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black"/> 
 
 #### BACK-END
-<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"/> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white"/> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white"/>
+<img src="https://img.shields.io/badge/Thymeleaf-6DB33F?style=for-the-badge&logo=Thymeleaf&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"/> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white"/> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white"/>
 <br> 
 <img src="https://img.shields.io/badge/NCP RDS-03C75A?style=for-the-badge&logo=Naver&logoColor=white"/> <img src="https://img.shields.io/badge/NCP S3-03C75A?style=for-the-badge&logo=Naver&logoColor=white"/> <img src="https://img.shields.io/badge/NCP EC2-03C75A?style=for-the-badge&logo=Naver&logoColor=white"/> 
 <br> 
@@ -34,19 +33,21 @@
 
 ## 🛠️ 트러블슈팅
 
-<details>
-
-<summary>FRONT-END</summary>
-
-
-</details>
-
-
-
 
 <details>
 
 <summary>BACK-END</summary>
+
+### 상품목록 조회 좋아요 유무 N+1 이슈
+
+|요구 사항| 핵심 기술을 선택한 이유 및 근거|
+|:---|:---|
+|:scream: 문제| 페이징처리된 상품목록 20개를 가져오는데 각 상품별로 유저가 좋아요 유무를 판단하는 쿼리문은 상품 <br/>갯수 20개만큼 쿼리문 날리는 문제 발생|
+|:thinking: 원인| 상품들을 먼저 조회하고 likes에서 exists로 찾기 때문에 N+1 문제 발생하는 것으로 판단했다.|
+|:sob: 시도| • 구글링을 통해 게시판 구현한 코드들을 봐도 N+1 이슈가 발생하도록 코드가 작성되어있어 쿼리문을 애초에 다르게 만들어야겠다고 생각함.</br> • product랑 likes를 조인하고 where절에 user를 eq조건에 넣어 해결해봐도 N+1발생 </br> • on절에 productId일치, user가 두 테이블 간에 일치하도록하여 해결함. |
+|:smile: 해결|likes 엔터티 간의 leftJoin하여 on절에 product 및 user가 두 테이블 간에 일치 조건을 기반으로 하여 데이터를 한꺼번에 가져오는 방식으로 해결함|
+
+
 
 
 </details>
