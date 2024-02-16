@@ -8,6 +8,11 @@
 
 <br/>
 
+## ⚙️ 서비스 아키텍쳐
+![stack](https://github.com/TECKIT-SHOPPING/Trend-hub/assets/131260371/60836e50-410e-4c7e-873d-2dbfa7a3d5ce)
+
+<br/>
+
 ## 📒 기술스택
 
 #### FRONT-END
@@ -71,5 +76,5 @@
 
 |[🔰안우성](https://github.com/Anwooseong)|[🔰최도영](https://github.com/mabyoungg)|[🔰김부권](https://github.com/bukwon)|[🔰현진영](https://github.com/jinyoung121636)|[🔰이재윤](https://github.com/leejaeyoon22)|[🔰신석우](https://github.com/bukgomi)
 |:---:|:---:|:---:|:---:|:---:|:---:|
-|![안우성](https://user-images.githubusercontent.com/116439064/215262142-47067e5c-59ab-4097-aa89-9c1ca56199c8.png)|![최도영](https://user-images.githubusercontent.com/116439064/215262141-5c84b7e9-1a76-4c89-93a9-9b2f404f829a.png)|![김부권](https://user-images.githubusercontent.com/116439064/215262141-5c84b7e9-1a76-4c89-93a9-9b2f404f829a.png)|![현진영](https://user-images.githubusercontent.com/116439064/215262240-af881f71-ac78-4b7a-8e6d-f0cd32ff044b.png)|![이재윤](https://user-images.githubusercontent.com/116439064/215262142-47067e5c-59ab-4097-aa89-9c1ca56199c8.png)|![신석우](https://user-images.githubusercontent.com/116439064/215262140-71f4049c-30c5-4bf3-8072-af2b3ebc7ec9.png)|
+|![안우성](https://github.com/TECKIT-SHOPPING/Trend-hub/assets/131260371/fd3c0092-f6d3-4581-8d95-fdb371ac7df6)|![최도영](https://github.com/TECKIT-SHOPPING/Trend-hub/assets/131260371/d4e4a061-905a-4f74-ae43-c48425208c93)|![김부권](https://github.com/TECKIT-SHOPPING/Trend-hub/assets/131260371/dcc4377a-b276-498a-8d50-c14c70c18363)|![현진영](https://github.com/TECKIT-SHOPPING/Trend-hub/assets/131260371/00f9e9a0-af2c-457b-b549-08b793321020)|![이재윤](https://github.com/TECKIT-SHOPPING/Trend-hub/assets/131260371/caf86912-325d-4926-bcc9-ccf04c8cd2bf)|![신석우](https://github.com/TECKIT-SHOPPING/Trend-hub/assets/131260371/0641779a-6af2-47fa-a27b-a1b3302510ab)|
 |BACK-END|BACK-END|BACK-END|BACK-END|BACK-END|BACK-END|
