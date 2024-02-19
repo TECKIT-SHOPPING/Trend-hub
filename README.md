@@ -8,6 +8,14 @@
 
 <br/>
 
+## ✔️ 사이트 유의사항
+
+1. 구매후기는 물품 구매 후 '물품후기 작성하기' 버튼이 생성됩니다. (**결제 금액은 뜨지만 실제로 금액이 결제되진 않습니다.**)
+
+2. 문의사항 qna 답변은 관리자만 가능합니다. (**관리자 테스트 trendhub7 / trendhub7@**)
+
+<br/>
+
 ## ⚙️ 서비스 아키텍쳐
 ![stack](https://github.com/TECKIT-SHOPPING/Trend-hub/assets/131260371/60836e50-410e-4c7e-873d-2dbfa7a3d5ce)
 
